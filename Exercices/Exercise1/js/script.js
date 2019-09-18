@@ -20,13 +20,17 @@ let movingImage;
 //Image location
 let imageX = -640;
 let imageY = 0;
+// Obect that follows the mouse
+let mouseShadow;
+let scale = -0.5;
 
 
-// preload movingImage
+// preload movingImage and mouseShadow
 
 function preload() {
   movingImage = loadImage("images/Forest.jpg");
   // Always make the path from where the index.html file is
+  mouseShadow = loadImage("images/butterfly.png");
 }
 
 
@@ -79,9 +83,10 @@ function draw() {
   // Display the square
   rect(squareX,squareY,squareSize,squareSize);
 
-  //Use background so that the image does not leave a trail
-  background(255);
   // Make movingImage move from left to right
   imageX = imageX + 1;
   image(movingImage, imageX, imageY);
+
+  // Make mouseShadow follow the mouse position
+  image(mouseShadow, mouseX, mouseY, mouseShadow.width * scale, mouseShadow.height * scale);
 }
