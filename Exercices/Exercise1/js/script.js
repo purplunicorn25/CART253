@@ -1,5 +1,5 @@
 // Exercise 1 - Movement
-// Pippin Barr
+// Anne Boutet
 //
 // Starter code for exercise 1.
 // Draws a moving square and circle that intersect
@@ -15,13 +15,18 @@ let squareX;
 let squareY;
 let squareSize = 100;
 
+// Image already set to canvas size: 640 X 640
+let movingImage;
+//Image location
+let imageX = -640;
+let imageY = 0;
 
-// preload()
-//
-// Nothing here
+
+// preload movingImage
 
 function preload() {
-
+  movingImage = loadImage("images/Forest.jpg");
+  // Always make the path from where the index.html file is
 }
 
 
@@ -73,4 +78,10 @@ function draw() {
   fill(0,0,255,10);
   // Display the square
   rect(squareX,squareY,squareSize,squareSize);
+
+  //Use background so that the image does not leave a trail
+  background(255);
+  // Make movingImage move from left to right
+  imageX = imageX + 1;
+  image(movingImage, imageX, imageY);
 }
