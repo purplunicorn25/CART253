@@ -23,6 +23,11 @@ let imageY = 0;
 // Obect that follows the mouse
 let mouseShadow;
 let scale = -0.5;
+// Other moving image
+let movingImage2;
+let scale2 = -0.6;
+let image2X = 640;
+let image2Y = -200;
 
 
 // preload movingImage and mouseShadow
@@ -31,6 +36,7 @@ function preload() {
   movingImage = loadImage("images/Forest.jpg");
   // Always make the path from where the index.html file is
   mouseShadow = loadImage("images/butterfly.png");
+  movingImage2 = loadImage("images/Unicorn.png");
 }
 
 
@@ -84,9 +90,16 @@ function draw() {
   rect(squareX,squareY,squareSize,squareSize);
 
   // Make movingImage move from left to right
+  imageMode(CORNER)
   imageX = imageX + 1;
   image(movingImage, imageX, imageY);
 
   // Make mouseShadow follow the mouse position
   image(mouseShadow, mouseX, mouseY, mouseShadow.width * scale, mouseShadow.height * scale);
+
+  // Make the movingImage 2 rotate PI/4
+  imageMode(CENTER);
+  image2X = image2X - 1;
+  image2Y = image2Y + 1;
+  image(movingImage2, image2X, image2Y, movingImage2.width * scale2, movingImage2.height * scale2);
 }
