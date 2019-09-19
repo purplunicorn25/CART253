@@ -2,6 +2,8 @@
 
 Game - The Artful Dodger
 Pippin Barr
+&
+Anne Boutet
 
 A simple dodging game with keyboard controls
 
@@ -29,13 +31,32 @@ let enemyVX = 5;
 // How many dodges the player has made
 let dodges = 0;
 
+// The position of the dodges counter
+let dodgesX = 0;
+let dodgesY = 0;
+
+// Set counter position
+let textX = 20;
+let textY = 10;
+
+// Dodges counter make-over
+let textSize1 = 60;
+let counterFont;
+
+// preload()
+//
+function preload() {
+  // Load counter font
+//!!!counterFont = loadFont('ChunkFive-Regular');
+
+}
+
 // setup()
 //
 // Make the canvas, position the avatar and anemy
 function setup() {
   // Create our playing area
   createCanvas(500,500);
-
   // Put the avatar in the centre
   avatarX = width/2;
   avatarY = height/2;
@@ -139,5 +160,13 @@ function draw() {
   fill(255,0,0);
   // Draw the enemy as a circle
   ellipse(enemyX,enemyY,enemySize,enemySize);
+
+  // Display dodges counter on screen
+
+  textSize(textSize1);
+  fill("#1DE2DF");
+  textAlign(LEFT, TOP);
+  //!!!textFont(counterFont);
+  text(dodges, textX, textY);
 
 }
