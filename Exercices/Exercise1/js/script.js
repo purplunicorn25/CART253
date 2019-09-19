@@ -15,22 +15,22 @@ let squareX;
 let squareY;
 let squareSize = 100;
 
-// Image already set to canvas size: 640 X 640
+// Image already set to canvas size: 640 X 640 px
 let movingImage;
-//Image location
+// Image location
 let imageX = -640;
 let imageY = 0;
-// Obect that follows the mouse
+// Object that follows the mouse
 let mouseShadow;
 let scale = -0.5;
 // Other moving image
 let movingImage2;
-let scale2 = -0.6;
 let image2X = 640;
 let image2Y = -200;
+let scale2 = -0.6;
 
 
-// preload movingImage and mouseShadow
+// preload images
 
 function preload() {
   movingImage = loadImage("images/Forest.jpg");
@@ -89,15 +89,16 @@ function draw() {
   // Display the square
   rect(squareX,squareY,squareSize,squareSize);
 
-  // Make movingImage move from left to right
+  // Make movingImage move from left to right (X axis)
   imageMode(CORNER)
   imageX = imageX + 1;
   image(movingImage, imageX, imageY);
 
   // Make mouseShadow follow the mouse position
+  // Scale the image dimensions to right size
   image(mouseShadow, mouseX, mouseY, mouseShadow.width * scale, mouseShadow.height * scale);
 
-  // Make the movingImage 2 rotate PI/4
+  // Make the movingImage2 move from upper right corner to lower left corner
   imageMode(CENTER);
   image2X = image2X - 1;
   image2Y = image2Y + 1;
