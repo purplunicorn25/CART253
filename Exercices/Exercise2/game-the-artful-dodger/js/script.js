@@ -23,21 +23,22 @@ let avatarVY = 0;
 let enemyX;
 let enemyY;
 let enemySize = 50;
+let initialEnemySize = enemySize;
 
-// The speed and velocity of our enemy circle
+// The speed, velocity and acceleration of our enemy circle
 let enemySpeed = 5;
-let enemyVX = 5;
+let enemyVX = 0;
+let enemyAX = .3;
+
+// Enemy enlargement rate
+let enemyPlusSize = 5;
 
 // How many dodges the player has made
 let dodges = 0;
 
 // The position of the dodges counter
-let dodgesX = 0;
-let dodgesY = 0;
-
-// Set counter position
-let textX = 20;
-let textY = 10;
+let dodgesX = 20;
+let dodgesY = 10;
 
 // Dodges counter make-over
 let textSize1 = 60;
@@ -124,6 +125,9 @@ function draw() {
     avatarY = height/2;
     // Reset the dodge counter
     dodges = 0;
+    // Reset enemy size and enemy speed
+    enemySize = initialEnemySize;
+    enemySpeed = 5;
   }
 
   // Check if the avatar has gone off the screen (cheating!)
@@ -135,6 +139,9 @@ function draw() {
     avatarX = width/2;
     avatarY = height/2;
     dodges = 0;
+    // Reset enemy size and enemy speed
+    enemySize = initialEnemySize;
+    enemySpeed = 5;
   }
 
   // Check if the enemy has moved all the way across the screen
@@ -146,27 +153,30 @@ function draw() {
     // Reset the enemy's position to the left at a random height
     enemyX = 0;
     enemyY = random(0,height);
+    // Make the enemy bigger and faster at every dodge
+    enemySize = enemySize + enemyPlusSize;
+    enemySpeed = enemyVX + enemyAX; //velocity based on acceleration
+    console.log(enemySpeed + " ENEMY'S SPEED");
   }
 
   // Display the number of successful dodges in the console
   console.log(dodges);
 
   // The player is black
-  fill(0);
+  fill("#db24b4");
   // Draw the player as a circle
   ellipse(avatarX,avatarY,avatarSize,avatarSize);
 
   // The enemy is red
-  fill(255,0,0);
+  fill(0,255,0);
   // Draw the enemy as a circle
   ellipse(enemyX,enemyY,enemySize,enemySize);
 
   // Display dodges counter on screen
-
   textSize(textSize1);
   fill("#1DE2DF");
   textAlign(LEFT, TOP);
   //!!!textFont(counterFont);
-  text(dodges, textX, textY);
+  text(dodges, dodgesX, dodgesY);
 
 }

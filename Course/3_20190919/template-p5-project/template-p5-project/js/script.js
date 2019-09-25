@@ -17,25 +17,21 @@ function preload() {
 }
 
 
-// setup()
-//
-// Description of setup
-let circleX;
-let circleY;
-let circleSize = 100;
+let x = 0;
+let y = 0;
+let speed = 5;
+let vx = 40;
+let ax = 0.5; // Acceleration
 function setup() {
   createCanvas(500,500);
-  circleX = width/2;
-  circleY = height/2;
+  x = width/2;
+  y = height/2;
+  vx = speed;
 }
 function draw() {
-  background(255);
-  let d = dist(mouseX,mouseY,circleX,circleY);
-  if (d < circleSize/8) {
-    fill(255,0,0);
-  }
-  else {
-    fill(255);
-  }
-  ellipse(circleX,circleY,circleSize,circleSize);
+  // Change velocity based on acceleration
+  vx = vx + ax;
+  // Change position based on velocity
+  x = x + vx;
+  ellipse(x,y,50,50);
 }
