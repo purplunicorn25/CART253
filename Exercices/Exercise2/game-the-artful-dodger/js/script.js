@@ -44,6 +44,13 @@ let dodgesY = 10;
 let textSize1 = 60;
 let counterFont;
 
+// Background settings
+let blueSaturation = 255;
+let redSaturation = 255;
+let greenSaturation = 255;
+// Set how fast the background gets greener
+let saturationRate = 17; // At level 15 the background will be green
+
 // preload()
 //
 function preload() {
