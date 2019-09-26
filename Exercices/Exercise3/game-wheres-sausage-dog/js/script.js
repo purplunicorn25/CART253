@@ -36,9 +36,11 @@ let numDecoys = 100;
 // Keep track of whether they've won
 let gameOver = false;
 
-//Display Wanted Picture
+//Display Wanted Picture with Wanted caption
 let wantedX = 130;
 let wantedY = 130;
+let textX = 105;
+let textY = 40;
 
 // preload()
 //
@@ -130,7 +132,7 @@ function setup() {
   noStroke();
   textSize(20);
   textAlign(CENTER);
-  text("WANTED", windowWidth - (wantedX - 25), 40);
+  text("WANTED", windowWidth - textX, textY);
 
 }
 
