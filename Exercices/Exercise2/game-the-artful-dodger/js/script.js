@@ -12,7 +12,7 @@ A simple dodging game with keyboard controls
 // The position and size of our avatar circle
 let avatarX;
 let avatarY;
-let avatarSize = 50;
+let avatarSize = 70;
 
 // The speed and velocity of our avatar circle
 let avatarSpeed = 10;
@@ -22,7 +22,7 @@ let avatarVY = 0;
 // The position and size of the enemy circle
 let enemyX;
 let enemyY;
-let enemySize = 50;
+let enemySize = 60;
 let initialEnemySize = enemySize;
 
 // The speed, velocity and acceleration of our enemy circle
@@ -51,12 +51,16 @@ let greenSaturation = 255;
 // Set how fast the background gets greener
 let saturationRate = 17; // At level 15 the background will be green
 
+// Avatar and enemy personnality
+let player;
+let enemy;
+
 // preload()
 //
 function preload() {
-  // Load counter font
-//!!!counterFont = loadFont('ChunkFive-Regular');
-
+  // Load Images
+  player = loadImage("scaredMonsieur.png");
+  enemy = loadImage("cuteBrocoli.png");
 }
 
 // setup()
@@ -76,14 +80,12 @@ function setup() {
   // No stroke so it looks cleaner
   noStroke();
 }
-
 // draw()
 //
 // Handle moving the avatar and enemy and checking for dodges and
 // game over situations.
 function draw() {
-  // A pink background
-  background(255,220,220);
+ background(redSaturation, greenSaturation, blueSaturation);
 
   // Default the avatar's velocity to 0 in case no key is pressed this frame
   avatarVX = 0;
@@ -99,7 +101,6 @@ function draw() {
   else if (keyIsDown(RIGHT_ARROW)) {
     avatarVX = avatarSpeed;
   }
-
   // Up and down (separate if-statements so you can move vertically and
   // horizontally at the same time)
   if (keyIsDown(UP_ARROW)) {
@@ -108,7 +109,6 @@ function draw() {
   else if (keyIsDown(DOWN_ARROW)) {
     avatarVY = avatarSpeed;
   }
-
   // Move the avatar according to its calculated velocity
   avatarX = avatarX + avatarVX;
   avatarY = avatarY + avatarVY;
@@ -135,6 +135,10 @@ function draw() {
     // Reset enemy size and enemy speed
     enemySize = initialEnemySize;
     enemySpeed = 5;
+    // Set the background back to white
+    redSaturation = 255;
+    blueSaturation = 255;
+    greenSaturation = 255;
   }
 
   // Check if the avatar has gone off the screen (cheating!)
@@ -149,6 +153,10 @@ function draw() {
     // Reset enemy size and enemy speed
     enemySize = initialEnemySize;
     enemySpeed = 5;
+    // Set the background back to white
+    redSaturation = 255;
+    blueSaturation = 255;
+    greenSaturation = 255;
   }
 
   // Check if the enemy has moved all the way across the screen
@@ -164,26 +172,48 @@ function draw() {
     enemySize = enemySize + enemyPlusSize;
     enemySpeed = enemyVX + enemyAX; //velocity based on acceleration
     console.log(enemySpeed + " ENEMY'S SPEED");
+    //Make the green background go darker everytime avatar dodgesX
+    redSaturation = redSaturation - saturationRate;
+    blueSaturation = blueSaturation - saturationRate;
+    background(redSaturation,255,blueSaturation);
   }
 
+// At level 15 the background and the enemy become the same color; only luck counts!
+if (dodges >= 14){
+  textSize(26)
+  text('Luck is a very thin wire\nbetween survival and disaster.', dodgesX + 80, dodgesY);
+  textSize(18);
+  text('- Hunter S. Thompson -', dodgesX + 80, dodgesY + 65);
+}
   // Display the number of successful dodges in the console
   console.log(dodges);
 
-  // The player is black
-  fill("#db24b4");
+  // The player is white with pink Stroke
+  stroke("#db24b4");
+  strokeWeight(5);
+  fill(255)
   // Draw the player as a circle
   ellipse(avatarX,avatarY,avatarSize,avatarSize);
+  // The image follows the player center on center
+  imageMode(CENTER);
+  image(player, avatarX, avatarY, player.width * .38, player.height * .38);
 
-  // The enemy is red
+  // The enemy is green
+  noStroke();
   fill(0,255,0);
   // Draw the enemy as a circle
   ellipse(enemyX,enemyY,enemySize,enemySize);
+  // The image follows the player center on center
+  image(enemy, enemyX, enemyY, enemy.width *.5, enemy.height * .5)
+
 
   // Display dodges counter on screen
   textSize(textSize1);
-  fill("#1DE2DF");
+  fill(255, 0, 0);
   textAlign(LEFT, TOP);
-  //!!!textFont(counterFont);
   text(dodges, dodgesX, dodgesY);
-
 }
+
+//Sources:
+//cuteBrocoli = https://www.sccpre.cat/
+//scaredGirl = https://library.kissclipart.com/
