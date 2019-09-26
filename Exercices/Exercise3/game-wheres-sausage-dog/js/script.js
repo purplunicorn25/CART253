@@ -36,6 +36,10 @@ let numDecoys = 100;
 // Keep track of whether they've won
 let gameOver = false;
 
+//Display Wanted Picture
+let wantedX = 130;
+let wantedY = 130;
+
 // preload()
 //
 // Loads the target and decoy images before the program starts
@@ -112,6 +116,22 @@ function setup() {
 
   // And draw it (because it's the last thing drawn, it will always be on top)
   image(targetImage,targetX,targetY);
+
+  // Display targetImage top right corner to see what we are looking for
+  fill(255,0,0);
+  stroke(0);
+  strokeWeight(5);
+  rectMode(CORNER);
+  // 20px margins from borders of screen
+  rect(windowWidth - (wantedX + 40), 20, wantedX, wantedY); //*40 :scroll bar is 20px and hid square
+  imageMode(CORNER);
+  image(targetImage, windowWidth - (wantedX + 40), 20, wantedX, wantedY);
+  fill(0);
+  noStroke();
+  textSize(20);
+  textAlign(CENTER);
+  text("WANTED", windowWidth - (wantedX - 25), 40);
+
 }
 
 
@@ -120,6 +140,7 @@ function setup() {
 // Displays the game over screen if the player has won,
 // otherwise nothing (all the gameplay stuff is in mousePressed())
 function draw() {
+
   if (gameOver) {
     // Prepare our typography
     textFont("Helvetica");
