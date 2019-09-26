@@ -40,7 +40,9 @@ let gameOver = false;
 let wantedX = 130;
 let wantedY = 130;
 let textX = 105;
-let textY = 40;
+let textY = 45;
+
+//Make Winning more exciting
 
 // preload()
 //
@@ -120,22 +122,22 @@ function setup() {
   image(targetImage,targetX,targetY);
 
   // Display targetImage top right corner to see what we are looking for
-  fill(255,0,0);
-  stroke(0);
+  fill(255,45,0);
+  stroke(255);
   strokeWeight(5);
   rectMode(CORNER);
   // 20px margins from borders of screen
   rect(windowWidth - (wantedX + 40), 20, wantedX, wantedY); //*40 :scroll bar is 20px and hid square
   imageMode(CORNER);
   image(targetImage, windowWidth - (wantedX + 40), 20, wantedX, wantedY);
-  fill(0);
+  // Add caption to give instructions
+  fill(255);
   noStroke();
   textSize(20);
   textAlign(CENTER);
   text("WANTED", windowWidth - textX, textY);
 
 }
-
 
 // draw()
 //
@@ -150,7 +152,6 @@ function draw() {
     textAlign(CENTER,CENTER);
     noStroke();
     fill(random(255));
-
     // Tell them they won!
     text("YOU WINNED!",width/2,height/2);
 
@@ -160,6 +161,8 @@ function draw() {
     stroke(random(255));
     strokeWeight(10);
     ellipse(targetX,targetY,targetImage.width,targetImage.height);
+    // Make the targetImage follow mouse
+    image(targetImage, mouseX, mouseY, ); !!!!!!!!
   }
 }
 
