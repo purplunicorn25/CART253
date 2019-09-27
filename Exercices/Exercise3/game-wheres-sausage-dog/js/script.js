@@ -160,7 +160,6 @@ function draw() {
     fill(random(255));
     // Tell them they won!
     text("YOU WINNED!",width/2,height/2);
-
     // Draw a circle around the sausage dog to show where it is (even though
     // they already know because they found it!)
     noFill();
@@ -172,9 +171,8 @@ function draw() {
     mouseShadowWidth = mouseShadowWidth + 3;
     mouseShadowHeight = mouseShadowHeight + 3;
     image(mouseShadow, mouseX, mouseY, mouseShadowWidth, mouseShadowHeight);
-  //  image(targetImage, mouseX, mouseY);
+    }
   }
-}
 
 // mousePressed()
 //

@@ -179,7 +179,7 @@ function draw() {
   }
 
 // At level 15 the background and the enemy become the same color; only luck counts!
-if (dodges >= 14){
+if (dodges >= 16){
   textSize(26)
   text('Luck is a very thin wire\nbetween survival and disaster.', dodgesX + 80, dodgesY);
   textSize(18);
@@ -204,7 +204,7 @@ if (dodges >= 14){
   // Draw the enemy as a circle
   ellipse(enemyX,enemyY,enemySize,enemySize);
   // The image follows the player center on center
-  image(enemy, enemyX, enemyY, enemy.width *.5, enemy.height * .5)
+  image(enemy, enemyX, enemyY, enemy.width/12, enemy.height/12);
 
 
   // Display dodges counter on screen
