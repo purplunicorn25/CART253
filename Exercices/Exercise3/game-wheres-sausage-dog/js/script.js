@@ -16,6 +16,7 @@ https://creativenerds.co.uk/freebies/80-free-wildlife-icons-the-best-ever-animal
 let targetX;
 let targetY;
 let targetImage;
+let mouseShadow;
 
 // The ten decoy images
 let decoyImage1;
@@ -42,13 +43,18 @@ let wantedY = 130;
 let textX = 105;
 let textY = 45;
 
-//Make Winning more exciting
+//Make Winning by Making mouse Shadow Image bigger
+let mouseShadowWidth = 128;
+let mouseShadowHeight = 128;
+
 
 // preload()
 //
 // Loads the target and decoy images before the program starts
 function preload() {
   targetImage = loadImage("assets/images/animals-target.png");
+
+  mouseShadow = loadImage("assets/images/animals-target.png");
 
   decoyImage1 = loadImage("assets/images/animals-01.png");
   decoyImage2 = loadImage("assets/images/animals-02.png");
@@ -162,7 +168,11 @@ function draw() {
     strokeWeight(10);
     ellipse(targetX,targetY,targetImage.width,targetImage.height);
     // Make the targetImage follow mouse
-    image(targetImage, mouseX, mouseY, ); !!!!!!!!
+    imageMode(CENTER);
+    mouseShadowWidth = mouseShadowWidth + 3;
+    mouseShadowHeight = mouseShadowHeight + 3;
+    image(mouseShadow, mouseX, mouseY, mouseShadowWidth, mouseShadowHeight);
+  //  image(targetImage, mouseX, mouseY);
   }
 }
 
