@@ -16,6 +16,14 @@ https://creativenerds.co.uk/freebies/80-free-wildlife-icons-the-best-ever-animal
 let targetX;
 let targetY;
 let targetImage;
+
+let targetDecoyX;
+let targetDecoyY;
+let targetDecoy; // same image target but with blue spots instead of black spots
+let timePassed;
+let startTime;
+let interval =2000;
+
 let mouseShadow;
 
 // The ten decoy images
@@ -53,6 +61,8 @@ let mouseShadowHeight = 128;
 // Loads the target and decoy images before the program starts
 function preload() {
   targetImage = loadImage("assets/images/animals-target.png");
+
+  targetDecoy = loadImage("assets/images/animals-target-decoy.png");
 
   mouseShadow = loadImage("assets/images/animals-target.png");
 
@@ -143,6 +153,9 @@ function setup() {
   textAlign(CENTER);
   text("WANTED", windowWidth - textX, textY);
 
+  startTime =millis();
+  timePassed =0;
+
 }
 
 // draw()
@@ -171,6 +184,21 @@ function draw() {
     mouseShadowWidth = mouseShadowWidth + 3;
     mouseShadowHeight = mouseShadowHeight + 3;
     image(mouseShadow, mouseX, mouseY, mouseShadowWidth, mouseShadowHeight);
+    }
+
+    // Set timer
+    timePassed = millis()-startTime;
+
+    // Every time interval passes draw a new targetDecoy
+
+    if(timePassed>interval){
+
+     targetDecoyX = random(0, width);
+     targetDecoyY = random(height, 0);
+
+     image(targetDecoy, targetDecoyX, targetDecoyY);
+     startTime = millis();
+     timePassed = 0;
     }
   }
 
