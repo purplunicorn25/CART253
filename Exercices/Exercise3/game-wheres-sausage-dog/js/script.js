@@ -17,10 +17,12 @@ let targetX;
 let targetY;
 let targetImage;
 
+// same image target but with blue spots instead of black spots
+let timePassed;
 let targetDecoyX;
 let targetDecoyY;
-let targetDecoy; // same image target but with blue spots instead of black spots
-let timePassed;
+let targetDecoy;
+// Set timer
 let startTime;
 let interval =2000;
 
