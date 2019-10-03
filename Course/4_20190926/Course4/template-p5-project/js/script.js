@@ -1,16 +1,14 @@
+let t = 0;
 let x = 0;
-let y = 0;
-let tx = 0;
-let ty = 100;
 
 function setup() {
-  createCanvas(500,500);
+  createCanvas(windowWidth, windowHeight);
+  fill(0);
 }
+
 function draw() {
-  background(255);
-  x = width * noise(tx);
-  y = height * noise(ty);
-  tx += random(0, .01);
-  ty += random(0, .01);
-  ellipse(x,y,100,100);
+  let y = height * noise(t);
+  ellipse(x, y, 10, 10);
+  x++;
+  t += 0.01;
 }
