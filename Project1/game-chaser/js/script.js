@@ -25,6 +25,7 @@ let playerRadius = 25;
 let playerVX = 0;
 let playerVY = 0;
 let playerMaxSpeed = 2;
+let playerTurboSpeed = 6;
 // Player health
 let playerHealth;
 let playerMaxHealth = 255;
@@ -113,32 +114,46 @@ function draw() {
     showGameOver();
   }
 }
-
 // handleInput()
 //
 // Checks arrow keys and adjusts player velocity accordingly
 function handleInput() {
-  // Check for horizontal movement
-  if (keyIsDown(LEFT_ARROW)) {
-    playerVX = -playerMaxSpeed;
-  }
-  else if (keyIsDown(RIGHT_ARROW)) {
-    playerVX = playerMaxSpeed;
-  }
-  else {
-    playerVX = 0;
-  }
 
-  // Check for vertical movement
-  if (keyIsDown(UP_ARROW)) {
-    playerVY = -playerMaxSpeed;
-  }
-  else if (keyIsDown(DOWN_ARROW)) {
-    playerVY = playerMaxSpeed;
-  }
-  else {
-    playerVY = 0;
-  }
+    // Horizontal movement wiht turbo speed
+    if (keyIsDown(RIGHT_ARROW) && keyIsDown(32)) {
+      playerVX = playerTurboSpeed;
+    }
+    else if (keyIsDown(LEFT_ARROW) && keyIsDown(32)) {
+        console.log("BOOSTED LEFT");
+        playerVX = -playerTurboSpeed;
+    } // Check for horizontal movement
+    else if (keyIsDown(LEFT_ARROW)) {
+      console.log("GOING LEFT");
+      playerVX = -playerMaxSpeed;
+    }
+    else if (keyIsDown(RIGHT_ARROW)) {
+      playerVX = playerMaxSpeed;
+    }
+    else {
+      playerVX = 0;
+    }
+
+    // Vertical movement with turbo speed
+    if (keyIsDown(UP_ARROW) && keyIsDown(32)) {
+      playerVY = -playerTurboSpeed;
+    }
+    else if (keyIsDown(DOWN_ARROW) && keyIsDown(32)) {
+      playerVY = playerTurboSpeed;
+    } // Check for vertical movement
+    else if (keyIsDown(UP_ARROW)) {
+      playerVY = -playerMaxSpeed;
+    }
+    else if (keyIsDown(DOWN_ARROW)) {
+      playerVY = playerMaxSpeed;
+    }
+    else {
+      playerVY = 0;
+    }
 }
 
 // movePlayer()
@@ -149,7 +164,6 @@ function movePlayer() {
   // Update position
   playerX = playerX + playerVX;
   playerY = playerY + playerVY;
-
   // Wrap when player goes off the canvas
   if (playerX < 0) {
     // Off the left side, so add the width to reset to the right
@@ -273,7 +287,7 @@ function drawPlayer() {
 function showGameOver() {
   // Set up the font
   textSize(32);
-  textAlign(CENTER, CENTER);
+  textAlign(C32, C32);
   fill(0);
   // Set up the text to display
   let gameOverText = "GAME OVER\n"; // \n means "new line"
