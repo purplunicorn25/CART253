@@ -28,7 +28,10 @@ let playerMaxSpeed = 2;
 let playerTurboSpeed = 6;
 // Player health
 let playerHealth;
-let playerMaxHealth = 255;
+let playerMaxHealth = 250;
+// LifeBar
+let lifeLevel;
+let barWidth;
 // Player fill color
 let playerFill = 50;
 
@@ -96,6 +99,7 @@ function setupPlayer() {
 // displays the two agents.
 // When the game is over, shows the game over screen.
 function draw() {
+
   background(100, 100, 200);
 
   if (!gameOver) {
@@ -106,6 +110,7 @@ function draw() {
 
     updateHealth();
     checkEating();
+    healthBar();
 
     drawPrey();
     drawPlayer();
@@ -124,8 +129,8 @@ function handleInput() {
       playerVX = playerTurboSpeed;
     }
     else if (keyIsDown(LEFT_ARROW) && keyIsDown(32)) {
-        console.log("BOOSTED LEFT");
-        playerVX = -playerTurboSpeed;
+      console.log("BOOSTED LEFT");
+      playerVX = -playerTurboSpeed;
     } // Check for horizontal movement
     else if (keyIsDown(LEFT_ARROW)) {
       console.log("GOING LEFT");
@@ -205,6 +210,37 @@ function updateHealth() {
   }
 }
 
+// healthBar
+//
+// Display the player's health with a life Bar
+function healthBar() {
+//Display bar on the right side of the canvas.
+// It has four levels: green, yellow, orange and red.
+  barWidth = 10;
+  lifeLevel = playerHealth; // Ration between playerHealth and canvas. *playerMaxHealth = 250; Canvas = 500*
+  rectMode(CENTER);
+
+  if (playerHealth >= playerMaxHealth - playerMaxHealth/5) { // > 200
+  fill("#39B54A"); // Green
+  noStroke();
+  rect(width - barWidth/2, height, barWidth, lifeLevel*4);
+  }
+  else if (playerHealth < playerMaxHealth - playerMaxSpeed/5 && playerHealth > playerMaxHealth - playerMaxHealth/2) { // < 199 > 124
+  fill("#FFDE17"); // Yellow
+  noStroke();
+  rect(width - barWidth/2, height, barWidth, lifeLevel*4);
+  }
+  else if (playerHealth <= playerMaxHealth - playerMaxHealth/2 && playerHealth >= playerMaxHealth - playerMaxHealth/1.25){ // < 125 > 50
+  fill("#F15A29"); // Orange
+  noStroke();
+  rect(width - barWidth/2, height, barWidth, lifeLevel*4);
+  } else { // < 49
+  fill("#ED1C24"); // Red
+  noStroke();
+  rect()
+  rect(width - barWidth/2, height, barWidth, lifeLevel*4);
+ }
+}
 // checkEating()
 //
 // Check if the player overlaps the prey and updates health of both
