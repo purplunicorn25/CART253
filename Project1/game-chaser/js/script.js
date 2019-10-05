@@ -189,8 +189,13 @@ function movePlayer() {
 // Reduce the player's health (happens every frame)
 // Check if the player is dead
 function updateHealth() {
+  // Reduce playerHealth faster if using playerTurboSpeed
+  if (playerVX >= playerTurboSpeed || playerVY >= playerTurboSpeed) {
+  playerHealth = playerHealth -  3;
+  } else {
   // Reduce player health
   playerHealth = playerHealth - 0.5;
+  }
   // Constrain the result to a sensible range
   playerHealth = constrain(playerHealth, 0, playerMaxHealth);
   // Check if the player is dead (0 health)
@@ -287,7 +292,7 @@ function drawPlayer() {
 function showGameOver() {
   // Set up the font
   textSize(32);
-  textAlign(C32, C32);
+  textAlign(CENTER, CENTER);
   fill(0);
   // Set up the text to display
   let gameOverText = "GAME OVER\n"; // \n means "new line"
