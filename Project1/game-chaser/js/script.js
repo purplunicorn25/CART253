@@ -290,6 +290,20 @@ let backgroundImage;
   //
   // Moves the prey based on random velocity changes
   function movePrey() {
+  // The prey gets faster if you eat more than 10, 30 et +
+    if (preyEaten <= 10) {
+      preyX = preyX;
+      preyY = preyY;
+    }
+      else if (preyEaten <= 30) {
+      preyX = preyX + 0.3;
+      preyY = preyY + 0.3;
+    }
+      else {
+      preyX = preyX + 0.6;
+      preyY = preyY + 0.6;
+      }
+
     // Set velocity based on random values to get a new direction
     // and speed of movement
     //
@@ -298,12 +312,11 @@ let backgroundImage;
     preyVX = map(noise(tx), 0, 1, -preyMaxSpeed, preyMaxSpeed);
     preyVY = map(noise(ty), 0, 1, -preyMaxSpeed, preyMaxSpeed);
 
+    tx += 0.01;
+    ty += 0.01;
     // Update prey position based on velocity
     preyX = preyX + preyVX;
     preyY = preyY + preyVY;
-
-    tx += 0.02;
-    ty += 0.02;
 
     // Screen wrapping
     if (preyX < 0) {
