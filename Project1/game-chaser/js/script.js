@@ -18,6 +18,11 @@ random movement, screen wrap.
 // Track whether the game is over
 let gameOver = false;
 
+// PLayer forms
+let sleeve1;
+let sleeve2;
+let sleeve3;
+let sleeve4;
 // Player position, size, velocity
 let playerX;
 let playerY;
@@ -49,11 +54,25 @@ let preyHealth;
 let preyMaxHealth = 100;
 // Prey fill color
 let preyFill = 200;
+let preySleeve;
+let preySleeveX;
+let preySleeveY;
 
 // Amount of health obtained per frame of "eating" (overlapping) the prey
 let eatHealth = 10;
 // Number of prey eaten during the game (the "score")
 let preyEaten = 0;
+
+let gameOverImage;
+
+function preload() {
+  sleeve1 = loadImage("assets/images/EARTH_1.png");
+  sleeve2 = loadImage("assets/images/EARTH_2.png");
+  sleeve3 = loadImage("assets/images/EARTH_3.png");
+  sleeve4 = loadImage("assets/images/EARTH_4.png");
+  gameOverImage = loadImage("assets/images/EARTH_5.png");
+  preySleeve = loadImage("assets/images/GRETA.png");
+}
 
 // setup()
 //
@@ -234,7 +253,8 @@ function healthBar() {
   fill("#F15A29"); // Orange
   noStroke();
   rect(width - barWidth/2, height, barWidth, lifeLevel*4);
-  } else { // < 49
+  }
+  else { // < 49
   fill("#ED1C24"); // Red
   noStroke();
   rect()
@@ -310,16 +330,33 @@ function movePrey() {
 //
 // Draw the prey as an ellipse with alpha based on health
 function drawPrey() {
+
+  preySleeveX = preyX;
+  preySleeveY = preyY;
+
   fill(preyFill, preyHealth);
   ellipse(preyX, preyY, preyRadius * 2);
+  imageMode(CENTER);
+  image(preySleeve, preySleeveX, preySleeveY, preyRadius * 4, preyRadius * 4);
 }
 
 // drawPlayer()
 //
 // Draw the player as an ellipse with alpha value based on health
 function drawPlayer() {
-  fill(playerFill, playerHealth);
-  ellipse(playerX, playerY, playerRadius * 2);
+
+  if (playerHealth >= playerMaxHealth - playerMaxHealth/5) { // > 200
+    image(sleeve1, playerX, playerY, playerRadius * 2, playerRadius * 2);
+  }
+  else if (playerHealth < playerMaxHealth - playerMaxSpeed/5 && playerHealth > playerMaxHealth - playerMaxHealth/2) { // < 199 > 124
+    image(sleeve2, playerX, playerY, playerRadius * 2, playerRadius * 2);
+  }
+  else if (playerHealth <= playerMaxHealth - playerMaxHealth/2 && playerHealth >= playerMaxHealth - playerMaxHealth/1.25){ // < 125 > 50
+    image(sleeve3, playerX, playerY, playerRadius * 2, playerRadius * 2);
+  }
+  else { // < 49
+    image(sleeve4, playerX, playerY, playerRadius * 2, playerRadius * 2);
+ }
 }
 
 // showGameOver()
@@ -331,9 +368,9 @@ function showGameOver() {
   textAlign(CENTER, CENTER);
   fill(0);
   // Set up the text to display
-  let gameOverText = "GAME OVER\n"; // \n means "new line"
-  gameOverText = gameOverText + "You ate " + preyEaten + " prey\n";
-  gameOverText = gameOverText + "before you died."
+  let gameOverText = "YOU FAILED \n TO SAVE OUR PLANET\n"; // \n means "new line"
+  gameOverText = gameOverText + "You picked up " + preyEaten + " Greta\n";
+  gameOverText = gameOverText + "before you all died."
   // Display it in the centre of the screen
   text(gameOverText, width / 2, height / 2);
 }
