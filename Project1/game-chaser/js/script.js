@@ -34,6 +34,7 @@ let playerVY = 0;
 let playerMaxSpeed = 2;
 let playerTurboSpeed = 6;
 let playerSlowSpeed = 1;
+let playerDefaultSpeed = 2;
 // Player health
 let playerHealth;
 let playerMaxHealth = 250;
@@ -67,28 +68,39 @@ let eatHealth = 10;
 let preyEaten = 0;
 // Customize game Over display
 
-// ObstacleSleeve
+// Obstacle functions
 let obstacle;
-let obstacleX=0;
+let obstacleX = 0;
 let obstacleY;
 let obstacleVX;
-let obstacleSpeed = 2;
+let obstacleSpeed = 3.5;
 let obstacleCenter = 50;
 let obstacleSize = 50;
+// PLayer slow mode
+let lazyPlayer;
 
-// Set timer for Obstacles
-let timePassed=0;
-let startTime;
-let interval = 5000;
+// Set timer for resetObstacles
+let timePassedReset = 0;
+let startTimeReset;
+let intervalReset = 5000;
+
+// Set a timer for sLowPlayer()
+let timePassedSlowed = 0;
+let startTimeSlowed;
+let intervalSlowed = 2000;
 
 let gameOverImage;
 let gameOverFont;
 // Set background
 let backgroundImage;
-// Make start button
+// Start game  = playing
 let playing = false;
-// Enable re-start by clicking
-// let reStart = false;
+// Game sounds
+let backgroundMusic;
+let eatingSound;
+let gameOverSound;
+let playGameOverSound = true;
+
 
   function preload() {
     sleeve1 = loadImage("assets/images/EARTH_1.png");
@@ -100,6 +112,9 @@ let playing = false;
     gameOverFont = loadFont("assets/fonts/PermanentMarker-Regular.ttf");
     backgroundImage = loadImage("assets/images/night_sky.jpg"); //https://www.nasa.gov/feature/goddard/2019/hubble-astronomers-assemble-wide-view-of-the-evolving-universe
     obstacle = loadImage("assets/images/CAN.png");
+    backgroundMusic = loadSound("assets/sounds/music_project1.wav"); // No source, it is an original :)
+    eatingSound = loadSound("assets/sounds/HowDareYou.wav"); //https://www.youtube.com/watch?v=bW3IQ-ke43w&t=1s
+    gameOverSound = loadSound("assets/sounds/HowDareYouLow.wav"); //https://www.youtube.com/watch?v=bW3IQ-ke43w&t=1s
 }
   // setup()
   //
@@ -112,6 +127,11 @@ let playing = false;
     // We're using simple functions to separate code out
     setupPrey();
     setupPlayer();
+
+    // Play music the entire duration of the playing duration
+    setupBackgroundMusic()
+    // Play gameOver sound
+    setupEatingSound();
   }
 
   // setupPrey()
@@ -137,6 +157,16 @@ let playing = false;
     ty = random(0, 1000);
   }
 
+  // setupGameOverSound
+  //
+  // Play sound when you fail
+  function setupEatingSound() {
+    eatingSound.play();
+  }
+
+  function setupBackgroundMusic() {
+    backgroundMusic.loop();
+  }
   // setupObstacle
   //
   // Set the first obstacle randomly on Y axis
@@ -168,6 +198,8 @@ let playing = false;
       checkEating();
       healthBar();
       resetObstacles();
+      slowPlayer();
+      obstacleOverlap();
 
       drawPrey();
       drawPlayer();
@@ -185,11 +217,9 @@ let playing = false;
     if (keyIsDown(RIGHT_ARROW) && keyIsDown(32)) {
       playerVX = playerTurboSpeed;
     } else if (keyIsDown(LEFT_ARROW) && keyIsDown(32)) {
-      console.log("BOOSTED LEFT");
       playerVX = -playerTurboSpeed;
     } // Check for horizontal movement
     else if (keyIsDown(LEFT_ARROW)) {
-      console.log("GOING LEFT");
       playerVX = -playerMaxSpeed;
     } else if (keyIsDown(RIGHT_ARROW)) {
       playerVX = playerMaxSpeed;
@@ -315,6 +345,8 @@ let playing = false;
         preyHealth = preyMaxHealth;
         // Track how many prey were eaten
         preyEaten = preyEaten + 1;
+        // Play game over sound
+        setupEatingSound();
       }
     }
   }
@@ -401,7 +433,7 @@ let playing = false;
   function mousePressed() {
 
     if (playing === false) {
-    startTime = millis();
+    startTimeReset = millis();
     //console.log("here"+startTime);
     }
     playing = true;
@@ -428,6 +460,14 @@ let playing = false;
     text(gameOverText, width / 2, height * 2/3);
     textSize(24);
     text(gameOverText2, width / 2, height * 4.8/6);
+
+    // Stop music
+    backgroundMusic.pause();
+    // PLay gameOverSound
+    if (playGameOverSound === true) {
+    gameOverSound.play();
+    playGameOverSound = false;
+    }
   }
 
   // startScreen()
@@ -465,10 +505,12 @@ let playing = false;
   //
   // Draw Obstacles
   function drawObstacles() {
+
   // Obstacles go from left to right
     obstacleVX = obstacleSpeed;
     obstacleX = obstacleX + obstacleVX;
-
+  //Use image mode center for overlap function with player
+    imageMode(CENTER);
     image(obstacle, obstacleX, obstacleY, obstacleSize, obstacleSize);
   }
 
@@ -476,13 +518,44 @@ let playing = false;
   //
   // reset obstacleX and obstaclesY after every interval
   function resetObstacles() {
-    timePassed = millis()-startTime;
+    timePassedReset = millis()-startTimeReset;
 
-    if (timePassed>interval) {
+    if (timePassedReset > intervalReset) {
       console.log("reset")
-      startTime = millis();
-      timePassed = 0;
+      startTimeReset = millis();
+      timePassedReset = 0;
       obstacleX = 0;
       obstacleY = random(0, height);
+    }
+  }
+
+  // obstacleOverlap
+  //
+  // Check obstacles and player overlaps
+  function obstacleOverlap() {
+  // Define distance between player and obstacle
+  let d = dist(playerX, playerY, obstacleX, obstacleY);
+  // Check if it's an overlap
+  if (d < playerRadius + obstacleSize / 4) {
+    console.log("slowing down");
+    // Start timer from 0 to stop
+    timePassedSlowed = 0;
+    startTimeSlowed = millis();
+    lazyPlayer = true;
+    playerMaxSpeed = playerSlowSpeed;
+    playerTurboSpeed = playerMaxSpeed;
+  }
+}
+
+  // sLowPlayer
+  //
+  // MAke the player go slower for the duration of the interval2
+  function slowPlayer() {
+    if (lazyPlayer === true) {
+      timePassedSlowed = millis() - startTimeSlowed;
+    }
+    if (timePassedSlowed > intervalSlowed) {
+      lazyPlayer = false;
+      playerMaxSpeed = playerDefaultSpeed;
     }
   }
