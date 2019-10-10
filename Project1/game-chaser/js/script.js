@@ -33,6 +33,7 @@ let playerVX = 0;
 let playerVY = 0;
 let playerMaxSpeed = 2;
 let playerTurboSpeed = 6;
+let playerSlowSpeed = 1;
 // Player health
 let playerHealth;
 let playerMaxHealth = 250;
@@ -65,10 +66,29 @@ let eatHealth = 10;
 // Number of prey eaten during the game (the "score")
 let preyEaten = 0;
 // Customize game Over display
+
+// ObstacleSleeve
+let obstacle;
+let obstacleX=0;
+let obstacleY;
+let obstacleVX;
+let obstacleSpeed = 2;
+let obstacleCenter = 50;
+let obstacleSize = 50;
+
+// Set timer for Obstacles
+let timePassed=0;
+let startTime;
+let interval = 5000;
+
 let gameOverImage;
 let gameOverFont;
 // Set background
 let backgroundImage;
+// Make start button
+let playing = false;
+// Enable re-start by clicking
+// let reStart = false;
 
   function preload() {
     sleeve1 = loadImage("assets/images/EARTH_1.png");
@@ -79,6 +99,7 @@ let backgroundImage;
     preySleeve = loadImage("assets/images/GRETA.png");
     gameOverFont = loadFont("assets/fonts/PermanentMarker-Regular.ttf");
     backgroundImage = loadImage("assets/images/night_sky.jpg"); //https://www.nasa.gov/feature/goddard/2019/hubble-astronomers-assemble-wide-view-of-the-evolving-universe
+    obstacle = loadImage("assets/images/CAN.png");
 }
   // setup()
   //
@@ -116,6 +137,13 @@ let backgroundImage;
     ty = random(0, 1000);
   }
 
+  // setupObstacle
+  //
+  // Set the first obstacle randomly on Y axis
+  function obstacleYAxis() {
+    obstacleY = random(0, height);
+  }
+
   // draw()
   //
   // While the game is active, checks input
@@ -124,11 +152,13 @@ let backgroundImage;
   // displays the two agents.
   // When the game is over, shows the game over screen.
   function draw() {
-
+  imageMode(CENTER);
   image(backgroundImage, width/2, height/2);
 
-
-    if (!gameOver) {
+      if (!playing) {
+      startScreen();
+      }
+      else if (!gameOver) {
       handleInput();
 
       movePlayer();
@@ -137,9 +167,11 @@ let backgroundImage;
       updateHealth();
       checkEating();
       healthBar();
+      resetObstacles();
 
       drawPrey();
       drawPlayer();
+      drawObstacles();
     } else {
       showGameOver();
     }
@@ -188,6 +220,7 @@ let backgroundImage;
     // Update position
     playerX = playerX + playerVX;
     playerY = playerY + playerVY;
+
     // Wrap when player goes off the canvas
     if (playerX < 0) {
       // Off the left side, so add the width to reset to the right
@@ -233,7 +266,7 @@ let backgroundImage;
   function healthBar() {
     //Display bar on the right side of the canvas.
     // It has four levels: green, yellow, orange and red.
-    barWidth = 10;
+    barWidth = 20;
     lifeLevel = playerHealth; // Ration between playerHealth and canvas. *playerMaxHealth = 250; Canvas = 500*
     rectMode(CENTER);
 
@@ -362,6 +395,18 @@ let backgroundImage;
     }
   }
 
+  // mousePressed()
+  //
+  // Click mouse to start game, resets startTime to 0
+  function mousePressed() {
+
+    if (playing === false) {
+    startTime = millis();
+    //console.log("here"+startTime);
+    }
+    playing = true;
+}
+
   // showGameOver()
   //
   // Display text about the game being over!
@@ -376,9 +421,68 @@ let backgroundImage;
     textAlign(CENTER, CENTER);
     fill(255,0,0);
     // Set up the text to display
-    let gameOverText = "YOU FAILED \n TO SAVE OUR PLANET\n"; // \n means "new line"
-    gameOverText = gameOverText + "You picked up " + preyEaten + " Greta\n";
-    gameOverText = gameOverText + "before we all died.";
+    let gameOverText = "YOU FAILED \n TO SAVE OUR PLANET...\n"; // \n means "new line"
+    let gameOverText2 = "You collected " + preyEaten + " Greta\n";
+    gameOverText2 = gameOverText2 + "before we all died.";
     // Display it in the centre of the screen
     text(gameOverText, width / 2, height * 2/3);
+    textSize(24);
+    text(gameOverText2, width / 2, height * 4.8/6);
+  }
+
+  // startScreen()
+  //
+  // Game Instructions before the start
+  function startScreen() {
+    // Show preySleeve
+    image(preySleeve, width * 4/5, 80, 180, 180);
+    image(preySleeve, width * 1/5, 80, 180, 180);
+    // Show obstacle
+    image(obstacle, width * .8/5, height * 4.4/5, 80, 80);
+    // Title of game
+    textFont(gameOverFont);
+    textSize(45);
+    stroke(255);
+    strokeWeight(4);
+    textAlign(CENTER);
+    fill(255,0,0);
+    let titleText = "BE A \nCLIMATE ACTIVIST!";
+    text(titleText, width / 2, height * 1.5/5);
+
+    // Instructions
+    textSize(20);
+    textAlign(CENTER);
+    strokeWeight(2);
+    textLeading(30);
+    let instructions = "1. Help collect as many Greta Thunberg\nas possible to save our planet\n";
+    instructions = instructions + "2. Use space bar to travel faster,\nbut careful it will cause more pollution!\n";
+    instructions = instructions + "3. Avoid debris that fly into space,\n they make you slow\n";
+    instructions = instructions + "\nClick to start"
+    text(instructions, width / 2, height * 2.6/5);
+}
+
+  // drawObstacles()
+  //
+  // Draw Obstacles
+  function drawObstacles() {
+  // Obstacles go from left to right
+    obstacleVX = obstacleSpeed;
+    obstacleX = obstacleX + obstacleVX;
+
+    image(obstacle, obstacleX, obstacleY, obstacleSize, obstacleSize);
+  }
+
+  // resetObstacles
+  //
+  // reset obstacleX and obstaclesY after every interval
+  function resetObstacles() {
+    timePassed = millis()-startTime;
+
+    if (timePassed>interval) {
+      console.log("reset")
+      startTime = millis();
+      timePassed = 0;
+      obstacleX = 0;
+      obstacleY = random(0, height);
+    }
   }
