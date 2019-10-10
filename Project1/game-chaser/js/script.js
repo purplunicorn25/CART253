@@ -5,7 +5,7 @@
 Game - Chaser
 Pippin Barr
 &
-ANNE BOUTET
+ANNE BOUTET :) 
 
 A "simple" game of cat and mouse. The player is a circle and can move with keys,
 if they overlap the (randomly moving) prey they "eat it" by sucking out its life
@@ -35,6 +35,8 @@ let playerMaxSpeed = 2;
 let playerTurboSpeed = 6;
 let playerSlowSpeed = 1;
 let playerDefaultSpeed = 2;
+// PLayer slow mode
+let lazyPlayer;
 // Player health
 let playerHealth;
 let playerMaxHealth = 250;
@@ -76,8 +78,6 @@ let obstacleVX;
 let obstacleSpeed = 3.5;
 let obstacleCenter = 50;
 let obstacleSize = 50;
-// PLayer slow mode
-let lazyPlayer;
 
 // Set timer for resetObstacles
 let timePassedReset = 0;
@@ -164,9 +164,13 @@ let playGameOverSound = true;
     eatingSound.play();
   }
 
+  // setupBackgroundMusic()
+  //
+  // Play music when game start and end when gameOver is true
   function setupBackgroundMusic() {
     backgroundMusic.loop();
   }
+
   // setupObstacle
   //
   // Set the first obstacle randomly on Y axis
@@ -176,10 +180,12 @@ let playGameOverSound = true;
 
   // draw()
   //
+  // A start screen explains the game
   // While the game is active, checks input
-  // updates positions of prey and player,
-  // checks health (dying), checks eating (overlaps)
-  // displays the two agents.
+  // updates positions of prey, player and obstacles
+  // Display life level
+  // checks health (dying), checks eating (overlaps), slowing (overlaps)
+  // displays the three agents.
   // When the game is over, shows the game over screen.
   function draw() {
   imageMode(CENTER);
@@ -208,6 +214,7 @@ let playGameOverSound = true;
       showGameOver();
     }
   }
+
   // handleInput()
   //
   // Checks arrow keys and adjusts player velocity accordingly
