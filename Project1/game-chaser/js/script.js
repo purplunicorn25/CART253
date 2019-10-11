@@ -5,7 +5,7 @@
 Game - Chaser
 Pippin Barr
 &
-ANNE BOUTET :) 
+ANNE BOUTET :)
 
 A "simple" game of cat and mouse. The player is a circle and can move with keys,
 if they overlap the (randomly moving) prey they "eat it" by sucking out its life
@@ -282,8 +282,8 @@ let playGameOverSound = true;
   // Check if the player is dead
   function updateHealth() {
     // Reduce playerHealth faster if using playerTurboSpeed
-    if (playerVX >= playerTurboSpeed || playerVY >= playerTurboSpeed) {
-      playerHealth = playerHealth - 3;
+    if (playerVX >= playerTurboSpeed || playerVY >= playerTurboSpeed || playerVX === -playerTurboSpeed || playerVY === -playerTurboSpeed) {
+      playerHealth = playerHealth - 1.2;
     } else {
       // Reduce player health
       playerHealth = playerHealth - 0.5;
@@ -451,7 +451,7 @@ let playGameOverSound = true;
   // Display text about the game being over!
   function showGameOver() {
     // Display dead planet
-    image(gameOverImage, width / 2, height / 4, gameOverImage.width / 3.5, gameOverImage.height / 3.5);
+    image(gameOverImage, width / 2, height / 3.7, gameOverImage.width / 3.3, gameOverImage.height / 3.3);
     // Set up the font
     textSize(32);
     textFont(gameOverFont);
