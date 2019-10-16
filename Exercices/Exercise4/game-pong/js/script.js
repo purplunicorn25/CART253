@@ -13,8 +13,10 @@
 let playing = false;
 
 // Game colors (using hexadecimal)
-let bgColor = 0;
-let fgColor = 255;
+let bgColorLeft = 255;
+let fgColorLeft = 0;
+let bgColorRight = 0;
+let fgColorRight = 255;
 
 // BALL
 
