@@ -2,6 +2,8 @@
 
 // Pong
 // by Pippin Barr
+// &
+// Anne Boutet
 //
 // A "simple" implementation of Pong with no scoring system
 // just the ability to play the game with the keyboard.
@@ -12,11 +14,23 @@
 // Whether the game has started
 let playing = false;
 
+// We will only use two colors for this whole Game
+let darkColor = 0; // black
+let brightColor = 255; // white
+
 // Game colors (using hexadecimal)
-let bgColorLeft = 255;
-let fgColorLeft = 0;
-let bgColorRight = 0;
-let fgColorRight = 255;
+let bgColorLeft = brightColor;
+let fgColorLeft = darkColor;
+let bgColorRight = darkColor;
+let fgColorRight = brightColor;
+
+// Keep scores of leftPlayer and rightPlayer
+// They both start with no point
+let leftPlayerScore = 0;
+let rightPlayerScore = 0;
+let winningScore = 5;
+let startingScore = 0;
+
 
 // BALL
 
@@ -81,7 +95,6 @@ function setup() {
   createCanvas(640, 480);
   rectMode(CENTER);
   noStroke();
-  fill(fgColor);
 
   setupPaddles();
   resetBall();
@@ -106,7 +119,14 @@ function setupPaddles() {
 // See how tidy it looks?!
 function draw() {
   // Fill the background
-  background(bgColor);
+  // Make left and right side backgrounds contrast
+  // Left side
+  rectMode(CORNER);
+  fill(bgColorLeft);
+  rect(0, 0, width / 2, height);
+  // Right Side
+  fill(bgColorRight);
+  rect(width / 2, 0, width / 2, height);
 
   if (playing) {
     // If the game is in play, we handle input and move the elements around
@@ -129,8 +149,7 @@ function draw() {
       // This is where we would likely count points, depending on which side
       // the ball went off...
     }
-  }
-  else {
+  } else {
     // Otherwise we display the message to start the game
     displayStartMessage();
   }
@@ -156,8 +175,7 @@ function handleInput(paddle) {
   else if (keyIsDown(paddle.downKey)) {
     // Move down
     paddle.vy = paddle.speed;
-  }
-  else {
+  } else {
     // Otherwise stop moving
     paddle.vy = 0;
   }
@@ -185,105 +203,115 @@ function updateBall() {
 // Checks if the ball has gone off the left or right
 // Returns true if so, false otherwise
 function ballIsOutOfBounds() {
+  // Players' scores cannot go below startingScore
+  rightPlayerScore = constrain(rightPlayerScore, startingScore, winningScore);
+  leftPlayerScore = constrain(leftPlayerScore, startingScore, winningScore);
   // Check for ball going off the sides
-  if (ball.x < 0 || ball.x > width) {
+  // If is goes of a side, add 1 point to the opposite winning side
+  // And remove 1 point from the losing side
+  if (ball.x < 0) {
+    rightPlayerScore = rightPlayerScore + 1;
+    leftPlayerScore = leftPlayerScore - 1;
     return true;
-  }
-  else {
+  } else if (ball.x > width) {
+    rightPlayerScore = rightPlayerScore - 1;
+    leftPlayerScore = leftPlayerScore + 1;
+    return true;
+  } else {
     return false;
   }
 }
-
-// checkBallWallCollision()
-//
-// Check if the ball has hit the top or bottom of the canvas
-// Bounce off if it has by reversing velocity
-// Play a sound
-function checkBallWallCollision() {
-  // Check for collisions with top or bottom...
-  if (ball.y < 0 || ball.y > height) {
-    // It hit so reverse velocity
-    ball.vy = -ball.vy;
-    // Play our bouncing sound effect by rewinding and then playing
-    beepSFX.currentTime = 0;
-    beepSFX.play();
-  }
-}
-
-// checkBallPaddleCollision(paddle)
-//
-// Checks for collisions between the ball and the specified paddle
-function checkBallPaddleCollision(paddle) {
-  // VARIABLES FOR CHECKING COLLISIONS
-
-  // We will calculate the top, bottom, left, and right of the
-  // paddle and the ball to make our conditionals easier to read...
-  let ballTop = ball.y - ball.size / 2;
-  let ballBottom = ball.y + ball.size / 2;
-  let ballLeft = ball.x - ball.size / 2;
-  let ballRight = ball.x + ball.size / 2;
-
-  let paddleTop = paddle.y - paddle.h / 2;
-  let paddleBottom = paddle.y + paddle.h / 2;
-  let paddleLeft = paddle.x - leftPaddle.w / 2;
-  let paddleRight = paddle.x + paddle.w / 2;
-
-  // First check the ball is in the vertical range of the paddle
-  if (ballBottom > paddleTop && ballTop < paddleBottom) {
-    // Then check if it is touching the paddle horizontally
-    if (ballLeft < paddleRight && ballRight > paddleLeft) {
-      // Then the ball is touching the paddle
-      // Reverse its vx so it starts travelling in the opposite direction
-      ball.vx = -ball.vx;
+  // checkBallWallCollision()
+  //
+  // Check if the ball has hit the top or bottom of the canvas
+  // Bounce off if it has by reversing velocity
+  // Play a sound
+  function checkBallWallCollision() {
+    // Check for collisions with top or bottom...
+    if (ball.y < 0 || ball.y > height) {
+      // It hit so reverse velocity
+      ball.vy = -ball.vy;
       // Play our bouncing sound effect by rewinding and then playing
       beepSFX.currentTime = 0;
       beepSFX.play();
     }
   }
-}
 
-// displayPaddle(paddle)
-//
-// Draws the specified paddle
-function displayPaddle(paddle) {
-  // Draw the paddles
-  rect(paddle.x, paddle.y, paddle.w, paddle.h);
-}
+  // checkBallPaddleCollision(paddle)
+  //
+  // Checks for collisions between the ball and the specified paddle
+  function checkBallPaddleCollision(paddle) {
+    // VARIABLES FOR CHECKING COLLISIONS
 
-// displayBall()
-//
-// Draws the ball on screen as a square
-function displayBall() {
-  // Draw the ball
-  rect(ball.x, ball.y, ball.size, ball.size);
-}
+    // We will calculate the top, bottom, left, and right of the
+    // paddle and the ball to make our conditionals easier to read...
+    let ballTop = ball.y - ball.size / 2;
+    let ballBottom = ball.y + ball.size / 2;
+    let ballLeft = ball.x - ball.size / 2;
+    let ballRight = ball.x + ball.size / 2;
 
-// resetBall()
-//
-// Sets the starting position and velocity of the ball
-function resetBall() {
-  // Initialise the ball's position and velocity
-  ball.x = width / 2;
-  ball.y = height / 2;
-  ball.vx = ball.speed;
-  ball.vy = ball.speed;
-}
+    let paddleTop = paddle.y - paddle.h / 2;
+    let paddleBottom = paddle.y + paddle.h / 2;
+    let paddleLeft = paddle.x - leftPaddle.w / 2;
+    let paddleRight = paddle.x + paddle.w / 2;
 
-// displayStartMessage()
-//
-// Shows a message about how to start the game
-function displayStartMessage() {
-  push();
-  textAlign(CENTER, CENTER);
-  textSize(32);
-  text("CLICK TO START", width / 2, height / 2);
-  pop();
-}
+    // First check the ball is in the vertical range of the paddle
+    if (ballBottom > paddleTop && ballTop < paddleBottom) {
+      // Then check if it is touching the paddle horizontally
+      if (ballLeft < paddleRight && ballRight > paddleLeft) {
+        // Then the ball is touching the paddle
+        // Reverse its vx so it starts travelling in the opposite direction
+        ball.vx = -ball.vx;
+        // Play our bouncing sound effect by rewinding and then playing
+        beepSFX.currentTime = 0;
+        beepSFX.play();
+      }
+    }
+  }
 
-// mousePressed()
-//
-// Here to require a click to start playing the game
-// Which will help us be allowed to play audio in the browser
-function mousePressed() {
-  playing = true;
-}
+  // displayPaddle(paddle)
+  //
+  // Draws the specified paddle
+  function displayPaddle(paddle) {
+    // Draw the paddles
+    rect(paddle.x, paddle.y, paddle.w, paddle.h);
+  }
+
+  // displayBall()
+  //
+  // Draws the ball on screen as a square
+  function displayBall() {
+    // Draw the ball
+    fill(255, 0, 0);
+    rect(ball.x, ball.y, ball.size, ball.size);
+  }
+
+  // resetBall()
+  //
+  // Sets the starting position and velocity of the ball
+  function resetBall() {
+    // Initialise the ball's position and velocity
+    ball.x = width / 2;
+    ball.y = height / 2;
+    ball.vx = ball.speed;
+    ball.vy = ball.speed;
+  }
+
+  // displayStartMessage()
+  //
+  // Shows a message about how to start the game
+  function displayStartMessage() {
+    push();
+    textAlign(CENTER, CENTER);
+    textSize(32);
+    text("CLICK TO START", width / 2, height / 2);
+    pop();
+  }
+
+  // mousePressed()
+  //
+  // Here to require a click to start playing the game
+  // Which will help us be allowed to play audio in the browser
+  function mousePressed() {
+    playing = true;
+  }
