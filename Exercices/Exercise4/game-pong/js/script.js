@@ -39,7 +39,7 @@ let startingScore = 0;
 let ball = {
   x: 0,
   y: 0,
-  size: 20,
+  size: 30,
   vx: 0,
   vy: 0,
   speed: 5,
@@ -101,11 +101,29 @@ let rightRectangleBackground = {
 // A variable to hold the beep sound we will play on bouncing
 let beepSFX;
 
+// If the ball is right at the center of the background divisin it is a half circle
+let middleBallImage;
+// StartScreen images
+let leftSideImage;
+let rightSideImage;
+let leftTitle;
+let rightTitle;
+let title;
+let instruction;
+
 // preload()
 //
 // Loads the beep audio for the sound of bouncing
+// Loads the images for the ball and the starting screen
 function preload() {
   beepSFX = new Audio("assets/sounds/beep.wav");
+  middleBallImage = loadImage("assets/images/half_ball.png");
+  leftSideImage = loadImage("assets/images/YIN.png");
+  rightSideImage = loadImage("assets/images/YANG.png");
+  leftTitle = loadImage("assets/images/YIN2.png");
+  rightTitle = loadImage("assets/images/YANG2.png");
+  title = loadImage("assets/images/PONG.png");
+  instruction = loadImage("assets/images/Instructions.png");
 }
 
 // setup()
@@ -172,7 +190,7 @@ function draw() {
     updateBall();
 
     // We also want to keep track of the score
-    leftPlayerScoreDisplay();
+    leftBackgroundScoreDisplay();
 
     checkBallWallCollision();
     checkBallPaddleCollision(leftPaddle);
@@ -234,11 +252,10 @@ function updatePaddle(paddle) {
 // updateBall()
 //
 // Sets the position of the ball based on its velocity
-// The velocity<s direction depends on the score of the Players
-// If
 function updateBall() {
-  console.log("update")
+
   // Update the ball's position based on velocity
+  // The velocity's direction depends on the score of the Players
   if (leftPlayerScore < rightPlayerScore) {
     ball.x += ball.vx;
     ball.y += ball.vy;
@@ -267,7 +284,7 @@ function leftBackground() {
 // ScoreDisplay
 //
 // Adjust the width of the leftRectangleBackground to show score
-function leftPlayerScoreDisplay() {
+function leftBackgroundScoreDisplay() {
   // Set the different positions of the leftBackground
   // If there is an equality
   let equal = width * .5;
@@ -333,6 +350,8 @@ function ballIsOutOfBounds() {
   // If it goes of the left side, add 1 point to rightPlayerScore and deduce 1 point from leftPlayerScore
   // If it goes of the right side, add 1 point to leftPlayerScore and deduce 1 point from rightPlayerScore
   // Count score from - winningScore to winningScore for background
+  startingScore = -winningScore;
+
   if (ball.x < 0) {
     rightPlayerScore = rightPlayerScore + 1;
     leftPlayerScore = leftPlayerScore - 1;
@@ -418,12 +437,23 @@ function displayPaddle(paddle) {
 
 // displayBall()
 //
-// Draws the ball on screen as a square
+// Draws the ball on screen as a ellipse that is constrasted by the background
 function displayBall() {
-  //console.log("ball");
+
   // Draw the ball
-  fill(255, 0, 0);
-  ellipse(ball.x, ball.y, ball.size, ball.size);
+  // Fill the ball according to the background fill (opposite) with middleBallImage
+  push();
+  if (ball.x > leftRectangleBackground.width) {
+    fill(brightColor);
+    ellipse(ball.x, ball.y, ball.size, ball.size);
+  } else if (ball.x < leftRectangleBackground.width) {
+    fill(darkColor);
+    ellipse(ball.x, ball.y, ball.size, ball.size);
+  } else if (ball.x === leftRectangleBackground.width) {
+    imageMode(CENTER)
+    image(middleBallImage, ball.x, ball.y);
+  }
+  pop();
 }
 
 // resetBall()
@@ -441,11 +471,20 @@ function resetBall() {
 //
 // Shows a message about how to start the game
 function displayStartMessage() {
+
+  // Images for each side
   push();
-  textAlign(CENTER, CENTER);
-  textSize(32);
-  text("CLICK TO START", width / 2, height / 2);
+  imageMode(CENTER);
+  image(leftSideImage, width / 4, height / 4);
+  image(leftTitle, width / 4, height * 3 / 5);
+  image(rightSideImage, width * 3 / 4, height / 4);
+  image(rightTitle, width * 3 / 4, height * 3 / 5);
+  image(title, width / 2, height * 4 / 5);
+  image(instruction, width / 2, height * .9);
+
   pop();
+  // Name of the Game
+  textSize(42)
 }
 
 // mousePressed()
