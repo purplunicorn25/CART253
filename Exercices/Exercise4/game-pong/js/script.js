@@ -26,6 +26,7 @@ let fgColorRight = brightColor;
 
 // Keep scores of leftPlayer and rightPlayer
 // They both start with no point
+let backgroundScoreDisplay = 0;
 let leftPlayerScore = 0;
 let rightPlayerScore = 0;
 let winningScore = 5;
@@ -41,7 +42,9 @@ let ball = {
   size: 20,
   vx: 0,
   vy: 0,
-  speed: 5
+  speed: 5,
+  minSpeed: 2.5,
+  maxSpeed: 6
 }
 
 // PADDLES
@@ -62,16 +65,19 @@ let leftPaddle = {
 // RIGHT PADDLE
 
 // Basic definition of a left paddle object with its key properties of
-// position, size, velocity, and speed
+// position, size, velocity, speed, minSpeed and maxSpeed
 let rightPaddle = {
   x: 0,
   y: 0,
   w: 20,
   h: 70,
   vy: 0,
-  speed: 5,
+  speed: 4,
   upKey: 38,
   downKey: 40,
+  minSpeed: 2.5,
+  maxSpeed: 6,
+  maxNegSpeed: -6
 }
 
 // LEFT BACKGROUND
@@ -176,6 +182,7 @@ function draw() {
     // (Note how we can use a function that returns a truth value
     // inside a conditional!)
     if (ballIsOutOfBounds()) {
+      console.log("out of bound");
       // If it went off either side, reset it
       resetBall();
       // This is where we would likely count points, depending on which side
@@ -227,10 +234,21 @@ function updatePaddle(paddle) {
 // updateBall()
 //
 // Sets the position of the ball based on its velocity
+// The velocity<s direction depends on the score of the Players
+// If
 function updateBall() {
+  console.log("update")
   // Update the ball's position based on velocity
-  ball.x += ball.vx;
-  ball.y += ball.vy;
+  if (leftPlayerScore < rightPlayerScore) {
+    ball.x += ball.vx;
+    ball.y += ball.vy;
+  } else if (leftPlayerScore > rightPlayerScore) {
+    ball.x -= ball.vx;
+    ball.y -= ball.vy;
+  } else {
+    ball.x += ball.vx;
+    ball.y += ball.vy;
+  }
 }
 
 // leftBackground()
@@ -258,7 +276,7 @@ function leftPlayerScoreDisplay() {
   let won2Points = width * .7;
   let won3Points = width * .8;
   let won4Points = width * .9;
-  let won5Points = width * .10;
+  let won5Points = width;
   // If losing
   let lost1Point = width * .4;
   let lost2Points = width * .3;
@@ -266,30 +284,30 @@ function leftPlayerScoreDisplay() {
   let lost4Points = width * .1;
   let lost5Points = 0;
 
-  // Make the two sides absolutly equal if null
+  // Make the two sides absolutly equal if the score is 0
   // Move the leftRectangleBackground to the right and make it wider if winning
   // Move the leftRectangleBackground to the left to make it narrower if losing
-  if (leftPlayerScore === 0) {
+  if (backgroundScoreDisplay === 0) {
     leftRectangleBackground.width = equal;
-  } else if (leftPlayerScore === 1) {
+  } else if (backgroundScoreDisplay === 1) {
     leftRectangleBackground.width = won1Point;
-  } else if (leftPlayerScore === 2) {
+  } else if (backgroundScoreDisplay === 2) {
     leftRectangleBackground.width = won2Points;
-  } else if (leftPlayerScore === 3) {
+  } else if (backgroundScoreDisplay === 3) {
     leftRectangleBackground.width = won3Points;
-  } else if (leftPlayerScore === 4) {
+  } else if (backgroundScoreDisplay === 4) {
     leftRectangleBackground.width = won4Points;
-  } else if (leftPlayerScore === 5) {
+  } else if (backgroundScoreDisplay === 5) {
     leftRectangleBackground.width = won5Points;
-  } else if (leftPlayerScore === -1) {
+  } else if (backgroundScoreDisplay === -1) {
     leftRectangleBackground.width = lost1Point;
-  } else if (leftPlayerScore === -2) {
+  } else if (backgroundScoreDisplay === -2) {
     leftRectangleBackground.width = lost2Points;
-  } else if (leftPlayerScore === -3) {
+  } else if (backgroundScoreDisplay === -3) {
     leftRectangleBackground.width = lost3Points;
-  } else if (leftPlayerScore === -4) {
+  } else if (backgroundScoreDisplay === -4) {
     leftRectangleBackground.width = lost4Points;
-  } else if (leftPlayerScore === -5) {
+  } else if (backgroundScoreDisplay === -5) {
     leftRectangleBackground.width = lost5Points;
   }
 }
@@ -305,28 +323,43 @@ function rightBackground() {
   rect(rightRectangleBackground.x, rightRectangleBackground.y, width, height);
   pop();
 }
+
 // ballIsOutOfBounds()
 //
 // Checks if the ball has gone off the left or right
 // Returns true if so, false otherwise
 function ballIsOutOfBounds() {
   // Check for ball going off the sides
-  // If is goes of a side, add 1 point to the opposite winning side
-  // And remove 1 point from the losing side and widden their background
+  // If it goes of the left side, add 1 point to rightPlayerScore and deduce 1 point from leftPlayerScore
+  // If it goes of the right side, add 1 point to leftPlayerScore and deduce 1 point from rightPlayerScore
+  // Count score from - winningScore to winningScore for background
   if (ball.x < 0) {
+    rightPlayerScore = rightPlayerScore + 1;
     leftPlayerScore = leftPlayerScore - 1;
-    // Players' scores cannot go below - winningScore
-    leftPlayerScore = constrain(leftPlayerScore, -winningScore, winningScore);
+    // Players' scores cannot go below startingScore
+    rightPlayerScore = constrain(rightPlayerScore, startingScore, winningScore);
+    leftPlayerScore = constrain(leftPlayerScore, startingScore, winningScore);
+
+    backgroundScoreDisplay = backgroundScoreDisplay - 1;
+    // backgroundScoreDisplay range from - winningScore to winningScore
+    backgroundScoreDisplay = constrain(backgroundScoreDisplay, -winningScore, winningScore);
     return true;
   } else if (ball.x > width) {
+    rightPlayerScore = rightPlayerScore - 1;
     leftPlayerScore = leftPlayerScore + 1;
     // Players' scores cannot go below startingScore
-    leftPlayerScore = constrain(leftPlayerScore, -winningScore, winningScore);
+    rightPlayerScore = constrain(rightPlayerScore, startingScore, winningScore);
+    leftPlayerScore = constrain(leftPlayerScore, startingScore, winningScore);
+
+    backgroundScoreDisplay = backgroundScoreDisplay + 1;
+    // backgroundScoreDisplay range from - winningScore to winningScore
+    backgroundScoreDisplay = constrain(backgroundScoreDisplay, -winningScore, winningScore);
     return true;
   } else {
     return false;
   }
 }
+
 // checkBallWallCollision()
 //
 // Check if the ball has hit the top or bottom of the canvas
@@ -387,23 +420,23 @@ function displayPaddle(paddle) {
 //
 // Draws the ball on screen as a square
 function displayBall() {
+  //console.log("ball");
   // Draw the ball
-  rectMode(CENTER);
   fill(255, 0, 0);
-  rect(ball.x, ball.y, ball.size, ball.size);
+  ellipse(ball.x, ball.y, ball.size, ball.size);
 }
 
 // resetBall()
 //
-// Sets the starting position and velocity of the ball
+// Sets the starting position and velocity of the ball, send the ball to the winning side
 function resetBall() {
   // Initialise the ball's position and velocity
   ball.x = width / 2;
   ball.y = height / 2;
-  ball.vx = ball.speed;
-  ball.vy = ball.speed;
+  //
+  ball.vx = random(ball.minSpeed, ball.maxSpeed);
+  ball.vy = random(ball.minSpeed, ball.maxSpeed);
 }
-
 // displayStartMessage()
 //
 // Shows a message about how to start the game
