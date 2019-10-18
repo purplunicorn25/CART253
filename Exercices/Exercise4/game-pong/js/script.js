@@ -31,7 +31,6 @@ let rightPlayerScore = 0;
 let winningScore = 5;
 let startingScore = 0;
 
-
 // BALL
 
 // A ball object with the properties of
@@ -72,7 +71,25 @@ let rightPaddle = {
   vy: 0,
   speed: 5,
   upKey: 38,
-  downKey: 40
+  downKey: 40,
+}
+
+// LEFT BACKGROUND
+
+// Left side background with its position properties
+let leftRectangleBackground = {
+  x: 0,
+  y: 0,
+  width: 0
+}
+
+// RIGHT BACKGROUND
+
+// Right side background with its position properties
+let rightRectangleBackground = {
+  x: 0,
+  y: 0,
+  width: 0
 }
 
 // A variable to hold the beep sound we will play on bouncing
@@ -98,6 +115,7 @@ function setup() {
 
   setupPaddles();
   resetBall();
+  setupBackground();
 }
 
 // setupPaddles()
@@ -109,8 +127,22 @@ function setupPaddles() {
   leftPaddle.y = height / 2;
 
   // Initialise the right paddle position
-  rightPaddle.x = width - rightPaddle.w;
+  rightPaddle.x = width - rightPaddle.w * 2;
   rightPaddle.y = height / 2;
+}
+
+// setupBackground()
+//
+// Sets the inital positions and width of the two background rectangles
+function setupBackground() {
+  // Initialise leftRectangleBackground's position and their width
+  leftRectangleBackground.x = 0;
+  leftRectangleBackground.y = 0;
+  leftRectangleBackground.width = width / 2;
+  // Initialise rightRectangleBackground's position and their width
+  rightRectangleBackground.x = 0;
+  rightRectangleBackground.y = 0;
+  rightRectangleBackground.width = width;
 }
 
 // draw()
@@ -118,15 +150,12 @@ function setupPaddles() {
 // Calls the appropriate functions to run the game
 // See how tidy it looks?!
 function draw() {
-  // Fill the background
+  // Fill the background according to the players' scores
   // Make left and right side backgrounds contrast
-  // Left side
-  rectMode(CORNER);
-  fill(bgColorLeft);
-  rect(0, 0, width / 2, height);
   // Right Side
-  fill(bgColorRight);
-  rect(width / 2, 0, width / 2, height);
+  rightBackground();
+  // Left side
+  leftBackground();
 
   if (playing) {
     // If the game is in play, we handle input and move the elements around
@@ -135,6 +164,9 @@ function draw() {
     updatePaddle(leftPaddle);
     updatePaddle(rightPaddle);
     updateBall();
+
+    // We also want to keep track of the score
+    leftPlayerScoreDisplay();
 
     checkBallWallCollision();
     checkBallPaddleCollision(leftPaddle);
@@ -155,7 +187,10 @@ function draw() {
   }
 
   // We always display the paddles and ball so it looks like Pong!
+  // Define their respective colors
+  fill(fgColorLeft);
   displayPaddle(leftPaddle);
+  fill(fgColorRight);
   displayPaddle(rightPaddle);
   displayBall();
 }
@@ -198,120 +233,192 @@ function updateBall() {
   ball.y += ball.vy;
 }
 
+// leftBackground()
+//
+// The bright side grows wider as leftPlayerScore goes up
+function leftBackground() {
+  push();
+  // This is the bright side
+  fill(brightColor);
+  // Position is set at the corner of the rectangle
+  rectMode(CORNER);
+  rect(leftRectangleBackground.x, leftRectangleBackground.y, leftRectangleBackground.width, height);
+  pop();
+}
+
+// ScoreDisplay
+//
+// Adjust the width of the leftRectangleBackground to show score
+function leftPlayerScoreDisplay() {
+  // Set the different positions of the leftBackground
+  // If there is an equality
+  let equal = width * .5;
+  // If winning
+  let won1Point = width * .6;
+  let won2Points = width * .7;
+  let won3Points = width * .8;
+  let won4Points = width * .9;
+  let won5Points = width * .10;
+  // If losing
+  let lost1Point = width * .4;
+  let lost2Points = width * .3;
+  let lost3Points = width * .2;
+  let lost4Points = width * .1;
+  let lost5Points = 0;
+
+  // Make the two sides absolutly equal if null
+  // Move the leftRectangleBackground to the right and make it wider if winning
+  // Move the leftRectangleBackground to the left to make it narrower if losing
+  if (leftPlayerScore === 0) {
+    leftRectangleBackground.width = equal;
+  } else if (leftPlayerScore === 1) {
+    leftRectangleBackground.width = won1Point;
+  } else if (leftPlayerScore === 2) {
+    leftRectangleBackground.width = won2Points;
+  } else if (leftPlayerScore === 3) {
+    leftRectangleBackground.width = won3Points;
+  } else if (leftPlayerScore === 4) {
+    leftRectangleBackground.width = won4Points;
+  } else if (leftPlayerScore === 5) {
+    leftRectangleBackground.width = won5Points;
+  } else if (leftPlayerScore === -1) {
+    leftRectangleBackground.width = lost1Point;
+  } else if (leftPlayerScore === -2) {
+    leftRectangleBackground.width = lost2Points;
+  } else if (leftPlayerScore === -3) {
+    leftRectangleBackground.width = lost3Points;
+  } else if (leftPlayerScore === -4) {
+    leftRectangleBackground.width = lost4Points;
+  } else if (leftPlayerScore === -5) {
+    leftRectangleBackground.width = lost5Points;
+  }
+}
+// rightBackground()
+//
+// The dark side grows wider as rightPlayerScore goes up
+function rightBackground() {
+  push();
+  // This is the dark side
+  fill(darkColor);
+  // Position is set at the corner of the rectangle
+  rectMode(CORNER);
+  rect(rightRectangleBackground.x, rightRectangleBackground.y, width, height);
+  pop();
+}
 // ballIsOutOfBounds()
 //
 // Checks if the ball has gone off the left or right
 // Returns true if so, false otherwise
 function ballIsOutOfBounds() {
-  // Players' scores cannot go below startingScore
-  rightPlayerScore = constrain(rightPlayerScore, startingScore, winningScore);
-  leftPlayerScore = constrain(leftPlayerScore, startingScore, winningScore);
   // Check for ball going off the sides
   // If is goes of a side, add 1 point to the opposite winning side
-  // And remove 1 point from the losing side
+  // And remove 1 point from the losing side and widden their background
   if (ball.x < 0) {
-    rightPlayerScore = rightPlayerScore + 1;
     leftPlayerScore = leftPlayerScore - 1;
+    // Players' scores cannot go below - winningScore
+    leftPlayerScore = constrain(leftPlayerScore, -winningScore, winningScore);
     return true;
   } else if (ball.x > width) {
-    rightPlayerScore = rightPlayerScore - 1;
     leftPlayerScore = leftPlayerScore + 1;
+    // Players' scores cannot go below startingScore
+    leftPlayerScore = constrain(leftPlayerScore, -winningScore, winningScore);
     return true;
   } else {
     return false;
   }
 }
-  // checkBallWallCollision()
-  //
-  // Check if the ball has hit the top or bottom of the canvas
-  // Bounce off if it has by reversing velocity
-  // Play a sound
-  function checkBallWallCollision() {
-    // Check for collisions with top or bottom...
-    if (ball.y < 0 || ball.y > height) {
-      // It hit so reverse velocity
-      ball.vy = -ball.vy;
+// checkBallWallCollision()
+//
+// Check if the ball has hit the top or bottom of the canvas
+// Bounce off if it has by reversing velocity
+// Play a sound
+function checkBallWallCollision() {
+  // Check for collisions with top or bottom...
+  if (ball.y < 0 || ball.y > height) {
+    // It hit so reverse velocity
+    ball.vy = -ball.vy;
+    // Play our bouncing sound effect by rewinding and then playing
+    beepSFX.currentTime = 0;
+    beepSFX.play();
+  }
+}
+
+// checkBallPaddleCollision(paddle)
+//
+// Checks for collisions between the ball and the specified paddle
+function checkBallPaddleCollision(paddle) {
+  // VARIABLES FOR CHECKING COLLISIONS
+
+  // We will calculate the top, bottom, left, and right of the
+  // paddle and the ball to make our conditionals easier to read...
+  let ballTop = ball.y - ball.size / 2;
+  let ballBottom = ball.y + ball.size / 2;
+  let ballLeft = ball.x - ball.size / 2;
+  let ballRight = ball.x + ball.size / 2;
+
+  let paddleTop = paddle.y - paddle.h / 2;
+  let paddleBottom = paddle.y + paddle.h / 2;
+  let paddleLeft = paddle.x - leftPaddle.w / 2;
+  let paddleRight = paddle.x + paddle.w / 2;
+
+  // First check the ball is in the vertical range of the paddle
+  if (ballBottom > paddleTop && ballTop < paddleBottom) {
+    // Then check if it is touching the paddle horizontally
+    if (ballLeft < paddleRight && ballRight > paddleLeft) {
+      // Then the ball is touching the paddle
+      // Reverse its vx so it starts travelling in the opposite direction
+      ball.vx = -ball.vx;
       // Play our bouncing sound effect by rewinding and then playing
       beepSFX.currentTime = 0;
       beepSFX.play();
     }
   }
+}
 
-  // checkBallPaddleCollision(paddle)
-  //
-  // Checks for collisions between the ball and the specified paddle
-  function checkBallPaddleCollision(paddle) {
-    // VARIABLES FOR CHECKING COLLISIONS
+// displayPaddle(paddle)
+//
+// Draws the specified paddle
+function displayPaddle(paddle) {
+  // Draw the paddles
+  rect(paddle.x, paddle.y, paddle.w, paddle.h);
+}
 
-    // We will calculate the top, bottom, left, and right of the
-    // paddle and the ball to make our conditionals easier to read...
-    let ballTop = ball.y - ball.size / 2;
-    let ballBottom = ball.y + ball.size / 2;
-    let ballLeft = ball.x - ball.size / 2;
-    let ballRight = ball.x + ball.size / 2;
+// displayBall()
+//
+// Draws the ball on screen as a square
+function displayBall() {
+  // Draw the ball
+  rectMode(CENTER);
+  fill(255, 0, 0);
+  rect(ball.x, ball.y, ball.size, ball.size);
+}
 
-    let paddleTop = paddle.y - paddle.h / 2;
-    let paddleBottom = paddle.y + paddle.h / 2;
-    let paddleLeft = paddle.x - leftPaddle.w / 2;
-    let paddleRight = paddle.x + paddle.w / 2;
+// resetBall()
+//
+// Sets the starting position and velocity of the ball
+function resetBall() {
+  // Initialise the ball's position and velocity
+  ball.x = width / 2;
+  ball.y = height / 2;
+  ball.vx = ball.speed;
+  ball.vy = ball.speed;
+}
 
-    // First check the ball is in the vertical range of the paddle
-    if (ballBottom > paddleTop && ballTop < paddleBottom) {
-      // Then check if it is touching the paddle horizontally
-      if (ballLeft < paddleRight && ballRight > paddleLeft) {
-        // Then the ball is touching the paddle
-        // Reverse its vx so it starts travelling in the opposite direction
-        ball.vx = -ball.vx;
-        // Play our bouncing sound effect by rewinding and then playing
-        beepSFX.currentTime = 0;
-        beepSFX.play();
-      }
-    }
-  }
+// displayStartMessage()
+//
+// Shows a message about how to start the game
+function displayStartMessage() {
+  push();
+  textAlign(CENTER, CENTER);
+  textSize(32);
+  text("CLICK TO START", width / 2, height / 2);
+  pop();
+}
 
-  // displayPaddle(paddle)
-  //
-  // Draws the specified paddle
-  function displayPaddle(paddle) {
-    // Draw the paddles
-    rect(paddle.x, paddle.y, paddle.w, paddle.h);
-  }
-
-  // displayBall()
-  //
-  // Draws the ball on screen as a square
-  function displayBall() {
-    // Draw the ball
-    fill(255, 0, 0);
-    rect(ball.x, ball.y, ball.size, ball.size);
-  }
-
-  // resetBall()
-  //
-  // Sets the starting position and velocity of the ball
-  function resetBall() {
-    // Initialise the ball's position and velocity
-    ball.x = width / 2;
-    ball.y = height / 2;
-    ball.vx = ball.speed;
-    ball.vy = ball.speed;
-  }
-
-  // displayStartMessage()
-  //
-  // Shows a message about how to start the game
-  function displayStartMessage() {
-    push();
-    textAlign(CENTER, CENTER);
-    textSize(32);
-    text("CLICK TO START", width / 2, height / 2);
-    pop();
-  }
-
-  // mousePressed()
-  //
-  // Here to require a click to start playing the game
-  // Which will help us be allowed to play audio in the browser
-  function mousePressed() {
-    playing = true;
-  }
+// mousePressed()
+//
+// Here to require a click to start playing the game
+// Which will help us be allowed to play audio in the browser
+function mousePressed() {
+  playing = true;
+}
