@@ -5,14 +5,23 @@
 // &
 // Anne Boutet
 //
-// A "simple" implementation of Pong with no scoring system
+// A Yin Yang version of the game Pong where darkness and tries to overcome light and vice-versa
 // just the ability to play the game with the keyboard.
 //
 // Up and down keys control the right hand paddle, W and S keys control
 // the left hand paddle
 
+// We always display the paddles and ball so it looks like Pong!
+let displayComponents = true;
+
 // Whether the game has started
+let starting = true;
+
+// When the game is active
 let playing = false;
+
+//Wether the game has ended
+let gameOver = false;
 
 // We will only use two colors for this whole Game
 let darkColor = 0; // black
@@ -98,6 +107,9 @@ let rightRectangleBackground = {
   width: 0
 }
 
+// Font used for gameOverScreen quotes
+let gameOverFont;
+
 // A variable to hold the beep sound we will play on bouncing
 let beepSFX;
 
@@ -114,7 +126,7 @@ let instruction;
 // preload()
 //
 // Loads the beep audio for the sound of bouncing
-// Loads the images for the ball and the starting screen
+// Loads the images for the ball, fonts and the starting screen
 function preload() {
   beepSFX = new Audio("assets/sounds/beep.wav");
   middleBallImage = loadImage("assets/images/half_ball.png");
@@ -124,6 +136,7 @@ function preload() {
   rightTitle = loadImage("assets/images/YANG2.png");
   title = loadImage("assets/images/PONG.png");
   instruction = loadImage("assets/images/Instructions.png");
+  gameOverFont = loadFont("assets/fonts/SourceSansPro-Bold.ttf");
 }
 
 // setup()
@@ -181,7 +194,10 @@ function draw() {
   // Left side
   leftBackground();
 
-  if (playing) {
+  if (starting) {
+    // Otherwise we display the message to start the game
+    displayStartMessage();
+  } else if (playing) {
     // If the game is in play, we handle input and move the elements around
     handleInput(leftPaddle);
     handleInput(rightPaddle);
@@ -196,6 +212,9 @@ function draw() {
     checkBallPaddleCollision(leftPaddle);
     checkBallPaddleCollision(rightPaddle);
 
+    // If the players' score equals winningScore end gameOver
+    endGame();
+
     // Check if the ball went out of bounds and respond if so
     // (Note how we can use a function that returns a truth value
     // inside a conditional!)
@@ -203,23 +222,23 @@ function draw() {
       console.log("out of bound");
       // If it went off either side, reset it
       resetBall();
-      // This is where we would likely count points, depending on which side
-      // the ball went off...
     }
-  } else {
-    // Otherwise we display the message to start the game
-    displayStartMessage();
+    // This is where we would likely count points, depending on which side
+    // the ball went off...
+  } else if (gameOver) {
+    // Show the game over screen if any player won
+    gameOverScreen();
   }
-
   // We always display the paddles and ball so it looks like Pong!
   // Define their respective colors
-  fill(fgColorLeft);
-  displayPaddle(leftPaddle);
-  fill(fgColorRight);
-  displayPaddle(rightPaddle);
-  displayBall();
+  if (displayComponents) {
+    fill(fgColorLeft);
+    displayPaddle(leftPaddle);
+    fill(fgColorRight);
+    displayPaddle(rightPaddle);
+    displayBall();
+  }
 }
-
 // handleInput()
 //
 // Checks the mouse and keyboard input to set the velocities of the
@@ -328,9 +347,10 @@ function leftBackgroundScoreDisplay() {
     leftRectangleBackground.width = lost5Points;
   }
 }
+
 // rightBackground()
 //
-// The dark side grows wider as rightPlayerScore goes up
+// The dark side cover the screen (left is on top)
 function rightBackground() {
   push();
   // This is the dark side
@@ -467,24 +487,24 @@ function resetBall() {
   ball.vx = random(ball.minSpeed, ball.maxSpeed);
   ball.vy = random(ball.minSpeed, ball.maxSpeed);
 }
+
 // displayStartMessage()
 //
 // Shows a message about how to start the game
+// Conceptualize the Yin Yang theme with images
 function displayStartMessage() {
 
-  // Images for each side
   push();
   imageMode(CENTER);
+  // Images and titles for each side
   image(leftSideImage, width / 4, height / 4);
   image(leftTitle, width / 4, height * 3 / 5);
   image(rightSideImage, width * 3 / 4, height / 4);
   image(rightTitle, width * 3 / 4, height * 3 / 5);
+  // Title and Instructions
   image(title, width / 2, height * 4 / 5);
   image(instruction, width / 2, height * .9);
-
   pop();
-  // Name of the Game
-  textSize(42)
 }
 
 // mousePressed()
@@ -492,5 +512,65 @@ function displayStartMessage() {
 // Here to require a click to start playing the game
 // Which will help us be allowed to play audio in the browser
 function mousePressed() {
+  starting = false;
   playing = true;
+}
+
+// gameOverScreen()
+//
+// If a player score is equal the winning score the game ends.
+function endGame() {
+  // If left player wins
+  if (leftPlayerScore === winningScore) {
+    gameOver = true;
+    playing = false;
+    displayComponents = false;
+    background(brightColor);
+  } else if (rightPlayerScore === winningScore) {
+    gameOver = true;
+    playing = false;
+    displayComponents = false;
+    background(darkColor);
+  }
+}
+
+// gameOverScreen()
+//
+// If game over display the winners gameOverScreen
+function gameOverScreen() {
+
+  // If left player wins
+  if (leftPlayerScore === winningScore) {
+    push();
+    fill(brightColor);
+    rectMode(CENTER);
+    rect(0, 0, width, height);
+    textAlign(CENTER, CENTER);
+    fill(darkColor);
+    textFont(gameOverFont);
+    textSize(45);
+    text("YIN WON!", width / 2, height * .2);
+    textSize(32);
+    text('“Darkness cannot drive out darkness: \n only light can do that. \n Hate cannot drive out hate: \n only love can do that.”"', width / 2, height / 2);
+    textSize(20);
+    text("- Martin Luther King Jr-", width / 2, height * .7);
+    pop();
+  }
+  // If right player wins
+  else if (rightPlayerScore === winningScore) {
+    push()
+    fill(darkColor);
+    rectMode(CENTER);
+    rect(0, 0, width, height);
+    textAlign(CENTER, CENTER);
+    fill(brightColor);
+    textFont(gameOverFont);
+    textSize(45);
+    text("YANG WON!", width / 2, height * .2);
+    textSize(32);
+    text('“I do not speak as I think, \n I do not think as I should, \n and so it all goes on in helpless darkness.”', width / 2, height / 2);
+    textSize(20);
+    text("- Franz Kafka -", width / 2, height * .65);
+    pop();
+  }
 }
