@@ -21,9 +21,9 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
 
   // Predators
-  tiger = new Predator(100, 100, 5, color(200, 200, 0), 40, UP_ARROW, DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW); // Arrow keys
-  panther = new Predator(100, 100, 5, color(155, 0, 200), 40, 87, 83, 65, 68); // WSAD keys
-  koala = new Predator(100, 100, 5, color(100, 100, 0), 40, 73, 75, 74, 76); // IKJL keys
+  tiger = new Predator(100, 100, 5, color(200, 200, 0), 40, UP_ARROW, DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, CONTROL); // Arrow keys Sprint = CTRL
+  panther = new Predator(100, 100, 5, color(155, 0, 200), 40, 87, 83, 65, 68, SHIFT); // WSAD keys Sprint = SHIFT
+  koala = new Predator(100, 100, 5, color(100, 100, 0), 40, 73, 75, 74, 76, 32); // IKJL keys Sprint = SPACE
 
   // Preys
   antelope = new Prey(100, 100, 10, color(255, 100, 10), 150); //50
@@ -42,6 +42,8 @@ function draw() {
   tiger.handleInput();
   panther.handleInput();
   koala.handleInput();
+
+  console.log(tiger.vx + "VX");
 
   // Move all the "animals"
   tiger.move();
@@ -72,8 +74,6 @@ function draw() {
   koala.scorePredator(antelope);
   koala.scorePredator(zebra);
   koala.scorePredator(bee);
-
-  console.log(koala.score + " tiger's score");
 
   // Display all the "animals"
   tiger.display();
