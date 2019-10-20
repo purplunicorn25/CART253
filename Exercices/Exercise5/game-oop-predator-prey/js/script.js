@@ -2,7 +2,7 @@
 // by Pippin Barr
 //
 // Creates a predator and three prey (of different sizes and speeds)
-// The predator chases the prey using the arrow keys and consumes them.
+// The predator chases the prey using the arrow s and consumes them.
 // The predator loses health over time, so must keep eating to survive.
 
 // Our predator
@@ -19,7 +19,9 @@ let bee;
 // Creates objects for the predator and three prey
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  tiger = new Predator(100, 100, 5, color(200, 200, 0), 40);
+  tiger = new Predator(100, 100, 5, color(200, 200, 0), 40, UP_ARROW, DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW); // Arrow keys
+  panther = new Predator(100, 100, 5, color(155, 0, 200), 40, 87, 83, 65, 68); // WSAD keys
+  koala = new Predator(100, 100, 5, color(100, 100, 0), 40, 73, 75, 74, 76); // IKJL keys
   antelope = new Prey(100, 100, 10, color(255, 100, 10), 50);
   zebra = new Prey(100, 100, 8, color(255, 255, 255), 60);
   bee = new Prey(100, 100, 20, color(255, 255, 0), 10);
@@ -32,22 +34,34 @@ function draw() {
   // Clear the background to black
   background(0);
 
-  // Handle input for the tiger
+  // Handle input for the the predators
   tiger.handleInput();
+  panther.handleInput();
+  koala.handleInput();
 
   // Move all the "animals"
   tiger.move();
+  panther.move();
+  koala.move();
   antelope.move();
   zebra.move();
   bee.move();
 
-  // Handle the tiger eating any of the prey
+  // Handle the predators eating any of the prey
   tiger.handleEating(antelope);
   tiger.handleEating(zebra);
   tiger.handleEating(bee);
+  panther.handleEating(antelope);
+  panther.handleEating(zebra);
+  panther.handleEating(bee);
+  koala.handleEating(antelope);
+  koala.handleEating(zebra);
+  koala.handleEating(bee);
 
   // Display all the "animals"
   tiger.display();
+  panther.display();
+  koala.display();
   antelope.display();
   zebra.display();
   bee.display();

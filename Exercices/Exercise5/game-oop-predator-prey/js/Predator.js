@@ -10,7 +10,7 @@ class Predator {
   //
   // Sets the initial values for the Predator's properties
   // Either sets default values or uses the arguments provided
-  constructor(x, y, speed, fillColor, radius) {
+  constructor(x, y, speed, fillColor, radius, upKey, downKey, leftKey, rightKey) {
     // Position
     this.x = x;
     this.y = y;
@@ -27,10 +27,10 @@ class Predator {
     this.fillColor = fillColor;
     this.radius = this.health; // Radius is defined in terms of health
     // Input properties
-    this.upKey = UP_ARROW;
-    this.downKey = DOWN_ARROW;
-    this.leftKey = LEFT_ARROW;
-    this.rightKey = RIGHT_ARROW;
+    this.upKey = upKey;
+    this.downKey = downKey;
+    this.leftKey = leftKey;
+    this.rightKey = rightKey;
   }
 
   // handleInput
@@ -41,21 +41,17 @@ class Predator {
     // Horizontal movement
     if (keyIsDown(this.leftKey)) {
       this.vx = -this.speed;
-    }
-    else if (keyIsDown(this.rightKey)) {
+    } else if (keyIsDown(this.rightKey)) {
       this.vx = this.speed;
-    }
-    else {
+    } else {
       this.vx = 0;
     }
     // Vertical movement
     if (keyIsDown(this.upKey)) {
       this.vy = -this.speed;
-    }
-    else if (keyIsDown(this.downKey)) {
+    } else if (keyIsDown(this.downKey)) {
       this.vy = this.speed;
-    }
-    else {
+    } else {
       this.vy = 0;
     }
   }
@@ -84,15 +80,13 @@ class Predator {
     // Off the left or right
     if (this.x < 0) {
       this.x += width;
-    }
-    else if (this.x > width) {
+    } else if (this.x > width) {
       this.x -= width;
     }
     // Off the top or bottom
     if (this.y < 0) {
       this.y += height;
-    }
-    else if (this.y > height) {
+    } else if (this.y > height) {
       this.y -= height;
     }
   }
