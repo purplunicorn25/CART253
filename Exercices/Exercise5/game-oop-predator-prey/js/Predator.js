@@ -31,6 +31,8 @@ class Predator {
     this.downKey = downKey;
     this.leftKey = leftKey;
     this.rightKey = rightKey;
+    // Score properties
+    this.score = 0;
   }
 
   // handleInput
@@ -110,6 +112,15 @@ class Predator {
       if (prey.health < 0) {
         prey.reset();
       }
+    }
+  }
+
+  // score
+  //
+  // Track how many prey(s) each predator has eaten
+  scorePredator(prey) {
+    if (prey.health === 0) {
+      this.score += 1;
     }
   }
 
