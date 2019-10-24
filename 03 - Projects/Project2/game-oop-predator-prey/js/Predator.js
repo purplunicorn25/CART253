@@ -10,7 +10,7 @@ class Predator {
   //
   // Sets the initial values for the Predator's properties
   // Either sets default values or uses the arguments provided
-  constructor(x, y, speed, avatar, radius, upKey, downKey, leftKey, rightKey, sprintKey, scoreX, scoreY, scoreChangeRed, scoreChangeGreen, scoreChangeBlue) {
+  constructor(x, y, speed, fillColor, radius) {
     // Position
     this.x = x;
     this.y = y;
@@ -18,32 +18,19 @@ class Predator {
     this.vx = 0;
     this.vy = 0;
     this.speed = speed;
-    this.turboSpeed = speed * 2;
     // Health properties
     this.maxHealth = radius;
     this.health = this.maxHealth; // Must be AFTER defining this.maxHealth
-    this.healthLossPerMove = 0.05;
+    this.healthLossPerMove = 0.1;
     this.healthGainPerEat = 1;
     // Display properties
-    this.avatar = avatar;
+    this.fillColor = fillColor;
     this.radius = this.health; // Radius is defined in terms of health
-    // Score display properties ( impacting background)
-    this.startingColor = 255;
-    this.scoreChangeRed = scoreChangeRed;
-    this.scoreChangeGreen = scoreChangeGreen;
-    this.scoreChangeBlue = scoreChangeBlue;
-    this.colorRed = 255;
-    this.colorGreen = 255;
-    this.colorBlue = 255;
-    // background display properties (responding to score)
-    this.scoreX = scoreX;
-    this.scoreY = scoreY;
     // Input properties
-    this.upKey = upKey;
-    this.downKey = downKey;
-    this.leftKey = leftKey;
-    this.rightKey = rightKey;
-    this.sprintKey = sprintKey;
+    this.upKey = UP_ARROW;
+    this.downKey = DOWN_ARROW;
+    this.leftKey = LEFT_ARROW;
+    this.rightKey = RIGHT_ARROW;
   }
 
   // handleInput
@@ -51,33 +38,29 @@ class Predator {
   // Checks if an arrow key is pressed and sets the predator's
   // velocity appropriately.
   handleInput() {
-    // Horizontal movement & sprint
-    if (keyIsDown(this.leftKey) && keyIsDown(this.sprintKey)) {
-      this.vx = -this.turboSpeed;
-    } else if (keyIsDown(this.rightKey) && keyIsDown(this.sprintKey)) {
-      this.vx = this.turboSpeed;
-    } else if (keyIsDown(this.leftKey)) {
+    // Horizontal movement
+    if (keyIsDown(this.leftKey)) {
       this.vx = -this.speed;
-    } else if (keyIsDown(this.rightKey)) {
+    }
+    else if (keyIsDown(this.rightKey)) {
       this.vx = this.speed;
-    } else {
+    }
+    else {
       this.vx = 0;
     }
-    // Vertical movement & sprint
-    if (keyIsDown(this.upKey) && keyIsDown(this.sprintKey)) {
-      this.vy = -this.turboSpeed;
-    } else if (keyIsDown(this.downKey) && keyIsDown(this.sprintKey)) {
-      this.vy = this.turboSpeed;
-    } else if (keyIsDown(this.upKey)) {
+    // Vertical movement
+    if (keyIsDown(this.upKey)) {
       this.vy = -this.speed;
-    } else if (keyIsDown(this.downKey)) {
+    }
+    else if (keyIsDown(this.downKey)) {
       this.vy = this.speed;
-    } else {
+    }
+    else {
       this.vy = 0;
     }
   }
 
-  // moves
+  // move
   //
   // Updates the position according to velocity
   // Lowers health (as a cost of living)
@@ -88,7 +71,7 @@ class Predator {
     this.y += this.vy;
     // Update health
     this.health = this.health - this.healthLossPerMove;
-    this.health = constrain(this.health, 1, this.maxHealth);
+    this.health = constrain(this.health, 0, this.maxHealth);
     // Handle wrapping
     this.handleWrapping();
   }
@@ -101,13 +84,15 @@ class Predator {
     // Off the left or right
     if (this.x < 0) {
       this.x += width;
-    } else if (this.x > width) {
+    }
+    else if (this.x > width) {
       this.x -= width;
     }
     // Off the top or bottom
     if (this.y < 0) {
       this.y += height;
-    } else if (this.y > height) {
+    }
+    else if (this.y > height) {
       this.y -= height;
     }
   }
@@ -129,26 +114,9 @@ class Predator {
       prey.health -= this.healthGainPerEat;
       // Check if the prey died and reset it if so
       if (prey.health < 0) {
-        // Adjust the color according to the prey eaten of the player
-        this.colorRed = constrain(this.colorRed, 0, 255);
-        this.colorGreen = constrain(this.colorGreen, 0, 255);
-        this.colorBlue = constrain(this.colorBlue, 0, 255);
-        // Reduce the color value
-        this.colorRed += this.scoreChangeRed;
-        this.colorGreen += this.scoreChangeGreen;
-        this.colorBlue += this.scoreChangeBlue;
-        // reset the preys for predators to eat more
         prey.reset();
       }
     }
-  }
-
-  // scoreDisplay()
-  //
-  // Divide the screen in three and every rectangle represents the score of a player
-  scoreDisplay() {
-    fill(this.colorRed, this.colorGreen, this.colorBlue);
-    rect(this.scoreX, this.scoreY, width / 3, height);
   }
 
   // display
@@ -158,9 +126,9 @@ class Predator {
   display() {
     push();
     noStroke();
+    fill(this.fillColor);
     this.radius = this.health;
-    imageMode(CENTER);
-    image(this.avatar, this.x, this.y, this.radius * 2, this.radius * 2);
+    ellipse(this.x, this.y, this.radius * 2);
     pop();
   }
 }
