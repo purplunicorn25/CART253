@@ -32,12 +32,12 @@ let rightbackground;
 // Load assets before the game starts
 function preload() {
   // Load all the  avatars
-  tigerAvatar = loadImage("assets/Images/Tiger.png");
-  sharkAvatar = loadImage("assets/Images/Shark.png");
-  alligatorAvatar = loadImage("assets/Images/Alli.png");
-  boarAvatar = loadImage("assets/Images/Boar.png");
-  fishAvatar = loadImage("assets/Images/Fish.png");
-  sheepAvatar = loadImage("assets/Images/Sheep.png");
+  tigerAvatar = loadImage("assets/images/Tiger.png");
+  sharkAvatar = loadImage("assets/images/Shark.png");
+  alligatorAvatar = loadImage("assets/images/Alli.png");
+  boarAvatar = loadImage("assets/images/Boar.png");
+  fishAvatar = loadImage("assets/images/Fish.png");
+  sheepAvatar = loadImage("assets/images/Sheep.png");
 }
 // setup()
 //
