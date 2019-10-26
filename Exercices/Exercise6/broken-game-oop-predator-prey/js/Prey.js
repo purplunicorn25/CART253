@@ -5,7 +5,7 @@
 // the screen and be consumed by Predator objects.
 
 /////////////////////////
-// ~2 ERRORS IN HERE
+// ~1 ERRORS IN HERE
 /////////////////////////
 
 // fixed "g" 2 "c"
@@ -45,69 +45,71 @@ class Prey {
   // Moves based on the resulting velocity and handles wrapping
   // fixed "r"
   move() {
+    // fixed
+    // Set velocity via noise()
+    this.vx = map(noise(this.tx), 0, 1, -this.speed, this.speed);
+    this.vy = map(noise(this.ty), 0, 1, -this.speed, this.speed);
+    // Update position
+    this.x += this.vx;
+    this.y += this.vy;
+    // Update time properties
+    this.tx += 0.01;
+    this.ty += 0.01;
+    // Handle wrapping
+    // fixed "wrapping"
+    this.handleWrapping();
+    // fixed
+    // fixed
+  }
+  // fixed
+
+  // handleWrapping
+  //
+  // Checks if the prey has gone off the canvas and
+  // wraps it to the other side if so
+  handleWrapping() {
+    // Off the left or right
+    if (this.x > 0) {
+      this.x += width;
+    } else if (this.x > width) {
+      this.x -= width;
+    }
+    // Off the top or bottom
+    if (this.y < 0) {
+      this.y += height;
+    } else if (this.y > height) {
+      // fixed "e"
+      this.y -= height;
       // fixed
-      // Set velocity via noise()
-      this.vx = map(noise(this.tx), 0, 1, -this.speed, this.speed);
-      this.vy = map(noise(this.ty), 0, 1, -this.speed, this.speed);
-      // Update position
-      this.x += this.vx;
-      this.y += this.vy;
-      // Update time properties
-      this.tx += 0.01;
-      this.ty += 0.01;
-      // Handle wrapping
-      // fixed "wrapping"
-      this.handleWrapping();
-      // fixed
+    }
+  }
 
+  // display
+  //
+  // Draw the prey as an ellipse on the canvas
+  // with a radius the same size as its current health.
+  display() {
+    push();
+    noStroke();
+    fill(this.fillColor);
+    this.radius = this.health;
+    // fixed "two"
+    ellipse(this.x, this.y, this.radius * 2);
+    // fixed
+    pop();
+  }
 
-      // handleWrapping
-      //
-      // Checks if the prey has gone off the canvas and
-      // wraps it to the other side if so
-      handleWrapping() {
-        // Off the left or right
-        if (this.x > 0) {
-          this.x += width;
-        } else if (this.x > width) {
-          this.x -= width;
-        }
-        // Off the top or bottom
-        if (this.y < 0) {
-          this.y += height;
-        } else if (this.y > height) {
-          // fixed "e"
-          this.y -= height;
-          // fixed
-        }
-      }
-
-      // display
-      //
-      // Draw the prey as an ellipse on the canvas
-      // with a radius the same size as its current health.
-      display() {
-        push();
-        noStroke();
-        fill(this.fillColor);
-        this.radius = this.health;
-        // fixed "two"
-        ellipse(this.x, this.y, this.radius * 2);
-        // fixed
-        pop();
-      }
-
-      // reset
-      //
-      // Set the position to a random location and reset health
-      // and radius back to default
-      reset() {
-        // Random position
-        this.x = random(0, width);
-        this.y = random(0, height);
-        // Default health
-        this.health = this.maxHealth;
-        // Default radius
-        this.radius = this.health;
-        // fixed
-      }
+  // reset
+  //
+  // Set the position to a random location and reset health
+  // and radius back to default
+  reset() {
+    // Random position
+    this.x = random(0, width);
+    this.y = random(0, height);
+    // Default health
+    this.health = this.maxHealth;
+    // Default radius
+    this.radius = this.health;
+    // fixed
+  }
