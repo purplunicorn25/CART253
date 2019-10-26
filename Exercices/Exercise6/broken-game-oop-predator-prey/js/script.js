@@ -10,7 +10,7 @@
 // The predator loses health over time, so must keep eating to survive.
 
 ////////////////////
-// 6 ERRORS IN HERE
+// 5 ERRORS IN HERE
 ////////////////////
 
 // Our predator
@@ -50,6 +50,9 @@ function draw() {
   tiger.move();
   antelope.move();
   zebra.move();
+  // fixed
+  bee.move();
+  // fixed
 
   // Handle the tiger eating any of the prey
   tiger.handleEating(antelope);
