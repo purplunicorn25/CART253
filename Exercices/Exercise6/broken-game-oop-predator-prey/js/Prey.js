@@ -5,7 +5,7 @@
 // the screen and be consumed by Predator objects.
 
 /////////////////////////
-// ~6 ERRORS IN HERE
+// ~5 ERRORS IN HERE
 /////////////////////////
 
 // fixed "g" 2 "c"
@@ -56,7 +56,9 @@ class Prey {
     this.tx += 0.01;
     this.ty += 0.01;
     // Handle wrapping
-    this.handleWarping();
+    // fixed "wrapping"
+    this.handleWrapping();
+    // fixed
 
 
     // handleWrapping
