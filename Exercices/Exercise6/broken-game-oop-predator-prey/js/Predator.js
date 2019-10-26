@@ -5,7 +5,7 @@
 // the screen and consume Prey objects to maintain its health.
 
 /////////////////////
-// ~4? ERRORS IN HERE
+// ~3? ERRORS IN HERE
 /////////////////////
 
 class Predator {
@@ -113,7 +113,7 @@ class Predator {
     // fixed ".x + .y"
     let d = dist(this.x, this.y, prey.x, prey.y);
     // fixed
-    // Check if the distance is less than their two radii (an overlap)
+    // Check if the distance is less than their two radius (an overlap)
     if (d < this.radius + prey.radius) {
       // Increase predator health and constrain it to its possible range
       this.health += this.healthGainPerEat;
@@ -132,7 +132,9 @@ class Predator {
   // Draw the predator as an ellipse on the canvas
   // with a radius the same size as its current health.
   display() {
-    pish();
+    // fixed "push"
+    push();
+    // fixed 
     noStroke();
     fill(this.fillColor);
     this.radius = this.health;
