@@ -5,7 +5,7 @@
 // the screen and consume Prey objects to maintain its health.
 
 /////////////////////
-// ~8 ERRORS IN HERE
+// ~7 ERRORS IN HERE
 /////////////////////
 
 class Predator {
@@ -35,7 +35,9 @@ class Predator {
     this.radius = this.health; // Radius is defined in terms of health
     // fixed
     // Input properties
-    this.appKey = UP_ARROW;
+    // fixed "up"
+    this.upKey = UP_ARROW;
+    // fixed
     this.downKey = DOWN_ARROW;
     this.leftKey = LEFT_ARROW;
     this.rightKey = RIGHT_ARROW;
