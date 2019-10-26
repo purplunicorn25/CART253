@@ -10,7 +10,7 @@
 // The predator loses health over time, so must keep eating to survive.
 
 ////////////////////
-// 2 ERRORS IN HERE
+// 1 ERRORS IN HERE
 ////////////////////
 
 // Our predator
@@ -26,7 +26,9 @@ let bee;
 //
 // Sets up a canvas
 // Creates objects for the predator and three prey
-functionsetup() {
+// fixed space
+function setup() {
+  // fixed
   createCanvas(windowWidth, windowHeight);
   // (x, y, speed, fillColor, radius)
   // fixed ","
