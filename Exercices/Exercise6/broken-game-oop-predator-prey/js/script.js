@@ -10,12 +10,11 @@
 // The predator loses health over time, so must keep eating to survive.
 
 ////////////////////
-// 4 ERRORS IN HERE
+// 3 ERRORS IN HERE
 ////////////////////
 
 // Our predator
 let tiger;
-
 // The three prey
 // fixed "e"
 let antelope;
@@ -29,7 +28,10 @@ let bee;
 // Creates objects for the predator and three prey
 functionsetup() {
   createCanvas(windowWidth, windowHeight);
-  tiger = new Predator(100, , 100, 5, color(200, 200, 0), 40);
+  // (x, y, speed, fillColor, radius)
+  // fixed ","
+  tiger = new Predator(100, 100, 5, color(200, 200, 0), 40);
+  // fixed
   antelope = new Prey(100, 100, 10, color(255, 100, 10), 50);
   zebra = new Prey(100, 8, color(255, 255, 255), 60);
   bee = new Prey(100, 100, 20, color(255, 255, 0), 10);
