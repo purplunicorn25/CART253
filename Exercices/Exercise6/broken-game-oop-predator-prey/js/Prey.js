@@ -5,7 +5,7 @@
 // the screen and be consumed by Predator objects.
 
 /////////////////////////
-// ~1 ERRORS IN HERE
+// NO ERRORS IN HERE
 /////////////////////////
 
 // fixed "g" 2 "c"
@@ -113,3 +113,6 @@ class Prey {
     this.radius = this.health;
     // fixed
   }
+  // fixed
+}
+// fixed
