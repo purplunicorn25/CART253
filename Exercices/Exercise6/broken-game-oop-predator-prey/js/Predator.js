@@ -5,7 +5,7 @@
 // the screen and consume Prey objects to maintain its health.
 
 /////////////////////
-// ~7 ERRORS IN HERE
+// ~6 ERRORS IN HERE
 /////////////////////
 
 class Predator {
@@ -59,7 +59,9 @@ class Predator {
     // Vertical movement
     if (keyIsDown(this.upKey)) {
       this.vy = -this.speed;
-    } else if (keyIsClown(this.downKey)) {
+      // fixed "down"
+    } else if (keyIsDown(this.downKey)) {
+      // fixed
       this.vy = this.speed;
     } else {
       this.vy = 0;
