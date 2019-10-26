@@ -10,7 +10,7 @@
 // The predator loses health over time, so must keep eating to survive.
 
 ////////////////////
-// 1 ERRORS IN HERE
+// NO ERRORS IN HERE
 ////////////////////
 
 // Our predator
@@ -51,6 +51,7 @@ function draw() {
   // fixed
 
   // Handle input for the tiger
+  tiger.handleInput();
 
   // Move all the "animals"
   tiger.move();
