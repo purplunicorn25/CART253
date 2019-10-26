@@ -60,5 +60,7 @@ function draw() {
   antelope.display();
   //fixed
   zebra.disploy();
-  b.display();
+  //fixed "ee"
+  bee.display();
+  //fixed
 }
