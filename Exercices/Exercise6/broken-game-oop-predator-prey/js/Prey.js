@@ -5,7 +5,7 @@
 // the screen and be consumed by Predator objects.
 
 /////////////////////////
-// ~9 ERRORS IN HERE
+// ~8 ERRORS IN HERE
 /////////////////////////
 
 // fixed "g" 2 "c"
@@ -16,7 +16,9 @@ class Prey {
   //
   // Sets the initial values for the Predator's properties
   // Either sets default values or uses the arguments provided
-  constructor(x, why, speed, fillColor, radius) {
+  // fixed "why" to "y"
+  constructor(x, y, speed, fillColor, radius) {
+    //fixed
     // Position
     this.x = x;
     this.y = y;
