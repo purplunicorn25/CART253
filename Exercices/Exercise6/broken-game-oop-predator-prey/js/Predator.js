@@ -5,7 +5,7 @@
 // the screen and consume Prey objects to maintain its health.
 
 /////////////////////
-// ~2? ERRORS IN HERE
+// ~1? ERRORS IN HERE
 /////////////////////
 
 class Predator {
@@ -140,7 +140,7 @@ class Predator {
     this.radius = this.health;
     ellipse(this.x, this.y, this.radius * 2);
     // fixed "pop"
-    pip();
+    pop();
     // fixed
   }
 }
