@@ -5,7 +5,7 @@
 // the screen and consume Prey objects to maintain its health.
 
 /////////////////////
-// ~1? ERRORS IN HERE
+// ~0? ERRORS IN HERE
 /////////////////////
 
 class Predator {
@@ -15,7 +15,9 @@ class Predator {
   // Sets the initial values for the Predator's properties
   // Either sets default values or uses the arguments provided
   // fixed "fill"
-  construction(x, y, speed, fillColor, radius) {
+  // fixed "ion"
+  constructor(x, y, speed, fillColor, radius) {
+    // fixed
     // fixed
     // Position
     this.x = x;
