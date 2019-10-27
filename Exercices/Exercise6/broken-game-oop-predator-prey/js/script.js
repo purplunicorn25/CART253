@@ -32,7 +32,7 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   // (x, y, speed, fillColor, radius)
   // fixed ","
-  tiger = new Predator(100, 100, 5, color(200, 200, 0), 40);
+  tiger = new Predator(200, 100, 5, color(200, 200, 0), 40);
   // fixed
   antelope = new Prey(100, 100, 10, color(255, 100, 10), 50);
   // fixed y

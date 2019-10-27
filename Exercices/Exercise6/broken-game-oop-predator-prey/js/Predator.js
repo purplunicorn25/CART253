@@ -77,8 +77,10 @@ class Predator {
   // Handles wrapping
   move() {
     // Update position
-    this.x = this.vx;
-    this.y = this.vy;
+    // fixed
+    this.x += this.vx;
+    this.y += this.vy;
+    // fixed
     // Update health
     this.health = this.health - this.healthLossPerMove;
     this.health = constrain(this.health, 0, this.maxHealth);
