@@ -79,4 +79,5 @@ function draw() {
   // fixed "ee"
   bee.display();
   // fixed
+  console.log(antelope.y);
 }
