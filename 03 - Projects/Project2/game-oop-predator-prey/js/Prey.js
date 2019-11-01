@@ -10,7 +10,7 @@ class Prey {
   //
   // Sets the initial values for the Predator's properties
   // Either sets default values or uses the arguments provided
-  constructor(x, y, speed, fillColor, radius) {
+  constructor(x, y, speed, avatar) {
     // Position
     this.x = x;
     this.y = y;
@@ -21,12 +21,8 @@ class Prey {
     // Time properties for noise() function
     this.tx = random(0, 1000); // To make x and y noise different
     this.ty = random(0, 1000); // we use random starting values
-    // Health properties
-    this.maxHealth = radius;
-    this.health = this.maxHealth; // Must be AFTER defining this.maxHealth
     // Display properties
-    this.fillColor = fillColor;
-    this.radius = this.health;
+    this.avatar = avatar;
   }
 
   // move
@@ -55,30 +51,22 @@ class Prey {
     // Off the left or right
     if (this.x < 0) {
       this.x += width;
-    }
-    else if (this.x > width) {
+    } else if (this.x > width) {
       this.x -= width;
     }
     // Off the top or bottom
     if (this.y < 0) {
       this.y += height;
-    }
-    else if (this.y > height) {
+    } else if (this.y > height) {
       this.y -= height;
     }
   }
 
   // display
   //
-  // Draw the prey as an ellipse on the canvas
-  // with a radius the same size as its current health.
+  // Draw the prey with an image (avatar)
   display() {
-    push();
-    noStroke();
-    fill(this.fillColor);
-    this.radius = this.health;
-    ellipse(this.x, this.y, this.radius * 2);
-    pop();
+    image(sheetAvatars[this.avatar], this.x, this.y);
   }
 
   // reset
@@ -89,9 +77,5 @@ class Prey {
     // Random position
     this.x = random(0, width);
     this.y = random(0, height);
-    // Default health
-    this.health = this.maxHealth;
-    // Default radius
-    this.radius = this.health;
   }
 }

@@ -10,7 +10,7 @@ class Predator {
   //
   // Sets the initial values for the Predator's properties
   // Either sets default values or uses the arguments provided
-  constructor(x, y, speed, fillColor, radius) {
+  constructor(x, y, speed, maxHealth, avatarE, avatarW, avatarN, avatarS, avatarNE, avatarSE, avatarNW, avatarSW) {
     // Position
     this.x = x;
     this.y = y;
@@ -19,13 +19,19 @@ class Predator {
     this.vy = 0;
     this.speed = speed;
     // Health properties
-    this.maxHealth = radius;
+    this.maxHealth = maxHealth;
     this.health = this.maxHealth; // Must be AFTER defining this.maxHealth
     this.healthLossPerMove = 0.1;
     this.healthGainPerEat = 1;
     // Display properties
-    this.fillColor = fillColor;
-    this.radius = this.health; // Radius is defined in terms of health
+    this.avatarE = avatarE;
+    this.avatarW = avatarW;
+    this.avatarN = avatarN;
+    this.avatarS = avatarS;
+    this.avatarNE = avatarNE;
+    this.avatarSE = avatarSE;
+    this.avatarNW = avatarNW;
+    this.avatarSW = avatarSW;
     // Input properties
     this.upKey = UP_ARROW;
     this.downKey = DOWN_ARROW;
@@ -41,21 +47,17 @@ class Predator {
     // Horizontal movement
     if (keyIsDown(this.leftKey)) {
       this.vx = -this.speed;
-    }
-    else if (keyIsDown(this.rightKey)) {
+    } else if (keyIsDown(this.rightKey)) {
       this.vx = this.speed;
-    }
-    else {
+    } else {
       this.vx = 0;
     }
     // Vertical movement
     if (keyIsDown(this.upKey)) {
       this.vy = -this.speed;
-    }
-    else if (keyIsDown(this.downKey)) {
+    } else if (keyIsDown(this.downKey)) {
       this.vy = this.speed;
-    }
-    else {
+    } else {
       this.vy = 0;
     }
   }
@@ -84,15 +86,13 @@ class Predator {
     // Off the left or right
     if (this.x < 0) {
       this.x += width;
-    }
-    else if (this.x > width) {
+    } else if (this.x > width) {
       this.x -= width;
     }
     // Off the top or bottom
     if (this.y < 0) {
       this.y += height;
-    }
-    else if (this.y > height) {
+    } else if (this.y > height) {
       this.y -= height;
     }
   }
@@ -121,14 +121,28 @@ class Predator {
 
   // display
   //
-  // Draw the predator as an ellipse on the canvas
-  // with a radius the same size as its current health.
+  // Draw the predator with an image related to its direction
   display() {
-    push();
-    noStroke();
-    fill(this.fillColor);
-    this.radius = this.health;
-    ellipse(this.x, this.y, this.radius * 2);
-    pop();
+
+    // Print different images according to the key pressed (directions)
+    if (keyIsDown(this.rightKey) && keyIsDown(this.upKey)) {
+      image(this.avatarNE, this.x, this.y);
+    } else if (keyIsDown(this.rightKey) && keyIsDown(this.downKey)) {
+      image(this.avatarSE, this.x, this.y);
+    } else if (keyIsDown(this.leftKey) && keyIsDown(this.upKey)) {
+      image(this.avatarNW, this.x, this.y);
+    } else if (keyIsDown(this.leftKey) && keyIsDown(this.downKey)) {
+      image(this.avatarSW, this.x, this.y);
+    } else if (keyIsDown(this.rightKey)) {
+      image(this.avatarE, this.x, this.y);
+    } else if (keyIsDown(this.leftKey)) {
+      image(this.avatarW, this.x, this.y);
+    } else if (keyIsDown(this.upKey)) {
+      image(this.avatarN, this.x, this.y);
+    } else if (keyIsDown(this.downKey)) {
+      image(this.avatarS, this.x, this.y);
+    } else {
+      image(this.avatarE, this.x, this.y);
+    }
   }
 }
