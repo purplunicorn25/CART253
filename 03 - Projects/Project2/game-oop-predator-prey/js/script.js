@@ -48,12 +48,19 @@ let leaf;
 // Create an array to combine all the leaf images at setup
 let leafAvatars = [];
 
+// Fonts
+let cursiveFont;
+
 // preload()
 //
 // Load assets before the game starts
 function preload() {
   // Load the background image
   backgroundImage = loadImage("assets/images/pavee_632KB.jpg");
+
+  // Load the Fonts
+  cursiveFont = loadFont("assets/fonts/BethEllen-Regular.ttf");
+
   //Load all the avatars for preys, predator, obstacles and decorations
   // Predator
   predatorAvatarE = loadImage("assets/images/predator/mozartE.png");
@@ -96,7 +103,7 @@ function setup() {
   mozart = new Predator(250, 250, 3, 60, predatorAvatarE, predatorAvatarW, predatorAvatarN, predatorAvatarS, predatorAvatarNE, predatorAvatarSE, predatorAvatarNW, predatorAvatarSW);
 
   // Sets the initial position and properties of the preys
-  for (let i = 0; i <= numPrey; i++) {
+  for (let i = 0; i < numPrey; i++) {
     // Generate (mostly) random values for the arguments of the Prey constructor
     let sheetX = random(0, width);
     let sheetY = random(0, height);
@@ -120,15 +127,14 @@ function draw() {
   if (playing) {
     startScreen();
   } else if (!gameOver) {
+
+    // MOZART
     // Handle input for mozart
     mozart.handleInput();
-
     // Move mozart
     mozart.move();
-
     // Display mozart
     mozart.display();
-
     // Display mozart's score
     displayScore();
 
@@ -140,7 +146,6 @@ function draw() {
       // Handle the predators eating any of the prey
       mozart.handleEating(prey[i]);
     }
-
   } else if (gameOver) {
     endScreen();
   }
@@ -171,6 +176,22 @@ function backgroundDisplay() {
 //
 // Display the amount of preys left to catch
 function displayScore() {
-  scoreText = mozart.score + " pages missing";
-  text(scoreText, width / 2, height / 2);
+  // Text properties
+  push();
+  stroke(100);
+  fill(255);
+  textSize(22);
+  textFont(cursiveFont);
+  // Fix position for the text
+  let scoreTextX = width - 200;
+  let scoreTextY = 30;
+  // Distinct the plural and the singular form for the text
+  if (mozart.score > 1) {
+    scoreTextPlural = mozart.score + " pages missing";
+    text(scoreTextPlural, scoreTextX, scoreTextY);
+  } else {
+    scoreTextSingular = mozart.score + " page missing";
+    text(scoreTextSingular, scoreTextX, scoreTextY);
+  }
+  pop();
 }
