@@ -101,9 +101,10 @@ function setup() {
     let sheetX = random(0, width);
     let sheetY = random(0, height);
     let sheetSpeed = random(2, 10);
-    let sheetAvatar = sheetAvatars[floor(random(0, 2))];
+    let sheetAvatar = floor(random() * sheetAvatars.length);
+    musicSheetAvatar = sheetAvatars[sheetAvatar];
     // Create a new Prey objects with the random values
-    let newPrey = new Prey(sheetX, sheetY, sheetSpeed, sheetAvatar);
+    let newPrey = new Prey(sheetX, sheetY, sheetSpeed, musicSheetAvatar, 50);
     // Add the new Prey object to the array
     prey.push(newPrey);
   }
@@ -116,46 +117,38 @@ function draw() {
 
   backgroundDisplay();
 
-  // Handle input for mozart
-  mozart.handleInput();
+  if (playing) {
+    startScreen();
+  } else if (!gameOver) {
+    // Handle input for mozart
+    mozart.handleInput();
 
-  // Move mozart
-  mozart.move();
+    // Move mozart
+    mozart.move();
 
-  // Display mozart
-  mozart.display();
+    // Display mozart
+    mozart.display();
 
-  // Move and Display the preys
-  for (let i = 0; i <= prey.lenght; i++) {
-    prey[i].move();
-    prey[i].display();
+    // Move and Display the preys
+    for (let i = 0; i < prey.length; i++) {
+      prey[i].move();
+      prey[i].display();
+    }
+  } else {
+    endScreen();
   }
-
-  // // Handle input for the tiger
-  // tiger.handleInput();
-  //
-  // // Move all the "animals"
-  // tiger.move();
-  // antelope.move();
-  // zebra.move();
-  // bee.move();
-  //
-  // // Handle the tiger eating any of the prey
-  // tiger.handleEating(antelope);
-  // tiger.handleEating(zebra);
-  // tiger.handleEating(bee);
-  //
-  // // Display all the "animals"
-  // tiger.display();
-  // antelope.display();
-  // zebra.display();
-  // bee.display();
 }
-
+// startScreen()
+//
+// Sets the concept for the gameOver
+// Instructions on how to play
 function startScreen() {
 
 }
 
+// endScreen()
+//
+// Display the score and allow the player to start again
 function endScreen() {
 
 }
