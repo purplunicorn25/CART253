@@ -104,7 +104,7 @@ function setup() {
     let sheetAvatar = floor(random() * sheetAvatars.length);
     musicSheetAvatar = sheetAvatars[sheetAvatar];
     // Create a new Prey objects with the random values
-    let newPrey = new Prey(sheetX, sheetY, sheetSpeed, musicSheetAvatar, 50);
+    let newPrey = new Prey(sheetX, sheetY, sheetSpeed, musicSheetAvatar);
     // Add the new Prey object to the array
     prey.push(newPrey);
   }
@@ -129,12 +129,19 @@ function draw() {
     // Display mozart
     mozart.display();
 
+    // Display mozart's score
+    displayScore();
+
     // Move and Display the preys
+    // Track interactions with predator
     for (let i = 0; i < prey.length; i++) {
       prey[i].move();
       prey[i].display();
+      // Handle the predators eating any of the prey
+      mozart.handleEating(prey[i]);
     }
-  } else {
+
+  } else if (gameOver) {
     endScreen();
   }
 }
@@ -158,4 +165,12 @@ function endScreen() {
 // Setup the background image
 function backgroundDisplay() {
   image(backgroundImage, 0, 0);
+}
+
+// displayScore()
+//
+// Display the amount of preys left to catch
+function displayScore() {
+  scoreText = mozart.score + " pages missing";
+  text(scoreText, width / 2, height / 2);
 }

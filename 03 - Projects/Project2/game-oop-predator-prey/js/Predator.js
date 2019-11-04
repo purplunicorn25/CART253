@@ -19,11 +19,10 @@ class Predator {
     this.vy = 0;
     this.speed = speed;
     // Health properties
-    this.maxHealth = maxHealth;
-    this.health = this.maxHealth; // Must be AFTER defining this.maxHealth
-    this.healthLossPerMove = 0.1;
-    this.healthGainPerEat = 1;
+    this.overlapRate2Catch = 4;
     // Display properties
+    this.width = 88 / 2; // initial size of the images
+    this.height = this.width;
     this.avatarE = avatarE;
     this.avatarW = avatarW;
     this.avatarN = avatarN;
@@ -37,6 +36,8 @@ class Predator {
     this.downKey = DOWN_ARROW;
     this.leftKey = LEFT_ARROW;
     this.rightKey = RIGHT_ARROW;
+    // Score properties
+    this.score = 49;
   }
 
   // handleInput
@@ -71,9 +72,6 @@ class Predator {
     // Update position
     this.x += this.vx;
     this.y += this.vy;
-    // Update health
-    this.health = this.health - this.healthLossPerMove;
-    this.health = constrain(this.health, 0, this.maxHealth);
     // Handle wrapping
     this.handleWrapping();
   }
@@ -105,16 +103,17 @@ class Predator {
   handleEating(prey) {
     // Calculate distance from this predator to the prey
     let d = dist(this.x, this.y, prey.x, prey.y);
-    // Check if the distance is less than their two radii (an overlap)
-    if (d < this.radius + prey.radius) {
-      // Increase predator health and constrain it to its possible range
-      this.health += this.healthGainPerEat;
-      this.health = constrain(this.health, 0, this.maxHealth);
-      // Decrease prey health by the same amount
-      prey.health -= this.healthGainPerEat;
+    // Check if the distance is less than half of their width
+    if (d < this.width / 2 + prey.width / 2) {
+      // Decrease prey width when overlap
+      prey.width -= this.overlapRate2Catch;
+      prey.height = prey.width;
       // Check if the prey died and reset it if so
-      if (prey.health < 0) {
-        prey.reset();
+      if (prey.width < 3 && prey.caught === false) {
+        //prey.reset();
+        prey.caught = true;
+        this.score -= 1;
+        console.log(this.score);
       }
     }
   }
@@ -123,7 +122,9 @@ class Predator {
   //
   // Draw the predator with an image related to its direction
   display() {
-
+    // Set the x and y at the CENTER
+    push();
+    imageMode(CENTER);
     // Print different images according to the key pressed (directions)
     if (keyIsDown(this.rightKey) && keyIsDown(this.upKey)) {
       image(this.avatarNE, this.x, this.y);
@@ -144,5 +145,7 @@ class Predator {
     } else {
       image(this.avatarE, this.x, this.y);
     }
+    pop();
   }
+
 }

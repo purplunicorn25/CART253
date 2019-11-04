@@ -10,7 +10,7 @@ class Prey {
   //
   // Sets the initial values for the Predator's properties
   // Either sets default values or uses the arguments provided
-  constructor(x, y, speed, avatar, radius) {
+  constructor(x, y, speed, avatar) {
     // Position
     this.x = x;
     this.y = y;
@@ -23,8 +23,9 @@ class Prey {
     this.ty = random(0, 1000); // we use random starting values
     // Display properties
     this.avatar = avatar;
-    console.log(this.avatar);
-    this.radius = radius;
+    this.width = 38; // 38px is the initial size of the images
+    this.height = this.width;
+    this.caught = false;
   }
 
   // move
@@ -68,17 +69,13 @@ class Prey {
   //
   // Draw the prey with an image (avatar)
   display() {
-    //  image(sheetAvatars[this.avatar], this.x, this.y);
-    image(this.avatar, this.x, this.y);
-  }
-
-  // reset
-  //
-  // Set the position to a random location and reset health
-  // and radius back to default
-  reset() {
-    // Random position
-    this.x = random(0, width);
-    this.y = random(0, height);
+    // Use images to display the Preys
+    // Make sure that the X and Y are in the center of the images
+    if (this.caught === false) {
+      push();
+      imageMode(CENTER);
+      image(this.avatar, this.x, this.y, this.width, this.height);
+      pop();
+    }
   }
 }
