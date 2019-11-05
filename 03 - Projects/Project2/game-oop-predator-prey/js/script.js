@@ -41,7 +41,12 @@ let prey = [];
 // The obstacles
 let walker;
 // Create an array to combine all the walkers images at setup
-let walkerAvatars = [];
+let walkerAvatarsLeft = [];
+let walkerAvatarsRight = [];
+// An empty array to store Obstacles in
+let obstacle = [];
+let numLeftWalker = 3;
+let numRightWalker = 3;
 
 // The Decoration
 let leaf;
@@ -79,11 +84,17 @@ function preload() {
     sheetAvatars.push(loadImage(fileName));
   }
 
-  // // Obstacles
-  // for (let i = 1; i <= 5; i++) {
-  //   let fileName = "assets/images/walker" + i + ".png";
-  //   walkerAvatars.push(loadImage(fileName));
+  // // Obstacles left
+  // for (let i = 0; i < 2; i++) {
+  //   let fileName = "assets/images/leftWalker" + i + ".png";
+  //   walkerAvatarsLeft.push(loadImage(fileName));
   // }
+
+  // Obstacles Right
+  for (let i = 0; i < 2; i++) {
+    let fileName = "assets/images/RightWalker/Hat" + i + ".png";
+    walkerAvatarsRight.push(loadImage(fileName));
+  }
 
   // Decorations
   for (let i = 1; i <= 4; i++) {
@@ -107,13 +118,28 @@ function setup() {
     // Generate (mostly) random values for the arguments of the Prey constructor
     let sheetX = random(0, width);
     let sheetY = random(0, height);
-    let sheetSpeed = random(2, 10);
+    let sheetSpeed = random(4, 11);
     let sheetAvatar = floor(random() * sheetAvatars.length);
-    musicSheetAvatar = sheetAvatars[sheetAvatar];
+    let musicSheetAvatar = sheetAvatars[sheetAvatar];
     // Create a new Prey objects with the random values
     let newPrey = new Prey(sheetX, sheetY, sheetSpeed, musicSheetAvatar);
     // Add the new Prey object to the array
     prey.push(newPrey);
+  }
+
+  // Sets the initial position and properties of the Obstacles
+  // The ones going to the right
+  for (let i = 0; i < numRightWalker; i++) {
+    // Generate (mostly) random values for the arguments of the obstacles constructor
+    let walkerX = -200 * i;
+    let walkerY = random(0, height);
+    let walkerSpeed = random(1, 3);
+    let walkerAvatar = floor(random() * walkerAvatarsRight.length);
+    let movingHats = walkerAvatarsRight[walkerAvatar];
+    // Create a new Obstacle object with the random values
+    let newObstacle = new Obstacle(walkerX, walkerY, walkerSpeed, movingHats);
+    // Add the new Obtacle object to the arrays
+    obstacle.push(newObstacle);
   }
 }
 
@@ -127,7 +153,6 @@ function draw() {
   if (playing) {
     startScreen();
   } else if (!gameOver) {
-
     // MOZART
     // Handle input for mozart
     mozart.handleInput();
@@ -139,13 +164,21 @@ function draw() {
     displayScore();
 
     // Move and Display the preys
-    // Track interactions with predator
+    // Track interactions with the predator
     for (let i = 0; i < prey.length; i++) {
       prey[i].move();
       prey[i].display();
       // Handle the predators eating any of the prey
       mozart.handleEating(prey[i]);
     }
+
+    // Move and Display the obstacles
+    // Track te interactions with the predator
+    for (let i = 0; i < obstacle.length; i++) {
+      obstacle[i].move();
+      obstacle[i].display();
+    }
+
   } else if (gameOver) {
     endScreen();
   }

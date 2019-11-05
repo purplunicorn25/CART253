@@ -26,6 +26,8 @@ class Prey {
     this.width = 38; // 38px is the initial size of the images
     this.height = this.width;
     this.caught = false;
+    this.theta = 0;
+    this.velTheta = random(0.01, 0.03);
   }
 
   // move
@@ -71,10 +73,14 @@ class Prey {
   display() {
     // Use images to display the Preys
     // Make sure that the X and Y are in the center of the images
+    // Rotate the images to give them a more natural windy behavior
     if (this.caught === false) {
       push();
       imageMode(CENTER);
-      image(this.avatar, this.x, this.y, this.width, this.height);
+      translate(this.x, this.y);
+      this.theta += this.velTheta;
+      rotate(this.theta);
+      image(this.avatar, 0, 0, this.width, this.height);
       pop();
     }
   }
