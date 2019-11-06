@@ -118,6 +118,22 @@ class Predator {
     }
   }
 
+  // handleCollision
+  //
+  // Take an Obstacle object as an argument and checks if the predator
+  // overlaps it. If so, all the preys appear again.
+  handleCollision(obstacle) {
+    console.log();
+    // Calculate distance from this predator to the obstacle
+    let d = dist(this.x, this.y, obstacle.x, obstacle.y);
+    // Check if the distance is less than half of their width
+    if (d < this.width / 2 + obstacle.width / 2) {
+      fill(0);
+      rect(200, 200, 200, 200);
+    }
+    console.log(obstacle.width);
+  }
+
   // display
   //
   // Draw the predator with an image related to its direction
@@ -148,4 +164,28 @@ class Predator {
     pop();
   }
 
+
+  // displayScore()
+  //
+  // Display the amount of preys left to catch
+  displayScore() {
+    // Text properties
+    push();
+    stroke(100);
+    fill(255);
+    textSize(22);
+    textFont(cursiveFont);
+    // Fix position for the text
+    let scoreTextX = width - 200;
+    let scoreTextY = 30;
+    // Distinct the plural and the singular form for the text
+    if (mozart.score > 1) {
+      let scoreTextPlural = mozart.score + " pages missing";
+      text(scoreTextPlural, scoreTextX, scoreTextY);
+    } else {
+      let scoreTextSingular = mozart.score + " page missing";
+      text(scoreTextSingular, scoreTextX, scoreTextY);
+    }
+    pop();
+  }
 }

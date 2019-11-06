@@ -45,8 +45,64 @@ let walkerAvatarsLeft = [];
 let walkerAvatarsRight = [];
 // An empty array to store Obstacles in
 let obstacle = [];
-let numLeftWalker = 3;
 let numRightWalker = 3;
+// Array of position to avoid overlap of walker
+let leftWalkerPositions = [{
+  x: 1000,
+  y: 100
+}, {
+  x: 1000,
+  y: 300
+}, {
+  x: 1000,
+  y: 500
+}, {
+  x: 1150,
+  y: 100
+}, {
+  x: 1150,
+  y: 300
+}, {
+  x: 1150,
+  y: 500
+}, {
+  x: 1300,
+  y: 100
+}, {
+  x: 1300,
+  y: 300
+}, {
+  x: 1300,
+  y: 500
+}];
+let rightWalkerPositions = [{
+  x: 0,
+  y: 0
+}, {
+  x: 0,
+  y: 200
+}, {
+  x: 0,
+  y: 400
+}, {
+  x: -200,
+  y: 0
+}, {
+  x: -200,
+  y: 200
+}, {
+  x: -200,
+  y: 400
+}, {
+  x: -350,
+  y: 0
+}, {
+  x: -350,
+  y: 200
+}, {
+  x: -350,
+  y: 400
+}];
 
 // The Decoration
 let leaf;
@@ -131,9 +187,11 @@ function setup() {
   // The ones going to the right
   for (let i = 0; i < numRightWalker; i++) {
     // Generate (mostly) random values for the arguments of the obstacles constructor
-    let walkerX = -200 * i;
-    let walkerY = random(0, height);
-    let walkerSpeed = random(1, 3);
+    let randomXPosition = floor(random() * rightWalkerPositions.length);
+    let walkerX = rightWalkerPositions[randomXPosition].x;
+    let randomYPosition = floor(random() * rightWalkerPositions.length);
+    let walkerY = rightWalkerPositions[randomYPosition].y;
+    let walkerSpeed = 2;
     let walkerAvatar = floor(random() * walkerAvatarsRight.length);
     let movingHats = walkerAvatarsRight[walkerAvatar];
     // Create a new Obstacle object with the random values
@@ -161,7 +219,7 @@ function draw() {
     // Display mozart
     mozart.display();
     // Display mozart's score
-    displayScore();
+    mozart.displayScore();
 
     // Move and Display the preys
     // Track interactions with the predator
@@ -177,6 +235,8 @@ function draw() {
     for (let i = 0; i < obstacle.length; i++) {
       obstacle[i].move();
       obstacle[i].display();
+      // Handle the predator overlaping any of the obstacle
+      mozart.handleCollision(obstacle[i]);
     }
 
   } else if (gameOver) {
@@ -203,28 +263,4 @@ function endScreen() {
 // Setup the background image
 function backgroundDisplay() {
   image(backgroundImage, 0, 0);
-}
-
-// displayScore()
-//
-// Display the amount of preys left to catch
-function displayScore() {
-  // Text properties
-  push();
-  stroke(100);
-  fill(255);
-  textSize(22);
-  textFont(cursiveFont);
-  // Fix position for the text
-  let scoreTextX = width - 200;
-  let scoreTextY = 30;
-  // Distinct the plural and the singular form for the text
-  if (mozart.score > 1) {
-    scoreTextPlural = mozart.score + " pages missing";
-    text(scoreTextPlural, scoreTextX, scoreTextY);
-  } else {
-    scoreTextSingular = mozart.score + " page missing";
-    text(scoreTextSingular, scoreTextX, scoreTextY);
-  }
-  pop();
 }
