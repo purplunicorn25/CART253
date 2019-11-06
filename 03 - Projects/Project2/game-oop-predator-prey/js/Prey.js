@@ -23,7 +23,8 @@ class Prey {
     this.ty = random(0, 1000); // we use random starting values
     // Display properties
     this.avatar = avatar;
-    this.width = 38; // 38px is the initial size of the images
+    this.initialWidth = 38;
+    this.width = this.initialWidth; // 38px is the initial size of the images
     this.height = this.width;
     this.caught = false;
     this.theta = 0;
@@ -83,5 +84,13 @@ class Prey {
       image(this.avatar, 0, 0, this.width, this.height);
       pop();
     }
+  }
+
+  // reset
+  //
+  // Reset the width of the prey so that they look as new preys
+  reset() {
+    this.width = this.initialWidth;
+    this.height = this.width;
   }
 }

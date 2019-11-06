@@ -43,7 +43,7 @@ class Obstacle {
   // Reset the prey's X and Y when it is off screen
   reset() {
     if (this.x > this.xOffScreen) {
-
+      //////// HELP
     }
   }
 }

@@ -108,6 +108,10 @@ let rightWalkerPositions = [{
 let leaf;
 // Create an array to combine all the leaf images at setup
 let leafAvatars = [];
+// Define how many are displayed at Setup
+let numLeaves = 45;
+// An empty array to store Leaves in
+let decorations = [];
 
 // Fonts
 let cursiveFont;
@@ -188,10 +192,11 @@ function setup() {
   for (let i = 0; i < numRightWalker; i++) {
     // Generate (mostly) random values for the arguments of the obstacles constructor
     let randomXPosition = floor(random() * rightWalkerPositions.length);
-    let walkerX = rightWalkerPositions[randomXPosition].x;
+    let walkerX = rightWalkerPositions[i].x;
     let randomYPosition = floor(random() * rightWalkerPositions.length);
-    let walkerY = rightWalkerPositions[randomYPosition].y;
-    let walkerSpeed = 2;
+    let walkerY = rightWalkerPositions[i].y;
+    ///////////// HOW TO MAKE SURE THEY DON'T CHOOSE THE SAME COORDINATES???
+    let walkerSpeed = 0.2; //2
     let walkerAvatar = floor(random() * walkerAvatarsRight.length);
     let movingHats = walkerAvatarsRight[walkerAvatar];
     // Create a new Obstacle object with the random values
@@ -239,7 +244,16 @@ function draw() {
       obstacle[i].move();
       obstacle[i].display();
       // Handle the predator overlaping any of the obstacle
-      mozart.handleCollision(obstacle[i]);
+      if (mozart.handleCollision(obstacle[i]) === true) {
+        // Display all the preys again
+        for (let i = 0; i < prey.length; i++) {
+          prey[i].caught = false;
+          // Reset size
+          prey[i].reset();
+          // Reset score
+          mozart.scoreReset();
+        }
+      }
     }
   } else if (gameOver) {
     endScreen();
@@ -317,6 +331,7 @@ function backgroundDisplay() {
 function mousePressed() {
   // Start the game
   playing = true;
+  //leaves.startTimeReset = millis()
 
   // Allow the player to reset the game when he
   if (mozart.score === mozart.endScore) {

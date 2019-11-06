@@ -39,7 +39,7 @@ class Predator {
     // Score properties
     this.initialScore = 49;
     this.score = 49;
-    this.endScore = 46;
+    this.endScore = 0;
   }
 
   // handleInput
@@ -125,16 +125,15 @@ class Predator {
   // Take an Obstacle object as an argument and checks if the predator
   // overlaps it. If so, all the preys appear again.
   handleCollision(obstacle) {
-    console.log();
     // Calculate distance from this predator to the obstacle
     let d = dist(this.x, this.y, obstacle.x, obstacle.y);
     // Check if the distance is less than half of their width
     if (d < this.width / 2 + obstacle.width / 2) {
       fill(0);
       rect(200, 200, 200, 200);
+      return true;
     }
-    console.log(obstacle.width);
-    //reset score value
+    return false;
   }
 
   // handleWinning
@@ -198,5 +197,12 @@ class Predator {
       text(scoreTextSingular, scoreTextX, scoreTextY);
     }
     pop();
+  }
+
+  // scoreReset()
+  //
+  // Reset the score if there is a collision with any Obstacles
+  scoreReset() {
+    this.score = this.initialScore;
   }
 }
