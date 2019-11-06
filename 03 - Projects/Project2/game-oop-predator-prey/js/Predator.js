@@ -37,7 +37,9 @@ class Predator {
     this.leftKey = LEFT_ARROW;
     this.rightKey = RIGHT_ARROW;
     // Score properties
+    this.initialScore = 49;
     this.score = 49;
+    this.endScore = 46;
   }
 
   // handleInput
@@ -132,6 +134,16 @@ class Predator {
       rect(200, 200, 200, 200);
     }
     console.log(obstacle.width);
+    //reset score value
+  }
+
+  // handleWinning
+  //
+  // Check if the predator has caught all preys or if
+  handleWinning() {
+    if (this.score === this.endScore) {
+      gameOver = true;
+    }
   }
 
   // display
@@ -163,7 +175,6 @@ class Predator {
     }
     pop();
   }
-
 
   // displayScore()
   //

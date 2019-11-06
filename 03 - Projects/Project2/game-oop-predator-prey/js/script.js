@@ -164,8 +164,8 @@ function preload() {
 // Sets up a canvas
 // Creates objects for the predator and three prey
 function setup() {
+
   createCanvas(1000, 500);
-  backgroundDisplay();
 
   mozart = new Predator(250, 250, 3, 60, predatorAvatarE, predatorAvatarW, predatorAvatarN, predatorAvatarS, predatorAvatarNE, predatorAvatarSE, predatorAvatarNW, predatorAvatarSW);
 
@@ -206,11 +206,12 @@ function setup() {
 // Handles input, movement, eating, and displaying for the system's objects
 function draw() {
 
-  backgroundDisplay();
-
-  if (playing) {
+  if (!playing) {
     startScreen();
   } else if (!gameOver) {
+    // Set the ground
+    backgroundDisplay();
+
     // MOZART
     // Handle input for mozart
     mozart.handleInput();
@@ -219,7 +220,9 @@ function draw() {
     // Display mozart
     mozart.display();
     // Display mozart's score
+    // Check if mozart is winning (score = 0)
     mozart.displayScore();
+    mozart.handleWinning();
 
     // Move and Display the preys
     // Track interactions with the predator
@@ -238,7 +241,6 @@ function draw() {
       // Handle the predator overlaping any of the obstacle
       mozart.handleCollision(obstacle[i]);
     }
-
   } else if (gameOver) {
     endScreen();
   }
@@ -248,14 +250,58 @@ function draw() {
 // Sets the concept for the gameOver
 // Instructions on how to play
 function startScreen() {
-
+  background(255);
+  // Game Title
+  push();
+  fill(255, 0, 0);
+  textSize(40);
+  textFont(cursiveFont);
+  textAlign(CENTER, CENTER);
+  let titleX = width / 2;
+  let titleY = height / 2;
+  let title = "This is a start screen";
+  text(title, titleX, titleY);
+  pop();
+  // Instructions
+  push();
+  fill(0);
+  textSize(20);
+  textFont(cursiveFont);
+  textAlign(CENTER, CENTER);
+  let instructionsX = width / 2;
+  let instructionsY = height * 4 / 5;
+  let instructions = "These are instructions \n even more instructions \n Oh look! Instructions again";
+  text(instructions, instructionsX, instructionsY);
+  pop();
 }
 
 // endScreen()
 //
 // Display the score and allow the player to start again
 function endScreen() {
-
+  background(255);
+  // Game Conclusion
+  push();
+  fill(255, 0, 0);
+  textSize(40);
+  textFont(cursiveFont);
+  textAlign(CENTER, CENTER);
+  let titleX = width / 2;
+  let titleY = height / 2;
+  let title = "This is an end screen";
+  text(title, titleX, titleY);
+  pop();
+  // Reset instructions
+  push();
+  fill(0);
+  textSize(20);
+  textFont(cursiveFont);
+  textAlign(CENTER, CENTER);
+  let instructionsX = width / 2;
+  let instructionsY = height * 4 / 5;
+  let instructions = "Click\nto start\nagain";
+  text(instructions, instructionsX, instructionsY);
+  pop();
 }
 
 // backgroundDisplay()
@@ -263,4 +309,19 @@ function endScreen() {
 // Setup the background image
 function backgroundDisplay() {
   image(backgroundImage, 0, 0);
+}
+
+// mousePressed()
+//
+// Click mouse to start game, resets startTime to 0
+function mousePressed() {
+  // Start the game
+  playing = true;
+
+  // Allow the player to reset the game when he
+  if (mozart.score === mozart.endScore) {
+    playing = false;
+    gameOver = false;
+    mozart.score = mozart.initialScore;
+  }
 }
