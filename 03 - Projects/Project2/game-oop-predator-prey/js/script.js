@@ -161,7 +161,7 @@ function setup() {
 
   // OBSTACLE
   // Sets the initial position and properties of the Obstacles
-  // The ones going to the right
+  // RIGHT: The ones going to the right
   for (let i = 0; i < numWalker; i++) {
     // Generate values for the arguments of the obstacles constructor
     let initialWalkerX = rightWalkerPositions[i].x;
@@ -176,7 +176,7 @@ function setup() {
     // Add the new Obtacle object to the array
     rightObstacle.push(newObstacle);
   }
-  // The ones going to the left
+  // LEFT: The ones going to the left
   for (let i = 0; i < numWalker; i++) {
     // Generate values for the arguments of the obstacles constructor
     let walkerX = leftWalkerPositions[i].x;
@@ -243,13 +243,16 @@ function draw() {
       leftObstacle[i].move();
       leftObstacle[i].display();
     }
+
     // Handle the predator overlaping any of the obstacle
-    // Track te interactions with the predator
     // If Mozart overlap a Walker object
     // all the Sheets objects are displayed again
+    // RIGHT: Move and display right walkers
+    // If offscreen, reset its position
     for (let i = 0; i < rightObstacle.length; i++) {
+      //Check it Mozart overlaps an obstacle
       if (mozart.handleCollision(rightObstacle[i]) === true) {
-        // Display all the preys again
+        // If true, display all the preys again
         for (let i = 0; i < prey.length; i++) {
           prey[i].caught = false;
           // Reset size
@@ -258,8 +261,17 @@ function draw() {
           mozart.scoreReset();
         }
       }
+      // If offscreen, reset its position
+      if (rightObstacle[i].offScreenRight() === true) {
+        //reset to initial position
+        rightObstacle[i].resetRight();
+      }
     }
+
+    // LEFT: Move and display left walkers
+    // If offscreen, reset walker position
     for (let i = 0; i < leftObstacle.length; i++) {
+      //Check it Mozart overlaps an obstacle
       if (mozart.handleCollision(leftObstacle[i]) === true) {
         // Display all the preys again
         for (let i = 0; i < prey.length; i++) {
@@ -270,21 +282,13 @@ function draw() {
           mozart.scoreReset();
         }
       }
-    }
-    // If obstacle is outside the canvas reset its position
-    //////////////// HELP don't get how to reset positions /////////////////////////////////
-    for (let i = 0; i < rightObstacle.length; i++) {
-
-      console.log(rightObstacle[i].offScreen());
-
-      if (rightObstacle[i].offScreen() === true) {
-        for (let i = 0; i < rightObstacle.length; i++) {
-          rightObstacle[i].obstacleOffScreen = true;
-          //reset to initial position
-          rightObstacle[i].reset();
-        }
+      // If offscreen, reset walker position
+      if (leftObstacle[i].offScreenLeft() === true) {
+        // Reset to the other side of the screen (left)
+        leftObstacle[i].resetLeft();
       }
     }
+
 
     // LEAVES
     // Move and display the Leaves
@@ -301,15 +305,17 @@ function draw() {
 // Instructions on how to play
 function startScreen() {
   background(startBackgroundImage, 0, 0);
+  // Box for text
+
   // Game Title
   push();
   fill(255, 0, 0);
   textSize(40);
   textFont(cursiveFont);
   textAlign(CENTER, CENTER);
-  let titleX = width / 2;
-  let titleY = height / 2;
-  let title = "This is a start screen";
+  let titleX = 600;
+  let titleY = 100;
+  let title = "Mozart is out of tune";
   text(title, titleX, titleY);
   pop();
   // Instructions

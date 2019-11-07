@@ -15,8 +15,8 @@ class Obstacle {
     this.x = x;
     this.y = y;
     this.xOffScreen = false;
-    this.OffScreenRight = 1000;
-    this.OffScreenLeft = -400;
+    this.OffScreenRight = width + random(200, 500);
+    this.OffScreenLeft = random(-300, -600);
     // Velocity and Speed
     this.speed = speed;
     this.vx = 0;
@@ -48,23 +48,39 @@ class Obstacle {
     pop();
   }
 
-  // offScreen
+  // offScreenRight
   //
-  // Check if walker is off screen
-  offScreen() {
+  // Check if right walker is off screen
+  offScreenRight() {
     if (this.x > this.OffScreenRight) {
       return true;
     }
     return false;
   }
 
-  // reset
+  // resetRight
   //
-  // Reset walkers positions
-  reset() {
-    if (this.obstacleOffScreen === true) {
-      fill(0);
-      rect(200, 200, 200, 200)
+  // Reset right walkers positions
+  resetRight() {
+    this.x = -100;
+    this.OffScreenRight = width + random(200, 500);
+  }
+
+  // OffScreenLeft
+  //
+  // Check if right walker is off screen
+  offScreenLeft() {
+    if (this.x < this.OffScreenLeft) {
+      return true;
     }
+    return false;
+  }
+
+  // resetLeft
+  //
+  // Reset left walkers positions
+  resetLeft() {
+    this.x = width + 100;
+    this.OffScreenLeft = random(-300, -600) - width;
   }
 }
