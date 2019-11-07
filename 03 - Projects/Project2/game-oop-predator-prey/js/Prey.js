@@ -3,6 +3,7 @@
 // A class that represents a simple prey that moves
 // on screen based on a noise() function. It can move around
 // the screen and be consumed by Predator objects.
+// It rotates as it moves to render a genuine wind effect
 
 class Prey {
 

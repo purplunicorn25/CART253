@@ -3,6 +3,8 @@
 // A class that represents a simple obstacle
 // moving side ways accross the canvas
 // that the Predator must avoid.
+// When it is out of the canvas
+// its position resets on the opposite side
 
 class Obstacle {
 
@@ -24,9 +26,6 @@ class Obstacle {
     this.avatar = avatar;
     this.size = 88; // same as the predator
     this.width = this.size;
-
-    this.obstacleOffScreen = false;
-
   }
 
   // move
@@ -60,7 +59,7 @@ class Obstacle {
 
   // resetRight
   //
-  // Reset right walkers positions
+  // Reset right walker position
   resetRight() {
     this.x = -100;
     this.OffScreenRight = width + random(200, 500);
@@ -68,7 +67,7 @@ class Obstacle {
 
   // OffScreenLeft
   //
-  // Check if right walker is off screen
+  // Check if left walker is off screen
   offScreenLeft() {
     if (this.x < this.OffScreenLeft) {
       return true;
@@ -78,7 +77,7 @@ class Obstacle {
 
   // resetLeft
   //
-  // Reset left walkers positions
+  // Reset left walker position
   resetLeft() {
     this.x = width + 100;
     this.OffScreenLeft = random(-300, -600) - width;

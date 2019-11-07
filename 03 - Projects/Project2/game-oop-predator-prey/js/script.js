@@ -15,6 +15,10 @@ let backgroundImage;
 let startBackgroundImage;
 let endBackgroundImage;
 
+// Sound properties
+let inGameMusic;
+let collisionSound;
+
 // PREDATOR
 let mozart;
 // Create arrays to combine all the prey images at setup
@@ -92,6 +96,10 @@ function preload() {
   backgroundImage = loadImage("assets/images/pavee_632KB.jpg");
   startBackgroundImage = loadImage("assets/images/StartScreenBCKGRND_96.6KB.jpg");
   endBackgroundImage = loadImage("assets/images/EndScreenBCKGRND_59.8KB.jpg");
+
+  // Load the sounds and music
+  inGameMusic = loadSound("assets/sounds/Symphony_No.25_Gminor.mp3");
+  collisionSound = loadSound("assets/sounds/collision.wav");
 
   // Load the Fonts
   cursiveFont = loadFont("assets/fonts/BethEllen-Regular.ttf");
@@ -204,11 +212,22 @@ function setup() {
 //
 // Handles input, movement, eating, and displaying for the system's objects
 function draw() {
-
+  // Start Screen
+  // In game
+  // End Screen
   if (!playing) {
+    // Display Title and instructions
     startScreen();
+
   } else if (!gameOver) {
-    // Set the ground
+
+    // Set an ambiance with music
+    if (!inGameMusic.isLooping()) {
+      // Loop the music
+      inGameMusic.loop();
+    }
+
+    // Set the background
     background(backgroundImage, 0, 0);
 
     // MOZART
@@ -243,7 +262,6 @@ function draw() {
       leftObstacle[i].move();
       leftObstacle[i].display();
     }
-
     // Handle the predator overlaping any of the obstacle
     // If Mozart overlap a Walker object
     // all the Sheets objects are displayed again
@@ -252,6 +270,10 @@ function draw() {
     for (let i = 0; i < rightObstacle.length; i++) {
       //Check it Mozart overlaps an obstacle
       if (mozart.handleCollision(rightObstacle[i]) === true) {
+        // PLay a sound
+        if (!collisionSound.isPlaying()) {
+          collisionSound.play();
+        }
         // If true, display all the preys again
         for (let i = 0; i < prey.length; i++) {
           prey[i].caught = false;
@@ -267,12 +289,15 @@ function draw() {
         rightObstacle[i].resetRight();
       }
     }
-
     // LEFT: Move and display left walkers
     // If offscreen, reset walker position
     for (let i = 0; i < leftObstacle.length; i++) {
       //Check it Mozart overlaps an obstacle
       if (mozart.handleCollision(leftObstacle[i]) === true) {
+        // PLay a sound
+        if (!collisionSound.isPlaying()) {
+          collisionSound.play();
+        }
         // Display all the preys again
         for (let i = 0; i < prey.length; i++) {
           prey[i].caught = false;
@@ -289,16 +314,14 @@ function draw() {
       }
     }
 
-
     // LEAVES
     // Move and display the Leaves
-
-
 
   } else if (gameOver) {
     endScreen();
   }
 }
+
 // startScreen()
 //
 // Sets the concept for the gameOver
@@ -310,24 +333,28 @@ function startScreen() {
   // Game Title
   push();
   fill(255, 0, 0);
-  textSize(40);
+  stroke(0);
+  strokeWeight(1);
+  textSize(50);
   textFont(cursiveFont);
   textAlign(CENTER, CENTER);
   let titleX = 600;
-  let titleY = 100;
+  let titleY = 30;
   let title = "Mozart is out of tune";
   text(title, titleX, titleY);
   pop();
   // Instructions
   push();
   fill(0);
-  textSize(20);
+  textSize(16);
   textFont(cursiveFont);
   textAlign(CENTER, CENTER);
-  let instructionsX = width / 2;
-  let instructionsY = height * 4 / 5;
-  let instructions = "These are instructions \n even more instructions \n Oh look! Instructions again";
-  text(instructions, instructionsX, instructionsY);
+  let instructionsX = width * 1.86 / 3;
+  let instructionsY = 140;
+  let instructions = "On this windy day of October, Mozart was walking to the opera.\n";
+  let instructions2 = instructions + "A strong blow made him drop his new symphony.\n";
+  let instructions3 = instructions2 + "Help him catch it!\n Use arrow keys to move. Avoid ponds and walkers\nthat get in your way.";
+  text(instructions3, instructionsX, instructionsY);
   pop();
 }
 
