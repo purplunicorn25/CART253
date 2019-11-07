@@ -17,7 +17,7 @@ class Obstacle {
     this.xOffScreen = false;
     this.OffScreenRight = 1000;
     this.OffScreenLeft = -400;
-    // Speed
+    // Velocity and Speed
     this.speed = speed;
     this.vx = 0;
     // Display properties

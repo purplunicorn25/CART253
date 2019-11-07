@@ -27,6 +27,7 @@ class Prey {
     this.width = this.initialWidth; // 38px is the initial size of the images
     this.height = this.width;
     this.caught = false;
+    // Rotation properties
     this.theta = 0;
     this.velTheta = random(0.01, 0.03);
   }

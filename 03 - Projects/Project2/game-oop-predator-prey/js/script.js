@@ -12,6 +12,8 @@ let gameOver = false;
 
 // Background properties
 let backgroundImage;
+let startBackgroundImage;
+let endBackgroundImage;
 
 // PREDATOR
 let mozart;
@@ -88,6 +90,8 @@ let cursiveFont;
 function preload() {
   // Load the background image
   backgroundImage = loadImage("assets/images/pavee_632KB.jpg");
+  startBackgroundImage = loadImage("assets/images/StartScreenBCKGRND_96.6KB.jpg");
+  endBackgroundImage = loadImage("assets/images/EndScreenBCKGRND_59.8KB.jpg");
 
   // Load the Fonts
   cursiveFont = loadFont("assets/fonts/BethEllen-Regular.ttf");
@@ -137,8 +141,10 @@ function setup() {
 
   createCanvas(1000, 500);
 
+  // PREDATOR
   mozart = new Predator(250, 250, 3, 60, predatorAvatarE, predatorAvatarW, predatorAvatarN, predatorAvatarS, predatorAvatarNE, predatorAvatarSE, predatorAvatarNW, predatorAvatarSW);
 
+  // PREY
   // Sets the initial position and properties of the preys
   for (let i = 0; i < numPrey; i++) {
     // Generate (mostly) random values for the arguments of the Prey constructor
@@ -153,6 +159,7 @@ function setup() {
     prey.push(newPrey);
   }
 
+  // OBSTACLE
   // Sets the initial position and properties of the Obstacles
   // The ones going to the right
   for (let i = 0; i < numWalker; i++) {
@@ -182,6 +189,15 @@ function setup() {
     // Add the new Obstacle object to the array
     leftObstacle.push(newObstacle);
   }
+
+  // DECORATION
+  // Set the inital position and properties of the decoration
+  for (let i = 0; i < numLeaves; i++) {
+    //
+    let leafX = 200;
+    let leafY = 300;
+    ///////////////////////////////////////////////////////////
+  }
 }
 
 // draw()
@@ -193,7 +209,7 @@ function draw() {
     startScreen();
   } else if (!gameOver) {
     // Set the ground
-    backgroundDisplay();
+    background(backgroundImage, 0, 0);
 
     // MOZART
     // Handle input for mozart
@@ -207,7 +223,7 @@ function draw() {
     mozart.displayScore();
     mozart.handleWinning();
 
-    // PREYS
+    // SHEETS
     // Move and Display the preys
     // Track interactions with the predator
     for (let i = 0; i < prey.length; i++) {
@@ -217,7 +233,7 @@ function draw() {
       mozart.handleEating(prey[i]);
     }
 
-    // OBSTACLES
+    // WALKERS
     // Move and Display the obstacles
     for (let i = 0; i < rightObstacle.length; i++) {
       rightObstacle[i].move();
@@ -256,6 +272,7 @@ function draw() {
       }
     }
     // If obstacle is outside the canvas reset its position
+    //////////////// HELP don't get how to reset positions /////////////////////////////////
     for (let i = 0; i < rightObstacle.length; i++) {
 
       console.log(rightObstacle[i].offScreen());
@@ -268,6 +285,12 @@ function draw() {
         }
       }
     }
+
+    // LEAVES
+    // Move and display the Leaves
+
+
+
   } else if (gameOver) {
     endScreen();
   }
@@ -277,7 +300,7 @@ function draw() {
 // Sets the concept for the gameOver
 // Instructions on how to play
 function startScreen() {
-  background(255);
+  background(startBackgroundImage, 0, 0);
   // Game Title
   push();
   fill(255, 0, 0);
@@ -306,7 +329,7 @@ function startScreen() {
 //
 // Display the score and allow the player to start again
 function endScreen() {
-  background(255);
+  background(endBackgroundImage, 0, 0);
   // Game Conclusion
   push();
   fill(255, 0, 0);
@@ -329,13 +352,6 @@ function endScreen() {
   let instructions = "Click\nto start\nagain";
   text(instructions, instructionsX, instructionsY);
   pop();
-}
-
-// backgroundDisplay()
-//
-// Setup the background image
-function backgroundDisplay() {
-  image(backgroundImage, 0, 0);
 }
 
 // mousePressed()
