@@ -115,7 +115,6 @@ class Predator {
         //prey.reset();
         prey.caught = true;
         this.score -= 1;
-        console.log(this.score);
       }
     }
   }
@@ -129,8 +128,6 @@ class Predator {
     let d = dist(this.x, this.y, obstacle.x, obstacle.y);
     // Check if the distance is less than half of their width
     if (d < this.width / 2 + obstacle.width / 2) {
-      fill(0);
-      rect(200, 200, 200, 200);
       return true;
     }
     return false;

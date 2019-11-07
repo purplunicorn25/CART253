@@ -13,7 +13,7 @@ let gameOver = false;
 // Background properties
 let backgroundImage;
 
-// Our predator
+// PREDATOR
 let mozart;
 // Create arrays to combine all the prey images at setup
 let predatorAvatars = [];
@@ -28,7 +28,7 @@ let predatorAvatarSE;
 let predatorAvatarNW;
 let predatorAvatarSW;
 
-// The preys
+// PREYS
 let sheet;
 // Create an array to combine all the sheet images at setup
 let sheetAvatars = [];
@@ -38,73 +38,39 @@ let numPrey = 49;
 // An empty array to store preys in
 let prey = [];
 
-// The obstacles
+// OBSTACLES
 let walker;
 // Create an array to combine all the walkers images at setup
 let walkerAvatarsLeft = [];
 let walkerAvatarsRight = [];
+// Define how many display at setup
+let numWalker = 3;
 // An empty array to store Obstacles in
-let obstacle = [];
-let numRightWalker = 3;
+let rightObstacle = [];
+let leftObstacle = [];
 // Array of position to avoid overlap of walker
 let leftWalkerPositions = [{
-  x: 1000,
+  x: 1600,
   y: 100
 }, {
-  x: 1000,
+  x: 1200,
   y: 300
 }, {
-  x: 1000,
-  y: 500
-}, {
-  x: 1150,
-  y: 100
-}, {
-  x: 1150,
-  y: 300
-}, {
-  x: 1150,
-  y: 500
-}, {
-  x: 1300,
-  y: 100
-}, {
-  x: 1300,
-  y: 300
-}, {
-  x: 1300,
+  x: 1400,
   y: 500
 }];
 let rightWalkerPositions = [{
-  x: 0,
+  x: -100,
   y: 0
 }, {
-  x: 0,
+  x: -500,
   y: 200
 }, {
-  x: 0,
-  y: 400
-}, {
-  x: -200,
-  y: 0
-}, {
-  x: -200,
-  y: 200
-}, {
-  x: -200,
-  y: 400
-}, {
-  x: -350,
-  y: 0
-}, {
-  x: -350,
-  y: 200
-}, {
-  x: -350,
+  x: -300,
   y: 400
 }];
 
-// The Decoration
+// DECORATIONS
 let leaf;
 // Create an array to combine all the leaf images at setup
 let leafAvatars = [];
@@ -144,11 +110,11 @@ function preload() {
     sheetAvatars.push(loadImage(fileName));
   }
 
-  // // Obstacles left
-  // for (let i = 0; i < 2; i++) {
-  //   let fileName = "assets/images/leftWalker" + i + ".png";
-  //   walkerAvatarsLeft.push(loadImage(fileName));
-  // }
+  // Obstacles left
+  for (let i = 0; i < 2; i++) {
+    let fileName = "assets/images/LeftWalker/Hat" + i + ".png";
+    walkerAvatarsLeft.push(loadImage(fileName));
+  }
 
   // Obstacles Right
   for (let i = 0; i < 2; i++) {
@@ -189,20 +155,32 @@ function setup() {
 
   // Sets the initial position and properties of the Obstacles
   // The ones going to the right
-  for (let i = 0; i < numRightWalker; i++) {
-    // Generate (mostly) random values for the arguments of the obstacles constructor
-    let randomXPosition = floor(random() * rightWalkerPositions.length);
-    let walkerX = rightWalkerPositions[i].x;
-    let randomYPosition = floor(random() * rightWalkerPositions.length);
-    let walkerY = rightWalkerPositions[i].y;
-    ///////////// HOW TO MAKE SURE THEY DON'T CHOOSE THE SAME COORDINATES???
-    let walkerSpeed = 0.2; //2
+  for (let i = 0; i < numWalker; i++) {
+    // Generate values for the arguments of the obstacles constructor
+    let initialWalkerX = rightWalkerPositions[i].x;
+    let walkerX = initialWalkerX;
+    let initialWalkerY = rightWalkerPositions[i].y;
+    let walkerY = initialWalkerY;
+    let walkerSpeed = random(2, 3);
     let walkerAvatar = floor(random() * walkerAvatarsRight.length);
     let movingHats = walkerAvatarsRight[walkerAvatar];
-    // Create a new Obstacle object with the random values
+    // Create a new Obstacle object with the values
     let newObstacle = new Obstacle(walkerX, walkerY, walkerSpeed, movingHats);
-    // Add the new Obtacle object to the arrays
-    obstacle.push(newObstacle);
+    // Add the new Obtacle object to the array
+    rightObstacle.push(newObstacle);
+  }
+  // The ones going to the left
+  for (let i = 0; i < numWalker; i++) {
+    // Generate values for the arguments of the obstacles constructor
+    let walkerX = leftWalkerPositions[i].x;
+    let walkerY = leftWalkerPositions[i].y;
+    let walkerSpeed = random(-3, -2);
+    let walkerAvatar = floor(random() * walkerAvatarsLeft.length);
+    let movingHats = walkerAvatarsLeft[walkerAvatar];
+    // Create a new Obstacle object with the values
+    let newObstacle = new Obstacle(walkerX, walkerY, walkerSpeed, movingHats);
+    // Add the new Obstacle object to the array
+    leftObstacle.push(newObstacle);
   }
 }
 
@@ -229,6 +207,7 @@ function draw() {
     mozart.displayScore();
     mozart.handleWinning();
 
+    // PREYS
     // Move and Display the preys
     // Track interactions with the predator
     for (let i = 0; i < prey.length; i++) {
@@ -238,13 +217,22 @@ function draw() {
       mozart.handleEating(prey[i]);
     }
 
+    // OBSTACLES
     // Move and Display the obstacles
+    for (let i = 0; i < rightObstacle.length; i++) {
+      rightObstacle[i].move();
+      rightObstacle[i].display();
+    }
+    for (let i = 0; i < leftObstacle.length; i++) {
+      leftObstacle[i].move();
+      leftObstacle[i].display();
+    }
+    // Handle the predator overlaping any of the obstacle
     // Track te interactions with the predator
-    for (let i = 0; i < obstacle.length; i++) {
-      obstacle[i].move();
-      obstacle[i].display();
-      // Handle the predator overlaping any of the obstacle
-      if (mozart.handleCollision(obstacle[i]) === true) {
+    // If Mozart overlap a Walker object
+    // all the Sheets objects are displayed again
+    for (let i = 0; i < rightObstacle.length; i++) {
+      if (mozart.handleCollision(rightObstacle[i]) === true) {
         // Display all the preys again
         for (let i = 0; i < prey.length; i++) {
           prey[i].caught = false;
@@ -252,6 +240,31 @@ function draw() {
           prey[i].reset();
           // Reset score
           mozart.scoreReset();
+        }
+      }
+    }
+    for (let i = 0; i < leftObstacle.length; i++) {
+      if (mozart.handleCollision(leftObstacle[i]) === true) {
+        // Display all the preys again
+        for (let i = 0; i < prey.length; i++) {
+          prey[i].caught = false;
+          // Reset size
+          prey[i].reset();
+          // Reset score
+          mozart.scoreReset();
+        }
+      }
+    }
+    // If obstacle is outside the canvas reset its position
+    for (let i = 0; i < rightObstacle.length; i++) {
+
+      console.log(rightObstacle[i].offScreen());
+
+      if (rightObstacle[i].offScreen() === true) {
+        for (let i = 0; i < rightObstacle.length; i++) {
+          rightObstacle[i].obstacleOffScreen = true;
+          //reset to initial position
+          rightObstacle[i].reset();
         }
       }
     }
