@@ -198,6 +198,7 @@ function setup() {
     // Add the new Obtacle object to the array
     rightObstacle.push(newObstacle);
   }
+
   // LEFT: The ones going to the left
   for (let i = 0; i < numWalker; i++) {
     // Generate values for the arguments of the obstacles constructor
@@ -248,6 +249,35 @@ function draw() {
 
     // Set the background
     background(backgroundImage, 0, 0);
+
+    // DROPS
+    // At every interval, make it rain
+    // Define time passed (millis started from 0 at playing (mousePressed))
+    rainTimePassed = millis() - rainStartTime;
+    // Always update the drop radius and reset()
+    // so that drops don't all appear at the same time
+    for (let i = 0; i < numDrops; i++) {
+      decorations[i].display();
+      decorations[i].reduceSize();
+
+      // If the interval has passed
+      if (rainTimePassed > rainStartInterval) {
+        // Display drops
+        decorations[i].raining = true;
+        // Display a pond
+        pond.display();
+      }
+      if (rainTimePassed > rainStopInterval) {
+        // Reset the pond's position
+        pond.reset();
+        // Reset timer properties
+        rainStartTime = millis();
+        // Do not display drops
+        for (let i = 0; i < numDrops; i++) {
+          decorations[i].raining = false;
+        }
+      }
+    }
 
     // MOZART
     // Handle input for mozart
@@ -332,35 +362,6 @@ function draw() {
         leftObstacle[i].resetLeft();
       }
     }
-
-    // DROPS
-    // At every interval, make it rain
-    // Define time passed (millis started from 0 at playing (mousePressed))
-    rainTimePassed = millis() - rainStartTime;
-    // Always update the drop radius and reset()
-    // so that drops don't all appear at the same time
-    for (let i = 0; i < numDrops; i++) {
-      decorations[i].display();
-      decorations[i].reduceSize();
-
-      // If the interval has passed
-      if (rainTimePassed > rainStartInterval) {
-        // Display drops
-        decorations[i].raining = true;
-        // Display a pond
-        pond.display();
-      }
-      if (rainTimePassed > rainStopInterval) {
-        // Do not display drops
-        for (let i = 0; i < numDrops; i++) {
-          decorations[i].raining = false;
-        }
-        // Reset the pond's position
-        pond.reset();
-        // Reset timer properties
-        rainStartTime = millis();
-      }
-    }
   } else if (gameOver) {
     endScreen();
   }
@@ -396,7 +397,7 @@ function startScreen() {
   let instructionsY = 140;
   let instructions = "On this windy day of October, Mozart was walking to the opera.\n";
   let instructions2 = instructions + "A strong blow made him drop his new symphony.\n";
-  let instructions3 = instructions2 + "Help him catch it!\n Use arrow keys to move. Avoid ponds and walkers\nthat get in your way.";
+  let instructions3 = instructions2 + "Help him catch it!\n Use arrow keys to move. Avoid walkers\nthat get in your way.";
   text(instructions3, instructionsX, instructionsY);
   pop();
 }
