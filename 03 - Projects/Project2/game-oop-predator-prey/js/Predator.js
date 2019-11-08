@@ -38,7 +38,7 @@ class Predator {
     this.rightKey = RIGHT_ARROW;
     // Score properties
     this.initialScore = 49;
-    this.score = 49;
+    this.score = 40;
     this.endScore = 0;
   }
 

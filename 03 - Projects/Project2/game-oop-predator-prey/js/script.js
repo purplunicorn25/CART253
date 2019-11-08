@@ -19,6 +19,9 @@ let endBackgroundImage;
 let inGameMusic;
 let collisionSound;
 
+// Fonts
+let cursiveFont;
+
 // PREDATOR
 let mozart;
 // Create arrays to combine all the prey images at setup
@@ -77,16 +80,24 @@ let rightWalkerPositions = [{
 }];
 
 // DECORATIONS
-let leaf;
-// Create an array to combine all the leaf images at setup
-let leafAvatars = [];
+let drop;
 // Define how many are displayed at Setup
-let numLeaves = 45;
-// An empty array to store Leaves in
+let numDrops = 120;
+// An empty array to store drops in
 let decorations = [];
+// Timer for the rain to start
+let rainStartTime;
+let rainTimePassed = 0;
+let rainStartInterval = 15000; // Every 15 seconds
+let rainStopInterval = 25000; // After 10 seconds
 
-// Fonts
-let cursiveFont;
+// // RAIN SCORE
+// // Set a score for the number of time it rained
+// // before the player catches all preys
+// let scoreTime;
+// let initialScoreTime = -25000;
+// let initialScore = 0;
+// let scoreTimeInterval = 40000;
 
 // preload()
 //
@@ -132,12 +143,6 @@ function preload() {
   for (let i = 0; i < 2; i++) {
     let fileName = "assets/images/RightWalker/Hat" + i + ".png";
     walkerAvatarsRight.push(loadImage(fileName));
-  }
-
-  // Decorations
-  for (let i = 1; i <= 4; i++) {
-    let fileName = "assets/images/leaf" + i + ".png";
-    leafAvatars.push(loadImage(fileName));
   }
 }
 
@@ -200,27 +205,28 @@ function setup() {
 
   // DECORATION
   // Set the inital position and properties of the decoration
-  for (let i = 0; i < numLeaves; i++) {
-    //
-    let leafX = 200;
-    let leafY = 300;
-    ///////////////////////////////////////////////////////////
+  for (let i = 0; i < numDrops; i++) {
+    // Generate (mostly) random values for the arguments of the Decoration constructor
+    let dropX = random(0, width);
+    let dropY = random(0, height);
+    let dropRadius = random(5, 10);
+    // Create a new Decoration object with the random values
+    let drop = new Decoration(dropX, dropY, dropRadius);
+    // Add the new Decoration object to the array
+    decorations.push(drop);
   }
 }
 
 // draw()
 //
 // Handles input, movement, eating, and displaying for the system's objects
+// The game starts, the player plays and the game ends
 function draw() {
-  // Start Screen
-  // In game
-  // End Screen
+
   if (!playing) {
     // Display Title and instructions
     startScreen();
-
   } else if (!gameOver) {
-
     // Set an ambiance with music
     if (!inGameMusic.isLooping()) {
       // Loop the music
@@ -314,9 +320,33 @@ function draw() {
       }
     }
 
-    // LEAVES
-    // Move and display the Leaves
+    // DROPS
+    // At every interval, make it rain
+    // Define time passed (millis started from 0 at playing (mousePressed))
+    rainTimePassed = millis() - rainStartTime;
+    // Always update the drop radius and reset()
+    // so that drops don't all appear at the same time
+    for (let i = 0; i < numDrops; i++) {
+      decorations[i].display();
+      decorations[i].reduceSize();
 
+      // If the interval has passed
+      if (rainTimePassed > rainStartInterval) {
+        // Display drops
+        decorations[i].raining = true;
+        // Count the number of time it rained
+        decorations[i].addOnePoint = true;
+        console.log(decorations[0].score);
+      }
+      if (rainTimePassed > rainStopInterval) {
+        // Do not display drops
+        for (let i = 0; i < numDrops; i++) {
+          decorations[i].raining = false;
+        }
+        // Reset timer properties
+        rainStartTime = millis();
+      }
+    }
   } else if (gameOver) {
     endScreen();
   }
@@ -328,7 +358,6 @@ function draw() {
 // Instructions on how to play
 function startScreen() {
   background(startBackgroundImage, 0, 0);
-  // Box for text
 
   // Game Title
   push();
@@ -369,32 +398,32 @@ function endScreen() {
   textSize(40);
   textFont(cursiveFont);
   textAlign(CENTER, CENTER);
-  let titleX = width / 2;
-  let titleY = height / 2;
-  let title = "This is an end screen";
+  let titleX = width / 3;
+  let titleY = 300;
+  let title = "Congratulations!\nYou collected all 49 pages";
   text(title, titleX, titleY);
   pop();
   // Reset instructions
   push();
   fill(0);
-  textSize(20);
+  textSize(28);
   textFont(cursiveFont);
   textAlign(CENTER, CENTER);
-  let instructionsX = width / 2;
-  let instructionsY = height * 4 / 5;
-  let instructions = "Click\nto start\nagain";
+  let instructionsX = width / 3;
+  let instructionsY = 400;
+  let instructions = "Click to start again";
   text(instructions, instructionsX, instructionsY);
   pop();
 }
 
 // mousePressed()
 //
-// Click mouse to start game, resets startTime to 0
+// Click mouse to start game
 function mousePressed() {
   // Start the game
   playing = true;
-  //leaves.startTimeReset = millis()
-
+  // Reset rainStartTime to 0
+  rainStartTime = millis();
   // Allow the player to reset the game when he
   if (mozart.score === mozart.endScore) {
     playing = false;
