@@ -1,9 +1,14 @@
-// Predator-Prey Simulation
+// Mozart is out of tune
 // by Pippin Barr
+// &
+// Anne Boutet
 //
-// Creates a predator and three prey (of different sizes and speeds)
-// The predator chases the prey using the arrow keys and consumes them.
-// The predator loses health over time, so must keep eating to survive.
+// Creates a predator and 49 preys that fly around using perlin noise and rotations
+// The predator chases the prey using the arrow keys and catches them.
+// Create obstacles that walk around in a horizontal line,
+// If the predator and any obstacle overlap it has to catch all the preys again.
+// Use rain that appear from time to time to set the game in autumn
+// It is also distracting and therefore make it more challenging
 
 // Track whether the game as started
 let playing = false;
@@ -91,13 +96,14 @@ let rainTimePassed = 0;
 let rainStartInterval = 15000; // Every 15 seconds
 let rainStopInterval = 25000; // After 10 seconds
 
-// // RAIN SCORE
-// // Set a score for the number of time it rained
-// // before the player catches all preys
-// let scoreTime;
-// let initialScoreTime = -25000;
-// let initialScore = 0;
-// let scoreTimeInterval = 40000;
+// POND
+let pond;
+// Define how many are displayed at Setup
+let numPonds = 2;
+// Image for pond objects
+let pondAvatar;
+// empty array to store ponds in
+let ponds = [];
 
 // preload()
 //
@@ -126,6 +132,9 @@ function preload() {
   predatorAvatarSE = loadImage("assets/images/predator/mozartSE.png");
   predatorAvatarNW = loadImage("assets/images/predator/mozartNW.png");
   predatorAvatarSW = loadImage("assets/images/predator/mozartSW.png");
+
+  // Pond
+  pondAvatar = loadImage("assets/images/Pond.png");
 
   // Preys
   for (let i = 0; i < 3; i++) {
@@ -215,6 +224,10 @@ function setup() {
     // Add the new Decoration object to the array
     decorations.push(drop);
   }
+
+  // POND
+  // Create a new Decoration object with the random values
+  pond = new Pond(random(0, width), random(0, height), pondAvatar);
 }
 
 // draw()
@@ -334,15 +347,16 @@ function draw() {
       if (rainTimePassed > rainStartInterval) {
         // Display drops
         decorations[i].raining = true;
-        // Count the number of time it rained
-        decorations[i].addOnePoint = true;
-        console.log(decorations[0].score);
+        // Display a pond
+        pond.display();
       }
       if (rainTimePassed > rainStopInterval) {
         // Do not display drops
         for (let i = 0; i < numDrops; i++) {
           decorations[i].raining = false;
         }
+        // Reset the pond's position
+        pond.reset();
         // Reset timer properties
         rainStartTime = millis();
       }

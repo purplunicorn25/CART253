@@ -6,7 +6,7 @@ class Decoration {
 
   // constructor
   //
-  // Set te initial values for the Leaves's properties
+  // Set te initial values for the decoration properties
   // Either sets default values or uses the arguments provided
   constructor(x, y, radius) {
     // Position
@@ -24,10 +24,6 @@ class Decoration {
     this.colors = ["#8CDFE8", "#99EDF3", "#BFF4F7", "#D4F1F9"];
     this.randomFillColor = floor(random(0, 1) * this.colors.length);
     this.fillColor = this.colors[this.randomFillColor];
-    // Set a score for the number of time it rained
-    // before the player catches all preys
-    this.score = 0;
-    this.addOnePoint = false;
   }
 
   // reduceSize
@@ -61,18 +57,6 @@ class Decoration {
       fill(this.fillColor)
       ellipse(this.x, this.y, this.radius, this.radius)
       pop();
-      // Keep track of how many times this.raining equalled true
-      this.addOnePoint = true;
-    }
-  }
-
-  // score
-  //
-  // Track how many times decoration objects appeared
-  score(decoration) {
-    if (this.addOnePoint === true) {
-      this.score += 1;
-      this.addOnePoint = false;
     }
   }
 }
