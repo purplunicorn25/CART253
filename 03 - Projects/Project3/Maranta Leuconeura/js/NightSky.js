@@ -1,6 +1,6 @@
 // NightSky
 //
-// That class represent a night sky full of stars.
+// That class represents a night sky full of stars.
 // It illustrates the concept of night time.
 // It is basically a black rectangle with sparkling stars.
 
@@ -10,13 +10,15 @@ class NightSky {
   //
   // Set the initial values for the NightSky's properties
   // Either sets default values or uses the arguments provided
-  constructor(x, y, radius, bckgrndX, bckgrndY, bckgrndWidth, bckgrndHeight) {
+  constructor(x, y, radius, reductionRate, growingRate, bckgrndX, bckgrndY, bckgrndWidth, bckgrndHeight) {
     // Position
     this.x = x;
     this.y = y;
     // Display properties
     this.radius = radius;
-    this.reductionRate = 0.03;
+    this.reductionRate = reductionRate;
+    this.growingRate = growingRate;
+    this.changeRate = this.reductionRate;
     this.bckgrndFill = 0;
     this.starFill = 255;
     // Background properties
@@ -26,26 +28,20 @@ class NightSky {
     this.bckgrndHeight = bckgrndHeight;
   }
 
-  // reduceSize
+  // Size
   //
-  // Reduce its size gradually to make it look like its glowing
-  reduceSize() {
-    this.radius -= this.reductionRate;
-    // If it is no longer visible reset the star
-    if (this.radius < 0) {
-      this.reset();
+  // Reduce and enlarge its size gradually to make it look like its glowing
+  size() {
+
+    // If it is no longer visible, make the star grow
+    if (this.radius > 1) {
+      this.changeRate = this.reductionRate;
     }
+    if (this.radius < .2) {
+      this.changeRate = this.growingRate;
+    }
+    this.radius += this.changeRate;
   }
-
-  // resetSize
-  //
-  // Reset the star properties
-  reset() {
-    this.radius = random(1, 3);
-    this.x = random(100, 400);
-    this.y = random(0, 600);
-  }
-
   // display
   //
   // Draw the star with an ellipse
@@ -67,5 +63,14 @@ class NightSky {
     fill(this.bckgrndFill);
     rect(this.bckgrndX, this.bckgrndY, this.bckgrndWidth, this.bckgrndHeight);
     pop();
+  }
+
+  // reset
+  //
+  // Reset the star position when it is not displaying
+  reset() {
+    this.x = random(0, width);
+    this.y = random(0, height);
+    this.radius = random(.3, .8);
   }
 }
