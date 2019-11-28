@@ -7,7 +7,7 @@ let numStars = 500;
 // An empty array to store stars in
 let nightSky = [];
 // Treshold
-let night = false;
+let night = true;
 
 // RAIN
 let drop;
@@ -16,13 +16,18 @@ let numDrops = 300;
 // An empty array to store drops in
 let rain = [];
 // Treshold
-let raining = true;
+let raining = false;
+
+// OTHER IMAGES
+// mouse avatar
+let fly;
 
 // preload()
 //
 // Load assets before the game starts
 function preload() {
   windowWall = loadImage("assets/images/window.png");
+  fly = loadImage("assets/images/fly.png");
 }
 
 // setup()
@@ -52,10 +57,8 @@ function draw() {
 
   // Update the wall background as the game runs
   // After all the outdoor scenes
-  push();
-  imageMode(CENTER);
-  image(windowWall, width / 2, height / 2);
-  pop();
+  wallCanvas();
+  mouseAvatar();
 }
 
 // setupNightSky()
@@ -95,7 +98,26 @@ function displayNightSky() {
 //
 // Set the initial position and properties of the rain
 function setupRain() {
-  for (let i = 0; i < numDrops; i++) {
+  for (let i = 0; i < numDrops; i++) {}
+}
 
-  }
+// mouseAvatar()
+//
+// Set an image to be the mouse avatar
+// Its position follows mouseX and mouseY
+function mouseAvatar() {
+  push();
+  imageMode(CENTER);
+  image(fly, mouseX, mouseY, 35, 35);
+  pop();
+}
+
+// wallCanvas()
+//
+// The image acts like a stencil that create a wall like effect
+function wallCanvas() {
+  push();
+  imageMode(CENTER);
+  image(windowWall, width / 2, height / 2);
+  pop();
 }
