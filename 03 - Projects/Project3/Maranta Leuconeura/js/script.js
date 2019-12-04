@@ -33,6 +33,14 @@ let drops = [];
 let sun;
 let rays;
 
+// SNOW
+// Define how many snownflakes are to be displayed
+let numSnowflakes1 = 500;
+let numSnowflakes2 = 150;
+// Empty arrays to store snownflakes in
+let snowflakes1 = [];
+let snowflakes2 = [];
+
 // OTHER IMAGES
 // mouse avatar
 let fly;
@@ -63,6 +71,9 @@ function setup() {
   // SUN
   // Set the initial position and properties of sun
   setupSun();
+  // SNOW
+  // Set the initial position and properties of snownflakes
+  setupSnow();
 
 }
 
@@ -81,10 +92,12 @@ function draw() {
   displayRain();
   // SUN
   displaySun();
+  // SNOW
+  displaySnow();
 
   // Update the wall background as the game runs
   // After all the outdoor scenes
-  wallCanvas();
+  //wallCanvas();
   mouseAvatar();
 }
 
@@ -133,8 +146,6 @@ function setupRain() {
     // Generate values for the arguments of the Rain constructor
     dropX = random(1000, 1500);
     dropY = random(0, height);
-    intervalX = 0;
-    intervalY = 0;
     // Create a new Rain object with the values
     let newDrop = new Rain(dropX, dropY);
     // Add the new drop to the array
@@ -153,7 +164,6 @@ function displayRain() {
     drops[i].handleWrapping();
     drops[i].dropTranslation();
     drops[i].limitsTranslation();
-
   }
 }
 
@@ -178,6 +188,56 @@ function displaySun() {
   rays.display();
   rays.resize();
   rays.translation();
+}
+
+// setupSnow()
+//
+// Set the inital position and properties of the snownflakes
+function setupSnow() {
+  // SNOWFLAKE1
+  for (let i = 0; i < numSnowflakes1; i++) {
+    // Generate mostly random values for the arguments of the Snow constructor
+    snowX = random(0, 500);
+    snowY = random(0, height);
+    snowRadius = random(.8, 1.8);
+    snowSpeedX = random(.1, .6);
+    snowSpeedY = 1;
+    snowFill = color(255);
+    // Create a new Snow object with the values
+    let newSnow = new Snowflake1(snowX, snowY, snowRadius, snowSpeedX, snowSpeedY, snowFill);
+    // Add the new snowflake to the array
+    snowflakes1.push(newSnow);
+  }
+  // SNOWFLAKE2
+  for (let i = 0; i < numSnowflakes2; i++) {
+    // Generate mostly random values for the arguments of the Snow constructor
+    snowX = random(0, 500);
+    snowY = random(0, height);
+    snowRadius = random(.8, 1.8);
+    snowSpeedX = random(.1, .6);
+    snowSpeedY = 1;
+    snowFill = color(255);
+    // Create a new Snow object with the values
+    let newSnow = new Snowflake2(snowX, snowY, snowRadius, snowSpeedX, snowSpeedY, snowFill);
+    // Add the new snowflake to the array
+    snowflakes2.push(newSnow);
+  }
+}
+
+// displaySnow()
+//
+// Display the snowflakes of the snowy day
+function displaySnow() {
+  // SNOWFLAKE1
+  for (let i = 0; i < snowflakes1.length; i++) {
+    snowflakes1[i].gravity();
+    snowflakes1[i].display();
+  }
+  // SNOWFLAKE2
+  for (let i = 0; i < snowflakes2.length; i++) {
+    snowflakes2[i].gravity();
+    snowflakes2[i].display();
+  }
 }
 
 // mouseAvatar()
@@ -215,7 +275,7 @@ function setupTimeFrames() {
   night5 = new TimeFrames(offsetTargetX + timeFrameInterval * 5, color(0));
   cloudy6 = new TimeFrames(offsetTargetX + timeFrameInterval * 6, color(100));
   night7 = new TimeFrames(offsetTargetX + timeFrameInterval * 7, color(0));
-  snow8 = new TimeFrames(offsetTargetX + timeFrameInterval * 8, color(255));
+  snow8 = new TimeFrames(offsetTargetX + timeFrameInterval * 8, color(210));
   night9 = new TimeFrames(offsetTargetX + timeFrameInterval * 9, color(0));
 
   // Store them in an array
