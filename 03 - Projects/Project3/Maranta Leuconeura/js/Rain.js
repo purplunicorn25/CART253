@@ -20,7 +20,7 @@ class Rain extends TimeFrames {
   // background
   //
   // Size and shape of the background object
-  background() {
+  backgroundDisplay() {
     super.box();
   }
 

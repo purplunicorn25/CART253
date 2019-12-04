@@ -19,13 +19,13 @@ class TimeFrames {
     // Moving properties
     this.boxTranslationRate = 5;
     this.ninthFrameX = 4500; // offsetTargetX + timeFrameInterval * 9
-    this.resetX = -499;
+    this.resetX = -500;
   }
 
   // background
   //
   // Size and shape of the box object
-  box() {
+  backgroundDisplay() {
     push();
     rectMode(CORNER);
     noStroke();
@@ -37,7 +37,7 @@ class TimeFrames {
   // boxTranslation
   //
   // The box move to the left at a slow pace
-  boxTranslation() {
+  backgroundTranslation() {
     this.x -= this.boxTranslationRate;
     if (this.x < this.resetX) {
       this.x = this.ninthFrameX;
