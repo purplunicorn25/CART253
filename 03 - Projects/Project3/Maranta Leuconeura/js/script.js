@@ -25,7 +25,7 @@ let stars = [];
 
 // RAIN
 // Define how may drops are to be displayed
-let numDrops = 300;
+let numDrops = 1000;
 // An empty array to store drops in
 let drops = [];
 
@@ -56,7 +56,7 @@ function setup() {
   setupNight();
   // RAIN
   // Set the initial position and properties of timeFrames
-
+  setupRain();
 }
 
 // draw()
@@ -66,14 +66,19 @@ function setup() {
 function draw() {
   // All the sceneries are updated at the same time
   // They are displayed and move to the left in an infinite loop
+  // BOXES
   displayTimeFrames();
-  //displayStars();
+  // NIGHT
   displayNight();
+  // RAIN
+  displayRain();
 
   // Update the wall background as the game runs
   // After all the outdoor scenes
   wallCanvas();
   mouseAvatar();
+
+
 }
 
 // setupNightSky()
@@ -81,16 +86,18 @@ function draw() {
 // Set the initial position and properties of the stars
 function setupNight() {
   for (let i = 0; i < numStars; i++) {
-    // Generate (mostly) random values for the arguments of the NightSky constructor
+    // Generate (mostly) random values for the arguments of the Night constructor
     bckgrndX = 0;
     bckgrndColor = color(0);
     starX = random(500, 1000); // night2
     starY = random(0, height);
+    moonX = 800;
+    moonY = 300;
     starRadius = random(.3, .8);
     reductionRate = random(-0.02, -0.005);
     growingRate = 0.01;
-    // Create a new NightSky object with the random values
-    let newStar = new Night(starX, starY, starRadius, reductionRate, growingRate);
+    // Create a new Night object with the random values
+    let newStar = new Night(starX, starY, moonX, moonY, starRadius, reductionRate, growingRate);
     // Add the new star to the array
     stars.push(newStar);
   }
@@ -115,7 +122,32 @@ function displayNight() {
 //
 // Set the initial position and properties of the rain
 function setupRain() {
-  for (let i = 0; i < numDrops; i++) {}
+  for (let i = 0; i < numDrops; i++) {
+    // Generate values for the arguments of the Rain constructor
+    dropX = random(1000, 1500);
+    dropY = random(0, height);
+    intervalX = 0;
+    intervalY = 0;
+    // Create a new Rain object with the values
+    let newDrop = new Rain(dropX, dropY);
+    // Add the new drop to the array
+    drops.push(newDrop);
+  }
+}
+
+// displayNight()
+//
+// Display the stars and the moon of the night sky
+function displayRain() {
+  // Display, resize and move all the stars
+  for (let i = 0; i < drops.length; i++) {
+    drops[i].dropDisplay();
+    drops[i].dropGravity();
+    drops[i].handleWrapping();
+    drops[i].dropTranslation();
+    //drops[i].limitsTranslation();
+
+  }
 }
 
 // mouseAvatar()

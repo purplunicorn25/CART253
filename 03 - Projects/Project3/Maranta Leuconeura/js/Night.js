@@ -10,7 +10,7 @@ class Night {
   //
   // Set the initial values for the NightSky's properties
   // Either sets default values or uses the arguments provided
-  constructor(starX, starY, radius, reductionRate, growingRate) {
+  constructor(starX, starY, moonX, moonY, radius, reductionRate, growingRate) {
     // Star position
     this.starX = starX;
     this.starY = starY;
@@ -21,10 +21,10 @@ class Night {
     this.changeRate = this.reductionRate;
     this.starFill = 255;
     // Star movement properties
-    this.starTranslationRate = 5;
+    this.starTranslationRate = 3;
     // Moon position properties
-    this.moonX = 800;
-    this.moonY = 300;
+    this.moonX = moonX;
+    this.moonY = moonY;
     // Moon display properties
     this.moonRadius = 25;
     this.moonFill = 255;
@@ -50,6 +50,7 @@ class Night {
     }
     this.radius += this.changeRate;
   }
+
   // starDisplay
   //
   // Draw the star with an ellipse
@@ -64,6 +65,7 @@ class Night {
   // starTranslation
   //
   // The stars move to the left following the backgroud
+  // Its position is reset to the end of the loop if it is offcanvas
   starTranslation() {
     this.starX -= this.starTranslationRate;
     if (this.starX - 500 < this.resetX) {

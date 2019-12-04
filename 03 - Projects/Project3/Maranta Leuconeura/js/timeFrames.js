@@ -1,6 +1,8 @@
 // TimeFrames
 //
-// BLA BLA
+// Frames all the sceneries as moving boxes
+// This class handles the background color
+// and the movement of the sequence
 
 class TimeFrames {
 
@@ -17,7 +19,7 @@ class TimeFrames {
     this.width = 500;
     this.height = 600;
     // Moving properties
-    this.boxTranslationRate = 5;
+    this.boxTranslationRate = 3;
     this.ninthFrameX = 4500; // offsetTargetX + timeFrameInterval * 9
     this.resetX = -500;
   }
@@ -37,6 +39,7 @@ class TimeFrames {
   // boxTranslation
   //
   // The box move to the left at a slow pace
+  // Its position is reset to the end of the loop if it is offcanvas
   backgroundTranslation() {
     this.x -= this.boxTranslationRate;
     if (this.x < this.resetX) {
