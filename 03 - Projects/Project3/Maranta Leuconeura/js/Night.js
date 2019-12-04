@@ -8,7 +8,7 @@ class Night {
 
   // constructor
   //
-  // Set the initial values for the NightSky's properties
+  // Set the initial values for the Night's properties
   // Either sets default values or uses the arguments provided
   constructor(starX, starY, moonX, moonY, radius, reductionRate, growingRate) {
     // Star position
@@ -21,7 +21,7 @@ class Night {
     this.changeRate = this.reductionRate;
     this.starFill = 255;
     // Star movement properties
-    this.starTranslationRate = 3;
+    this.starTranslationRate = 2;
     // Moon position properties
     this.moonX = moonX;
     this.moonY = moonY;
@@ -40,7 +40,6 @@ class Night {
   //
   // Reduce and enlarge its size gradually to make it look like its glowing
   starSize() {
-
     // The star's radius is increasing or decreasing according to its current size
     if (this.radius > 1) {
       this.changeRate = this.reductionRate;

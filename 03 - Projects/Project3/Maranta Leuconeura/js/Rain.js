@@ -26,12 +26,11 @@ class Rain {
     this.speedX = -.2;
     this.speedY = 5;
     // Translation properties
-    this.dropTranslationRate = 3;
+    this.dropTranslationRate = 2;
     this.resetX = -500;
     this.ninthFrameX = 5000; // offsetTargetX + timeFrameInterval * 10
     // Wrapping properties
     this.leftLimit = 1000;
-    this.rightLimit = 1500;
     this.boxWidth = 500;
     this.limitsTranslationRate = this.dropTranslationRate;
   }
@@ -67,16 +66,10 @@ class Rain {
     if (this.y > height) {
       this.y -= height;
     }
-    // // Off the left or right
-    // if (this.x < this.leftLimit) {
-    //   this.x = this.x + this.boxWidth;
-    // } else if (this.x > this.rightLimit) {
-    //   this.x = this.x - this.boxwidth;
-    // }
-    // // Off the top or bottom
-    // if (this.y > height) {
-    //   this.y -= height;
-    // }
+    // Off the left
+    if (this.x === this.leftLimit) {
+      this.x += this.boxWidth;
+    }
   }
 
   // dropTranslation
@@ -86,21 +79,17 @@ class Rain {
   dropTranslation() {
     this.x -= this.dropTranslationRate;
     if (this.x - 500 < this.resetX) {
-      this.x = this.x + this.ninthFrameX;
+      this.x += this.ninthFrameX;
     }
   }
 
-  // // limitsTranslation
-  // //
-  // // Make sure that the borders of the box move with the box
-  // limitsTranslation() {
-  //   this.leftLimit -= this.limitsTranslationRate;
-  //   if (this.leftLimit - 500 < this.resetX) {
-  //     this.leftLimit = this.leftLimit + this.ninthFrameX;
-  //   }
-  //   this.rightLimit -= this.limitsTranslationRate;
-  //   if (this.rightLimit - 500 < this.resetX) {
-  //     this.rightLimit = this.rightLimit + this.ninthFrameX;
-  //   }
-  // }
+  // limitsTranslation
+  //
+  // Make sure that the borders of the box move with the box
+  limitsTranslation() {
+    this.leftLimit -= this.limitsTranslationRate;
+    if (this.leftLimit - 500 < this.resetX) {
+      this.leftLimit = this.leftLimit + this.ninthFrameX;
+    }
+  }
 }

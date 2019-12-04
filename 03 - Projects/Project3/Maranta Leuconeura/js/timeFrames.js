@@ -19,7 +19,7 @@ class TimeFrames {
     this.width = 500;
     this.height = 600;
     // Moving properties
-    this.boxTranslationRate = 3;
+    this.boxTranslationRate = 2;
     this.ninthFrameX = 4500; // offsetTargetX + timeFrameInterval * 9
     this.resetX = -500;
   }

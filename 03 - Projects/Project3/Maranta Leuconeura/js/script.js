@@ -29,6 +29,9 @@ let numDrops = 1000;
 // An empty array to store drops in
 let drops = [];
 
+// SUN
+let sun;
+let rays;
 
 // OTHER IMAGES
 // mouse avatar
@@ -55,8 +58,12 @@ function setup() {
   // Set the initial position and properties of the stars
   setupNight();
   // RAIN
-  // Set the initial position and properties of timeFrames
+  // Set the initial position and properties of the drops
   setupRain();
+  // SUN
+  // Set the initial position and properties of sun
+  setupSun();
+
 }
 
 // draw()
@@ -72,13 +79,13 @@ function draw() {
   displayNight();
   // RAIN
   displayRain();
+  // SUN
+  displaySun();
 
   // Update the wall background as the game runs
   // After all the outdoor scenes
   wallCanvas();
   mouseAvatar();
-
-
 }
 
 // setupNightSky()
@@ -145,9 +152,32 @@ function displayRain() {
     drops[i].dropGravity();
     drops[i].handleWrapping();
     drops[i].dropTranslation();
-    //drops[i].limitsTranslation();
+    drops[i].limitsTranslation();
 
   }
+}
+
+// setupSun()
+//
+// Set the inital position and properties of the sunny sky
+function setupSun() {
+  // Create a sun and its rays as Sun objects
+  sun = new Sun(220, 200, 100, -.05, .05, 100, 90, color(255, 255, 0));
+  rays = new Sun(220, 200, 150, -1, 1, 180, 120, color(255, 255, 0, 80));
+}
+
+// displaySun()
+//
+// Display the sun and its rays
+function displaySun() {
+  // Display the sun and its functionalities
+  sun.display();
+  sun.resize();
+  sun.translation();
+  // Display the rays and their functionalities
+  rays.display();
+  rays.resize();
+  rays.translation();
 }
 
 // mouseAvatar()
