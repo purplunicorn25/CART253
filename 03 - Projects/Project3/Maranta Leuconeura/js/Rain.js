@@ -12,8 +12,10 @@ class Rain {
   // Either sets default values or uses the arguments provided
   constructor(x, y) {
     // Position properties
-    this.x = x;
+    this.x = x + 1000;
+    this.originX = x;
     this.y = y;
+    this.originY = y;
     // Display properties
     this.width = 1;
     this.height = random(5, 10);
@@ -31,6 +33,7 @@ class Rain {
     this.ninthFrameX = 5000; // offsetTargetX + timeFrameInterval * 10
     // Wrapping properties
     this.leftLimit = 1000;
+    this.rightLimit = 1500;
     this.boxWidth = 500;
     this.limitsTranslationRate = this.dropTranslationRate;
   }
@@ -47,7 +50,7 @@ class Rain {
     rectMode(CENTER);
     translate(this.x, this.y);
     rotate(this.theta);
-    rect(this.x, this.y, this.width, this.height);
+    rect(0, 0, this.width, this.height);
     pop();
   }
 
@@ -66,11 +69,12 @@ class Rain {
   handleWrapping() {
     // Off the bottom
     if (this.y > height) {
-      this.y -= height;
+      this.y = 0;
+      // this.x = this.originX;
     }
     // Off the left
-    if (this.x === this.leftLimit) {
-      this.x += this.boxWidth;
+    if (this.x < this.leftLimit) {
+      this.x = this.rightLimit;
     }
   }
 
@@ -92,6 +96,10 @@ class Rain {
     this.leftLimit -= this.limitsTranslationRate;
     if (this.leftLimit - 500 < this.resetX) {
       this.leftLimit = this.leftLimit + this.ninthFrameX;
+    }
+    this.rightLimit -= this.limitsTranslationRate;
+    if (this.rightLimit - 500 < this.resetX) {
+      this.rightLimit = this.right + this.ninthFrameX;
     }
   }
 }

@@ -34,11 +34,11 @@ class Snowflake2 extends Snow {
     noStroke();
     fill(this.fill);
     translate(this.x, this.y);
-    rect(this.x, this.y, this.width, this.height);
+    rect(0, 0, this.width, this.height);
     rotate(this.theta);
-    rect(this.x, this.y, this.width, this.height);
+    rect(0, 0, this.width, this.height);
     rotate(this.theta / 2);
-    rect(this.x, this.y, this.width, this.height);
+    rect(0, 0, this.width, this.height);
     pop();
   }
 }

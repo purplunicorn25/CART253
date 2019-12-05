@@ -10,7 +10,7 @@ let rain2; // 1000 - 1500
 let night3; // 1500 - 2000
 let sun4; // 2000 - 2500
 let night5; // 2500 - 3000
-let cloudy6; // 3000 - 3500
+let snow6 // 3000 - 3500
 let night7; // 3500 - 4000
 let snow8; // 4000 - 4500
 let night9; // 4500 - 5000
@@ -20,8 +20,12 @@ let weather = [];
 // NIGHTSKY
 // Define how many star are to be displayed
 let numStars = 500;
-// An empty array to store stars in
-let stars = [];
+// Empty arrays to store stars in for everynight
+let stars1 = [];
+let stars3 = [];
+let stars5 = [];
+let stars7 = [];
+let stars9 = [];
 
 // RAIN
 // Define how may drops are to be displayed
@@ -30,8 +34,10 @@ let numDrops = 1000;
 let drops = [];
 
 // SUN
-let sun;
-let rays;
+let sun00;
+let rays00;
+let sun04;
+let rays04;
 
 // SNOW
 // Define how many snownflakes are to be displayed
@@ -43,7 +49,7 @@ let snowflakes2 = [];
 
 // PLANT
 // Define how many leaves the plant has
-let numLeaves = 10;
+let numLeaves = 9;
 // An empty array to store leaves in
 let leaves = [];
 // Image array for its avatars
@@ -116,7 +122,7 @@ function draw() {
   // THE WALL
   // Update the wall background as the game runs
   // After all the outdoor scenes
-  wallCanvas();
+  // wallCanvas();
 
   // IN FRONT OF THE WALL
   mouseAvatar();
@@ -129,21 +135,90 @@ function draw() {
 //
 // Set the initial position and properties of the stars
 function setupNight() {
+  // NIGHT1
   for (let i = 0; i < numStars; i++) {
     // Generate (mostly) random values for the arguments of the Night constructor
-    bckgrndX = 0;
-    bckgrndColor = color(0);
-    starX = random(500, 1000); // night2
-    starY = random(0, height);
-    moonX = 800;
-    moonY = 300;
-    starRadius = random(.3, .8);
-    reductionRate = random(-0.02, -0.005);
-    growingRate = 0.01;
+    let bckgrndX = 0;
+    let bckgrndColor = color(0);
+    let starX = random(500, 1000); // night2
+    let starY = random(0, height);
+    let moonX = 800;
+    let moonY = 300;
+    let starRadius = random(.3, .8);
+    let reductionRate = random(-0.02, -0.005);
+    let growingRate = 0.01;
     // Create a new Night object with the random values
     let newStar = new Night(starX, starY, moonX, moonY, starRadius, reductionRate, growingRate);
     // Add the new star to the array
-    stars.push(newStar);
+    stars1.push(newStar);
+  }
+  // NIGHT3
+  for (let i = 0; i < numStars; i++) {
+    // Generate (mostly) random values for the arguments of the Night constructor
+    let bckgrndX = 0;
+    let bckgrndColor = color(0);
+    let starX = random(1500, 2000); // night2
+    let starY = random(0, height);
+    let moonX = 1800;
+    let moonY = 300;
+    let starRadius = random(.3, .8);
+    let reductionRate = random(-0.02, -0.005);
+    let growingRate = 0.01;
+    // Create a new Night object with the random values
+    let newStar = new Night(starX, starY, moonX, moonY, starRadius, reductionRate, growingRate);
+    // Add the new star to the array
+    stars3.push(newStar);
+  }
+  // NIGHT5
+  for (let i = 0; i < numStars; i++) {
+    // Generate (mostly) random values for the arguments of the Night constructor
+    let bckgrndX = 0;
+    let bckgrndColor = color(0);
+    let starX = random(2500, 3000); // night2
+    let starY = random(0, height);
+    let moonX = 2800;
+    let moonY = 300;
+    let starRadius = random(.3, .8);
+    let reductionRate = random(-0.02, -0.005);
+    let growingRate = 0.01;
+    // Create a new Night object with the random values
+    let newStar = new Night(starX, starY, moonX, moonY, starRadius, reductionRate, growingRate);
+    // Add the new star to the array
+    stars5.push(newStar);
+  }
+  // NIGHT7
+  for (let i = 0; i < numStars; i++) {
+    // Generate (mostly) random values for the arguments of the Night constructor
+    let bckgrndX = 0;
+    let bckgrndColor = color(0);
+    let starX = random(3500, 4000); // night2
+    let starY = random(0, height);
+    let moonX = 3800;
+    let moonY = 300;
+    let starRadius = random(.3, .8);
+    let reductionRate = random(-0.02, -0.005);
+    let growingRate = 0.01;
+    // Create a new Night object with the random values
+    let newStar = new Night(starX, starY, moonX, moonY, starRadius, reductionRate, growingRate);
+    // Add the new star to the array
+    stars7.push(newStar);
+  }
+  // NIGHT9
+  for (let i = 0; i < numStars; i++) {
+    // Generate (mostly) random values for the arguments of the Night constructor
+    let bckgrndX = 0;
+    let bckgrndColor = color(0);
+    let starX = random(4500, 5000); // night2
+    let starY = random(0, height);
+    let moonX = 4800;
+    let moonY = 300;
+    let starRadius = random(.3, .8);
+    let reductionRate = random(-0.02, -0.005);
+    let growingRate = 0.01;
+    // Create a new Night object with the random values
+    let newStar = new Night(starX, starY, moonX, moonY, starRadius, reductionRate, growingRate);
+    // Add the new star to the array
+    stars9.push(newStar);
   }
 }
 
@@ -151,15 +226,60 @@ function setupNight() {
 //
 // Display the stars and the moon of the night sky
 function displayNight() {
+  // NIGHT1
   // Display, resize and move all the stars
-  for (let i = 0; i < stars.length; i++) {
-    stars[i].starSize();
-    stars[i].starDisplay();
-    stars[i].starTranslation();
+  for (let i = 0; i < stars1.length; i++) {
+    stars1[i].starSize();
+    stars1[i].starDisplay();
+    stars1[i].starTranslation();
   }
   // Display and move the moon according to one lucky star
-  stars[7].moonDisplay();
-  stars[7].moonTranslation();
+  stars1[7].moonDisplay();
+  stars1[7].moonTranslation();
+
+  // NIGHT3
+  // Display, resize and move all the stars
+  for (let i = 0; i < stars3.length; i++) {
+    stars3[i].starSize();
+    stars3[i].starDisplay();
+    stars3[i].starTranslation();
+  }
+  // Display and move the moon according to one lucky star
+  stars3[7].moonDisplay();
+  stars3[7].moonTranslation();
+
+  // NIGHT5
+  // Display, resize and move all the stars
+  for (let i = 0; i < stars5.length; i++) {
+    stars5[i].starSize();
+    stars5[i].starDisplay();
+    stars5[i].starTranslation();
+  }
+  // Display and move the moon according to one lucky star
+  stars5[7].moonDisplay();
+  stars5[7].moonTranslation();
+
+  // NIGHT7
+  // Display, resize and move all the stars
+  for (let i = 0; i < stars7.length; i++) {
+    stars7[i].starSize();
+    stars7[i].starDisplay();
+    stars7[i].starTranslation();
+  }
+  // Display and move the moon according to one lucky star
+  stars7[7].moonDisplay();
+  stars7[7].moonTranslation();
+
+  // NIGHT9
+  // Display, resize and move all the stars
+  for (let i = 0; i < stars9.length; i++) {
+    stars9[i].starSize();
+    stars9[i].starDisplay();
+    stars9[i].starTranslation();
+  }
+  // Display and move the moon according to one lucky star
+  stars9[7].moonDisplay();
+  stars9[7].moonTranslation();
 }
 
 // setupRain()
@@ -168,8 +288,8 @@ function displayNight() {
 function setupRain() {
   for (let i = 0; i < numDrops; i++) {
     // Generate values for the arguments of the Rain constructor
-    dropX = random(1000, 1500);
-    dropY = random(0, height);
+    let dropX = random(0, 500);
+    let dropY = random(0, height);
     // Create a new Rain object with the values
     let newDrop = new Rain(dropX, dropY);
     // Add the new drop to the array
@@ -196,22 +316,36 @@ function displayRain() {
 // Set the inital position and properties of the sunny sky
 function setupSun() {
   // Create a sun and its rays as Sun objects
-  sun = new Sun(220, 200, 100, -.05, .05, 100, 90, color(255, 255, 0));
-  rays = new Sun(220, 200, 150, -1, 1, 180, 120, color(255, 255, 0, 80));
+  // DAY0
+  sun00 = new Sun(220, 200, 100, -.05, .05, 100, 90, color(255, 255, 0));
+  rays00 = new Sun(220, 200, 150, -1, 1, 180, 120, color(255, 255, 0, 80));
+  // DAY4
+  sun04 = new Sun(2220, 2200, 100, -.05, .05, 100, 90, color(255, 255, 0));
+  rays04 = new Sun(2220, 2200, 150, -1, 1, 180, 120, color(255, 255, 0, 80));
 }
 
 // displaySun()
 //
 // Display the sun and its rays
 function displaySun() {
+  // DAY0
   // Display the sun and its functionalities
-  sun.display();
-  sun.resize();
-  sun.translation();
+  sun00.display();
+  sun00.resize();
+  sun00.translation();
   // Display the rays and their functionalities
-  rays.display();
-  rays.resize();
-  rays.translation();
+  rays00.display();
+  rays00.resize();
+  rays00.translation();
+  // DAY4
+  // Display the sun and its functionalities
+  sun04.display();
+  sun04.resize();
+  sun04.translation();
+  // Display the rays and their functionalities
+  rays04.display();
+  rays04.resize();
+  rays04.translation();
 }
 
 // setupSnow()
@@ -221,12 +355,12 @@ function setupSnow() {
   // SNOWFLAKE1
   for (let i = 0; i < numSnowflakes1; i++) {
     // Generate mostly random values for the arguments of the Snow constructor
-    snowX = random(0, 500);
-    snowY = random(0, height);
-    snowRadius = random(.8, 1.8);
-    snowSpeedX = random(.1, .6);
-    snowSpeedY = 1;
-    snowFill = color(255);
+    let snowX = random(0, 500);
+    let snowY = random(0, height);
+    let snowRadius = random(.8, 1.8);
+    let snowSpeedX = random(.1, .6);
+    let snowSpeedY = 1;
+    let snowFill = color(255);
     // Create a new Snow object with the values
     let newSnow = new Snowflake1(snowX, snowY, snowRadius, snowSpeedX, snowSpeedY, snowFill);
     // Add the new snowflake to the array
@@ -235,12 +369,12 @@ function setupSnow() {
   // SNOWFLAKE2
   for (let i = 0; i < numSnowflakes2; i++) {
     // Generate mostly random values for the arguments of the Snow constructor
-    snowX = random(0, 500);
-    snowY = random(0, height);
-    snowRadius = random(.8, 1.8);
-    snowSpeedX = random(.1, .6);
-    snowSpeedY = 1;
-    snowFill = color(255);
+    let snowX = random(0, 500);
+    let snowY = random(0, height);
+    let snowRadius = random(.8, 1.8);
+    let snowSpeedX = random(.1, .6);
+    let snowSpeedY = 1;
+    let snowFill = color(255);
     // Create a new Snow object with the values
     let newSnow = new Snowflake2(snowX, snowY, snowRadius, snowSpeedX, snowSpeedY, snowFill);
     // Add the new snowflake to the array
@@ -275,8 +409,7 @@ function setupPlant() {
     leafWidth = random(0, 5);
     leafHeight = random(0, 10);
     leafTheta = random(-PI / 16, PI / 16);
-    prayingLeaf = floor(random() * leafAvatars.length);
-    leafAvatar = leafAvatars[prayingLeaf];
+    leafAvatar = leafAvatars[i];
     leafGrowningRate = 1;
     leafMaxHeight = 50;
     // Create a new leaf with the values
@@ -323,11 +456,11 @@ function wallCanvas() {
 // Rain, NightSky, Snow, and Sun objects
 // Store them in an array
 function setupTimeFrames() {
-  sun0 = new TimeFrames(offsetTargetX + timeFrameInterval * 0, color(255, 0, 0));
+  sun0 = new TimeFrames(offsetTargetX + timeFrameInterval * 0, "#42ADF5");
   night1 = new TimeFrames(offsetTargetX + timeFrameInterval * 1, color(0));
   rain2 = new TimeFrames(offsetTargetX + timeFrameInterval * 2, color(0, 0, 255));
   night3 = new TimeFrames(offsetTargetX + timeFrameInterval * 3, color(0));
-  sun4 = new TimeFrames(offsetTargetX + timeFrameInterval * 4, color(255, 255, 0));
+  sun4 = new TimeFrames(offsetTargetX + timeFrameInterval * 4, "#42ADF5");
   night5 = new TimeFrames(offsetTargetX + timeFrameInterval * 5, color(0));
   cloudy6 = new TimeFrames(offsetTargetX + timeFrameInterval * 6, color(100));
   night7 = new TimeFrames(offsetTargetX + timeFrameInterval * 7, color(0));
