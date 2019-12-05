@@ -41,6 +41,14 @@ let numSnowflakes2 = 150;
 let snowflakes1 = [];
 let snowflakes2 = [];
 
+// PLANT
+// Define how many leaves the plant has
+let numLeaves = 10;
+// An empty array to store leaves in
+let leaves = [];
+// Image array for its avatars
+let leafAvatars = [];
+
 // OTHER IMAGES
 // mouse avatar
 let fly;
@@ -49,8 +57,15 @@ let fly;
 //
 // Load assets before the game starts
 function preload() {
+  // Wall
   windowWall = loadImage("assets/images/window.png");
+  // Mouse Avatar
   fly = loadImage("assets/images/fly.png");
+  // Leaves
+  for (let i = 0; i < 9; i++) {
+    let fileName = "assets/images/leaves/leaf" + i + ".png";
+    leafAvatars.push(loadImage(fileName));
+  }
 }
 
 // setup()
@@ -74,7 +89,9 @@ function setup() {
   // SNOW
   // Set the initial position and properties of snownflakes
   setupSnow();
-
+  // PLANT
+  // Set the inital position and properties of the leaves
+  setupPlant();
 }
 
 // draw()
@@ -82,6 +99,7 @@ function setup() {
 // Handles sceneries, movement and interractions
 // The game starts, the player plays and the game ends
 function draw() {
+  // BEHIND THE WALL
   // All the sceneries are updated at the same time
   // They are displayed and move to the left in an infinite loop
   // BOXES
@@ -95,10 +113,16 @@ function draw() {
   // SNOW
   displaySnow();
 
+  // THE WALL
   // Update the wall background as the game runs
   // After all the outdoor scenes
-  //wallCanvas();
+  wallCanvas();
+
+  // IN FRONT OF THE WALL
   mouseAvatar();
+  displayPlant();
+
+
 }
 
 // setupNightSky()
@@ -237,6 +261,38 @@ function displaySnow() {
   for (let i = 0; i < snowflakes2.length; i++) {
     snowflakes2[i].gravity();
     snowflakes2[i].display();
+  }
+}
+
+// setupPlant()
+//
+// Set the initial position and properties of the Leaves
+function setupPlant() {
+  // Generate mostly random values for the arguments of the Plant constructor
+  for (let i = 0; i < numLeaves; i++) {
+    leafX = random(225, 275);
+    leafY = random(400, 410);
+    leafWidth = random(0, 5);
+    leafHeight = random(0, 10);
+    leafTheta = random(-PI / 16, PI / 16);
+    prayingLeaf = floor(random() * leafAvatars.length);
+    leafAvatar = leafAvatars[prayingLeaf];
+    leafGrowningRate = 1;
+    leafMaxHeight = 50;
+    // Create a new leaf with the values
+    let newLeaf = new Leaves(leafX, leafY, leafWidth, leafHeight, leafTheta, leafAvatar, leafGrowningRate, leafMaxHeight)
+    // Add the new leaf to the array
+    leaves.push(newLeaf);
+  }
+}
+
+// displayPlant()
+//
+// Display the leaves of the plant
+function displayPlant() {
+  for (let i = 0; i < leaves.length; i++) {
+    leaves[i].display();
+    leaves[i].grow();
   }
 }
 
