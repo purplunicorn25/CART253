@@ -10,7 +10,7 @@ class Sun {
   //
   // Set the initial values for the Sun's properties
   // Either sets default values or uses the arguments provided
-  constructor(x, y, radius, reductionRate, growingRate, maxRadius, minRadius, fill) {
+  constructor(x, y, radius, reductionRate, growingRate, maxRadius, minRadius, fill, translationRate) {
     // Position properties
     this.x = x;
     this.y = y;
@@ -25,7 +25,7 @@ class Sun {
     // Box properties
     this.resetX = -500;
     this.ninthFrameX = 5000; // offsetTargetX + timeFrameInterval * 10
-    this.translationRate = 2;
+    this.translationRate = translationRate;
 
   }
 

@@ -25,7 +25,7 @@ class Sun {
     // Box properties
     this.resetX = -500;
     this.ninthFrameX = 5000; // offsetTargetX + timeFrameInterval * 10
-    this.translationRate = 2;
+    this.translationRate = 4;
 
   }
 

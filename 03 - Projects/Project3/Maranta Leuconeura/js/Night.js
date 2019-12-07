@@ -10,7 +10,7 @@ class Night {
   //
   // Set the initial values for the Night's properties
   // Either sets default values or uses the arguments provided
-  constructor(starX, starY, moonX, moonY, radius, reductionRate, growingRate) {
+  constructor(starX, starY, moonX, moonY, radius, reductionRate, growingRate, translationRate) {
     // Star position
     this.starX = starX;
     this.starY = starY;
@@ -21,7 +21,7 @@ class Night {
     this.changeRate = this.reductionRate;
     this.starFill = 255;
     // Star movement properties
-    this.starTranslationRate = 2;
+    this.starTranslationRate = translationRate;
     // Moon position properties
     this.moonX = moonX;
     this.moonY = moonY;

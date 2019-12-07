@@ -21,7 +21,7 @@ class Night {
     this.changeRate = this.reductionRate;
     this.starFill = 255;
     // Star movement properties
-    this.starTranslationRate = 2;
+    this.starTranslationRate = 4;
     // Moon position properties
     this.moonX = moonX;
     this.moonY = moonY;

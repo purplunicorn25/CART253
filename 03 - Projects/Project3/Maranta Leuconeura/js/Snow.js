@@ -11,7 +11,7 @@ class Snow {
   //
   // Set the initial values for Snow's properties
   // Either sets default values or uses the arguments provided
-  constructor(x, y, radius, speedX, speedY, fill) {
+  constructor(x, y, radius, speedY, fill, translationRate) {
     // Position properties
     this.x = x;
     this.y = y;
@@ -20,13 +20,10 @@ class Snow {
     this.fill = fill;
     // Movemnet properties
     this.speedY = speedY;
-    this.speedX = speedX;
-    this.tx = random(0, 1000);
-    this.vx = 0;
     // Box properties
     this.resetX = -500;
     this.ninthFrameX = 5000; // offsetTargetX + timeFrameInterval * 10
-    this.translationRate = 2;
+    this.translationRate = translationRate;
   }
 
   // gravity
@@ -35,10 +32,27 @@ class Snow {
   gravity() {
     // Move down
     this.y += this.speedY;
-    // Ondulate its path to the bottom with noise
-    this.vx = map(noise(this.tx), 0, 1, -this.speedX, this.speedX);
-    this.x += this.vx;
-    // Update time properties
-    this.tx += 0.01;
+  }
+
+  // handleWrapping
+  //
+  // Checks if the snowflake has gone off the canvas and
+  // wraps it to the other side if so (only up and down)
+  handleWrapping() {
+    // Off the bottom
+    if (this.y > height) {
+      this.y = 0;
+    }
+  }
+
+  // translation
+  //
+  // The snowflake move to the left following the backgroud
+  // Its position is reset to the end of the loop if it is offcanvas
+  translation() {
+    this.x -= this.translationRate;
+    if (this.x - 500 < this.resetX) {
+      this.x = this.x + this.ninthFrameX;
+    }
   }
 }

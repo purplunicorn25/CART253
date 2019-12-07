@@ -122,7 +122,7 @@ function draw() {
   // THE WALL
   // Update the wall background as the game runs
   // After all the outdoor scenes
-  // wallCanvas();
+  //  wallCanvas();
 
   // IN FRONT OF THE WALL
   mouseAvatar();
@@ -288,7 +288,7 @@ function displayNight() {
 function setupRain() {
   for (let i = 0; i < numDrops; i++) {
     // Generate values for the arguments of the Rain constructor
-    let dropX = random(0, 500);
+    let dropX = random(1000, 1500);
     let dropY = random(0, height);
     // Create a new Rain object with the values
     let newDrop = new Rain(dropX, dropY);

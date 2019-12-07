@@ -9,8 +9,8 @@ class Snowflake1 extends Snow {
   //
   // Set the initial values for Snowflake1's properties
   // Either sets default values or uses the arguments provided
-  constructor(x, y, radius, speedX, speedY, fill) {
-    super(x, y, radius, speedX, speedY, fill);
+  constructor(x, y, radius, speedY, fill, translationRate) {
+    super(x, y, radius, speedY, fill, translationRate);
   }
 
   // gravity
@@ -18,6 +18,22 @@ class Snowflake1 extends Snow {
   // Move the snownflakes down using perling noise on the x axis
   gravity() {
     super.gravity();
+  }
+
+  // handleWrapping
+  //
+  // Checks if the snowflake has gone off the canvas and
+  // wraps it to the other side if so (only up and down)
+  handleWrapping() {
+    super.handleWrapping();
+  }
+
+  // translation
+  //
+  // The snowflake move to the left following the backgroud
+  // Its position is reset to the end of the loop if it is offcanvas
+  translation() {
+    super.translation();
   }
 
   // display

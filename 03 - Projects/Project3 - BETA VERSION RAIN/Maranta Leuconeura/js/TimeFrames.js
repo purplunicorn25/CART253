@@ -19,7 +19,7 @@ class TimeFrames {
     this.width = 500;
     this.height = 600;
     // Moving properties
-    this.boxTranslationRate = 2;
+    this.translationRate = 4;
     this.ninthFrameX = 4500; // offsetTargetX + timeFrameInterval * 9
     this.resetX = -500;
   }
@@ -41,7 +41,7 @@ class TimeFrames {
   // The box move to the left at a slow pace
   // Its position is reset to the end of the loop if it is offcanvas
   backgroundTranslation() {
-    this.x -= this.boxTranslationRate;
+    this.x -= this.translationRate;
     if (this.x < this.resetX) {
       this.x = this.ninthFrameX;
     }

@@ -10,12 +10,10 @@ class Rain {
   //
   // Set the initial values for the Rain properties
   // Either sets default values or uses the arguments provided
-  constructor(x, y) {
+  constructor(x, y, translationRate) {
     // Position properties
-    this.x = x + 1000;
-    this.originX = x;
+    this.x = x;
     this.y = y;
-    this.originY = y;
     // Display properties
     this.width = 1;
     this.height = random(5, 10);
@@ -25,17 +23,11 @@ class Rain {
     this.randomFillColor = floor(random(0, 1) * this.colors.length);
     this.fillColor = this.colors[this.randomFillColor];
     // Movement properties
-    this.speedX = -.2;
     this.speedY = 5;
     // Translation properties
-    this.dropTranslationRate = 2;
+    this.translationRate = translationRate;
     this.resetX = -500;
     this.ninthFrameX = 5000; // offsetTargetX + timeFrameInterval * 10
-    // Wrapping properties
-    this.leftLimit = 1000;
-    this.rightLimit = 1500;
-    this.boxWidth = 500;
-    this.limitsTranslationRate = this.dropTranslationRate;
   }
 
   // dropDisplay
@@ -58,7 +50,6 @@ class Rain {
   //
   // Move the drop down
   dropGravity() {
-    this.x += this.speedX;
     this.y += this.speedY;
   }
 
@@ -70,11 +61,6 @@ class Rain {
     // Off the bottom
     if (this.y > height) {
       this.y = 0;
-      // this.x = this.originX;
-    }
-    // Off the left
-    if (this.x < this.leftLimit) {
-      this.x = this.rightLimit;
     }
   }
 
@@ -83,23 +69,9 @@ class Rain {
   // The drop move to the left following the backgroud
   // Its position is reset to the end of the loop if it is offcanvas
   dropTranslation() {
-    this.x -= this.dropTranslationRate;
+    this.x -= this.translationRate;
     if (this.x - 500 < this.resetX) {
-      this.x += this.ninthFrameX;
-    }
-  }
-
-  // limitsTranslation
-  //
-  // Make sure that the borders of the box move with the box
-  limitsTranslation() {
-    this.leftLimit -= this.limitsTranslationRate;
-    if (this.leftLimit - 500 < this.resetX) {
-      this.leftLimit = this.leftLimit + this.ninthFrameX;
-    }
-    this.rightLimit -= this.limitsTranslationRate;
-    if (this.rightLimit - 500 < this.resetX) {
-      this.rightLimit = this.right + this.ninthFrameX;
+      this.x = this.x + this.ninthFrameX;
     }
   }
 }
