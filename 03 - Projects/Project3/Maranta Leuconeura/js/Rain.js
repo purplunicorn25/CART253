@@ -32,8 +32,6 @@ class Rain {
 
   // dropDisplay
   //
-  // dropDisplay
-  //
   // Draw the drop with a tiny rectangle rotated
   dropDisplay() {
     push();

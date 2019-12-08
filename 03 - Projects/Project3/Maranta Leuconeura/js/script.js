@@ -40,7 +40,7 @@ let stars9 = [];
 // Define how may drops are to be displayed
 let numDrops = 1000;
 // Empty arrays to store drops in
-let drops = [];
+let drops2 = [];
 let drops8 = [];
 
 // SUN
@@ -73,6 +73,12 @@ let numWater = 60;
 // An empty array to store the drops of water in
 let leftWater = [];
 let rightWater = [];
+
+// WATERING
+// Define how many drops of water are watering the plant
+let numWatering = 25;
+// An empty array to store them in
+let watering = [];
 
 // PLAYER
 // mouse avatar
@@ -135,6 +141,9 @@ function setup() {
   // HUMIDITY
   // Set the initial position and properties of the water
   setupHumidity();
+  // WATERING
+  // Set the initial position and properties of the water
+  setupWatering();
   // PLAYER
   // Set the initial position and properties of the player
   setupPlayer();
@@ -181,6 +190,8 @@ function draw() {
   displayPlayer();
   // The water bar represents the amont of water collected (score)
   displayWaterBar();
+  // The watering represents the water hydrating the plant
+  displayWatering();
 }
 
 // setupNightSky()
@@ -345,7 +356,7 @@ function setupRain() {
     // Create a new Rain object with the values
     let newDrop = new Rain(dropX, dropY, translationRate);
     // Add the new drop to the array
-    drops.push(newDrop);
+    drops2.push(newDrop);
   }
   for (let i = 0; i < numDrops; i++) {
     // Generate values for the arguments of the Rain constructor
@@ -363,11 +374,11 @@ function setupRain() {
 // Display the drops of the rain and their functionalities
 function displayRain() {
   // Display, resize and move all the drops
-  for (let i = 0; i < drops.length; i++) {
-    drops[i].dropDisplay();
-    drops[i].dropGravity();
-    drops[i].handleWrapping();
-    drops[i].dropTranslation();
+  for (let i = 0; i < drops2.length; i++) {
+    drops2[i].dropDisplay();
+    drops2[i].dropGravity();
+    drops2[i].handleWrapping();
+    drops2[i].dropTranslation();
   }
   // Display, resize and move all the drops
   for (let i = 0; i < drops8.length; i++) {
@@ -598,6 +609,36 @@ function displayHumidity() {
   }
 }
 
+// setupWatering()
+//
+// Set the inital position and properties of the humidity
+function setupWatering() {
+  // LEFT
+  // Generate mostly random values for the arguments of the Humidity constructor
+  for (let i = 0; i < numWatering; i++) {
+    let waterX = random(200, 300);
+    let waterY = random(350, 450);
+    let waterRadius = random(2, 4);
+    let speedX = 0;
+    let speedY = 0;
+    let waterReductionRate = .2;
+    // Create a new drop with the values
+    let newWater = new Humidity(waterX, waterY, waterRadius, speedX, speedY, waterReductionRate);
+    // Add the new drop to the array
+    watering.push(newWater);
+  }
+}
+
+// displayWatering()
+//
+// Display the watering drop and their functionalities
+function displayWatering() {
+  // Display the water from the array around the plant
+  for (let i = 0; i < watering.length; i++) {
+    watering[i].humidify();
+  }
+}
+
 // setupPlayer()
 //
 // Set the inital position and properties of the player
@@ -691,6 +732,12 @@ function displayTimeFrames() {
   }
 }
 
+// mousePressed()
+//
+// Check if the left button of the mouse is clicked
 function mousePressed() {
   waterBarTop.clicked = true;
+  for (let i = 0; i < watering.length; i++) {
+    watering[i].waterButtonClicked = true;
+  }
 }

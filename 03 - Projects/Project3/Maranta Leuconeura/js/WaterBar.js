@@ -30,6 +30,8 @@ class WaterBar {
     this.buttonImage = buttonImage;
     this.buttonImageWidth = 30;
     this.buttonImageHeight = this.buttonImageWidth;
+    // Interactive properties
+    this.humidify = false;
   }
 
   // display
@@ -49,7 +51,7 @@ class WaterBar {
   // The size of the rectangle is linked to the player.score
   handleScore(player) {
     if (player.scoring === true) {
-      this.highY = this.highY - player.score * 2 / 300; // adjust the rate to the size of the bar
+      this.highY = this.highY - player.score * 2; // adjust the rate to the size of the bar
       this.highY = constrain(this.highY, this.maxHeight, this.lowY);
       player.scoring = false;
     }
@@ -85,7 +87,6 @@ class WaterBar {
       this.radius += this.growingRate;
       this.radius = constrain(this.radius, 15, this.maxRadius);
       if (this.clicked === true) {
-        // watering = true;
         player.resetScore();
         this.highY = this.originHighY;
         this.clicked = false;

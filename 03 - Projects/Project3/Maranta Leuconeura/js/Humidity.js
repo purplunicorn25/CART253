@@ -27,6 +27,9 @@ class Humidity {
     this.floor = 350;
     this.tx = random(0, 1000);
     this.vx = 0;
+    // Interactive properties
+    this.waterButtonClicked = false;
+
   }
 
   // gravity
@@ -71,6 +74,32 @@ class Humidity {
       // Default position
       this.x = this.originX;
       this.y = random(-10, 0);
+    }
+  }
+
+  // humidify
+  //
+  // will be applied in the waterBar objects
+  // concentrate the drop on the plant until they disappear
+  humidify() {
+    // Check if the button has been clicked
+    if (this.waterButtonClicked === true) {
+      // Draw the ellipse
+      push();
+      noStroke();
+      fill(this.fillColor);
+      ellipse(this.x, this.y, this.radius * 2, this.radius * 2);
+      pop();
+      // Reduce its size to zero
+      this.radius -= this.reductionRate;
+      this.radius = constrain(this.radius, 0, this.maxRadius);
+    }
+    if (this.radius === 0) {
+      // Reset its properties
+      this.x = random(200, 300);
+      this.y = random(350, 450);
+      this.radius = this.maxRadius;
+      this.waterButtonClicked = false;
     }
   }
 }
