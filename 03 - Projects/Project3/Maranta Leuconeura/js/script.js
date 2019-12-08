@@ -2,7 +2,7 @@ let windowWall;
 
 let offsetTargetX = 0;
 let timeFrameInterval = 500;
-let translationRate = 6;
+let translationRate = 2;
 
 // TIME FRAMES
 let sun0; // 0 - 400
@@ -59,6 +59,13 @@ let leaves = [];
 // Image array for its avatars
 let leafAvatars = [];
 
+// HUMIDITY
+// Define how many drop of water are in the air
+let numWater = 60;
+// An empty array to store the drops of water in
+let leftWater = [];
+let rightWater = [];
+
 // OTHER IMAGES
 // mouse avatar
 let fly;
@@ -102,6 +109,9 @@ function setup() {
   // PLANT
   // Set the inital position and properties of the leaves
   setupPlant();
+  // HUMIDITY
+  // Set the initial position and properties of the water
+  setupHumidity();
 }
 
 // draw()
@@ -129,9 +139,12 @@ function draw() {
   wallCanvas();
 
   // IN FRONT OF THE WALL
+  // A tiny image follows the mouse
   mouseAvatar();
+  // A plant is growing slowly
   displayPlant();
-
+  // Humidity is visible in the air
+  displayHumidity();
 }
 
 // setupNightSky()
@@ -146,7 +159,7 @@ function setupNight() {
     let starX = random(500, 1000); // night2
     let starY = random(0, height);
     let moonX = 800;
-    let moonY = 300;
+    let moonY = 200;
     let starRadius = random(.3, .8);
     let reductionRate = random(-0.02, -0.005);
     let growingRate = 0.01;
@@ -227,7 +240,7 @@ function setupNight() {
 
 // displayNight()
 //
-// Display the stars and the moon of the night sky
+// Display the stars and the moon of the night sky and their functionalities
 function displayNight() {
   // NIGHT1
   // Display, resize and move all the stars
@@ -311,7 +324,7 @@ function setupRain() {
 
 // displayNight()
 //
-// Display the drops of the rain
+// Display the drops of the rain and their functionalities
 function displayRain() {
   // Display, resize and move all the drops
   for (let i = 0; i < drops.length; i++) {
@@ -344,7 +357,7 @@ function setupSun() {
 
 // displaySun()
 //
-// Display the sun and its rays
+// Display the sun, its rays and their functionalities
 function displaySun() {
   // DAY0
   // Display the sun and its functionalities
@@ -427,7 +440,7 @@ function setupSnow() {
 
 // displaySnow()
 //
-// Display the snowflakes of the snowy day
+// Display the snowflakes of the snowy day and their functionalities
 function displaySnow() {
   // DAY6
   // SNOWFLAKE1
@@ -467,14 +480,14 @@ function displaySnow() {
 function setupPlant() {
   // Generate mostly random values for the arguments of the Plant constructor
   for (let i = 0; i < numLeaves; i++) {
-    leafX = random(225, 275);
-    leafY = random(400, 410);
-    leafWidth = random(0, 5);
-    leafHeight = random(0, 10);
-    leafTheta = random(-PI / 16, PI / 16);
-    leafAvatar = leafAvatars[i];
-    leafGrowningRate = 1;
-    leafMaxHeight = 50;
+    let leafX = random(225, 275);
+    let leafY = random(400, 410);
+    let leafWidth = random(0, 5);
+    let leafHeight = random(0, 10);
+    let leafTheta = random(-PI / 16, PI / 16);
+    let leafAvatar = leafAvatars[i];
+    let leafGrowningRate = 1;
+    let leafMaxHeight = 50;
     // Create a new leaf with the values
     let newLeaf = new Leaves(leafX, leafY, leafWidth, leafHeight, leafTheta, leafAvatar, leafGrowningRate, leafMaxHeight)
     // Add the new leaf to the array
@@ -484,11 +497,68 @@ function setupPlant() {
 
 // displayPlant()
 //
-// Display the leaves of the plant
+// Display the leaves of the plant and their functionalities
 function displayPlant() {
+  // Display the leaves from the array
   for (let i = 0; i < leaves.length; i++) {
     leaves[i].display();
     leaves[i].grow();
+  }
+}
+
+// setupHumidity()
+//
+// Set the inital position and properties of the humidity
+function setupHumidity() {
+  // LEFT
+  // Generate mostly random values for the arguments of the Humidity constructor
+  for (let i = 0; i < numWater; i++) {
+    let waterX = random(0, 150);
+    let waterY = random(-200, 80);
+    let waterRadius = random(1.5, 2.5);
+    let speedX = random(.1, .6);
+    let speedY = random(.1, .2);
+    let waterReductionRate = random(.0006, .001);
+    // Create a new drop with the values
+    let newWater = new Humidity(waterX, waterY, waterRadius, speedX, speedY, waterReductionRate);
+    // Add the new drop to the array
+    leftWater.push(newWater);
+  }
+  // RIGHT
+  // Generate mostly random values for the arguments of the Humidity constructor
+  for (let i = 0; i < numWater; i++) {
+    let waterX = random(350, 500);
+    let waterY = random(-200, 80);
+    let waterRadius = random(1.5, 2.5);
+    let speedX = random(.1, .6);
+    let speedY = random(.1, .2);
+    let waterReductionRate = random(.001, .002);
+    // Create a new drop with the values
+    let newWater = new Humidity(waterX, waterY, waterRadius, speedX, speedY, waterReductionRate);
+    // Add the new drop to the array
+    rightWater.push(newWater);
+  }
+}
+
+// displayHumidity()
+//
+// Display the water drop and their functionalities
+function displayHumidity() {
+  // LEFT
+  // Display the water from the array
+  for (let i = 0; i < leftWater.length; i++) {
+    leftWater[i].display();
+    leftWater[i].gravity();
+    leftWater[i].size();
+    leftWater[i].reset();
+  }
+  // RIGHT
+  // Display the water from the array
+  for (let i = 0; i < rightWater.length; i++) {
+    rightWater[i].display();
+    rightWater[i].gravity();
+    rightWater[i].size();
+    rightWater[i].reset();
   }
 }
 
