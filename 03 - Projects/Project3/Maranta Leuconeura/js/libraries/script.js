@@ -149,10 +149,7 @@ function setup() {
 // The game starts, the player plays and the game ends
 function draw() {
   // Music
-  if (!inGameMusic.isLooping()) {
-    // Loop the music
-    inGameMusic.loop();
-  }
+
   // BEHIND THE WALL
   // All the sceneries are updated at the same time
   // They are displayed and move to the left in an infinite loop
