@@ -9,17 +9,27 @@ class WaterBar {
   //
   // Set the initial values for the WaterBar's properties
   // Either sets default values or uses arguments provided
-  constructor(lowX, lowY, highX, highY, width, maxHeight, color) {
+  constructor(lowX, lowY, highX, highY, maxHeight, color, buttonImage) {
     // Position properties
     this.lowX = lowX;
     this.lowY = lowY;
     this.highX = highX;
     this.highY = highY;
+    this.originHighY = highY;
+    this.width = this.lowX - this.highX;
     // Display properties
-    this.width = width;
-    this.height;
     this.maxHeight = maxHeight;
     this.fill = color;
+    // Button properties
+    this.x = this.highX + this.width / 2;
+    this.y = 190;
+    this.radius = 15;
+    this.maxRadius = 16;
+    this.growingRate = .6;
+    this.clicked = false;
+    this.buttonImage = buttonImage;
+    this.buttonImageWidth = 30;
+    this.buttonImageHeight = this.buttonImageWidth;
   }
 
   // display
@@ -39,9 +49,50 @@ class WaterBar {
   // The size of the rectangle is linked to the player.score
   handleScore(player) {
     if (player.scoring === true) {
-      this.highY = this.highY - player.score / 300; // adjust the rate to the size of the bar
+      this.highY = this.highY - player.score * 2 / 300; // adjust the rate to the size of the bar
       this.highY = constrain(this.highY, this.maxHeight, this.lowY);
       player.scoring = false;
+    }
+    if (this.highY === this.maxHeight) {
+      this.button();
+    }
+  }
+
+
+  // button
+  //
+  // If the bar reach its maxHeight, display a button to water the plant
+  button() {
+    push();
+    stroke(this.fill);
+    strokeWeight(1.5);
+    noFill();
+    ellipse(this.x, this.y, this.radius * 2, this.radius * 2);
+    imageMode(CENTER);
+    image(this.buttonImage, this.x, this.y, this.buttonImageWidth, this.buttonImageHeight);
+    pop();
+  }
+
+  // handleButton
+  //
+  // Check if the player overlaps the button and cicks interval
+  handleButton(player) {
+    // Calculate distance from player to button
+    let d = dist(this.x, this.y, player.x, player.y);
+    // Check if the distance is less than the button's radius
+    if (d < player.width / 4 + this.radius) {
+      // Change the button's radius
+      this.radius += this.growingRate;
+      this.radius = constrain(this.radius, 15, this.maxRadius);
+      if (this.clicked === true) {
+        // watering = true;
+        player.resetScore();
+        this.highY = this.originHighY;
+        this.clicked = false;
+      }
+    } else {
+      this.radius -= this.growingRate;
+      this.radius = constrain(this.radius, 15, this.maxRadius);
     }
   }
 }

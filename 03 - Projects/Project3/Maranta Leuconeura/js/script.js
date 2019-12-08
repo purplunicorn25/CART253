@@ -76,6 +76,7 @@ let player;
 // WaterBar objects
 let waterBar;
 let waterBarTop;
+let buttonImage;
 
 // preload()
 //
@@ -85,6 +86,8 @@ function preload() {
   windowWall = loadImage("assets/images/window.png");
   // Mouse Avatar
   fly = loadImage("assets/images/fly.png");
+  // Button image
+  buttonImage = loadImage("assets/images/fly.png");
   // Leaves
   for (let i = 0; i < 9; i++) {
     let fileName = "assets/images/leaves/leaf" + i + ".png";
@@ -98,8 +101,6 @@ function preload() {
 // Creates objects for the plant and outdoor scenes
 function setup() {
   createCanvas(500, 600);
-  mouseShadowX = mouseX;
-  mouseShadowY = mouseY;
   // TIMEFRAMES
   // Set the initial boxes and store them into an array
   setupTimeFrames();
@@ -134,6 +135,7 @@ function setup() {
 // Handles sceneries, movement and interractions
 // The game starts, the player plays and the game ends
 function draw() {
+
   // BEHIND THE WALL
   // All the sceneries are updated at the same time
   // They are displayed and move to the left in an infinite loop
@@ -605,8 +607,8 @@ function displayPlayer() {
 // Set the initial position and properties of the water bar
 function setupWaterBar() {
   // Create a new water bar object
-  waterBarTop = new WaterBar(473, 520, 480, 520, 10, 220, "#3FE0D0");
-  waterBar = new WaterBar(473, 220, 480, 520, 10, 0, "#FFFFFF");
+  waterBarTop = new WaterBar(473, 520, 480, 520, 220, "#3FE0D0", buttonImage);
+  waterBar = new WaterBar(473, 220, 480, 520, 0, "#FFFFFF", buttonImage);
 }
 
 // displayWaterBar()
@@ -618,8 +620,9 @@ function displayWaterBar() {
   waterBarTop.display();
   // The top bar displays the score of the player
   waterBarTop.handleScore(player);
+  // Check if the player overlaps and clicks the button
+  waterBarTop.handleButton(player);
 }
-
 
 // wallCanvas()
 //
@@ -669,4 +672,8 @@ function displayTimeFrames() {
     weather[i].backgroundDisplay();
     weather[i].backgroundTranslation();
   }
+}
+
+function mousePressed() {
+  waterBarTop.clicked = true;
 }

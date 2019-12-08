@@ -43,7 +43,7 @@ class Player {
   // overlaps it. If so, increase the water level. If the humidity object's
   // radius is === 0.5, it resets.
   handleCollecting(humidity) {
-    // Calculate distance from this player to this humidity
+    // Calculate distance from player to humidity
     let d = dist(this.x, this.y, humidity.x, humidity.y);
     // Check if the distance is less than the humidity's radius
     if (d < this.width / 4 + humidity.radius) {
