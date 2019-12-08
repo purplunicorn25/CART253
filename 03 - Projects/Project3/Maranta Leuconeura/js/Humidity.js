@@ -7,7 +7,7 @@ class Humidity {
 
   // constructor
   //
-  // Set the inital values for HUmidity's properties
+  // Set the inital values for Humidity's properties
   // Either sets default values or uses the arguments provided
   constructor(x, y, radius, speedX, speedY, reductionRate) {
     // Position properties
@@ -65,7 +65,7 @@ class Humidity {
   //
   // Set the position to back to its original position
   reset() {
-    if (this.radius <= 1) {
+    if (this.radius <= .5) {
       // Default radius
       this.radius = this.maxRadius;
       // Default position

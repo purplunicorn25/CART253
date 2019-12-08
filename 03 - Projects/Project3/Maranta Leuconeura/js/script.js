@@ -66,9 +66,13 @@ let numWater = 60;
 let leftWater = [];
 let rightWater = [];
 
-// OTHER IMAGES
+// PLAYER
 // mouse avatar
 let fly;
+// Player object
+let player;
+let mouseShadowX;
+let mouseShadowY;
 
 // preload()
 //
@@ -91,6 +95,8 @@ function preload() {
 // Creates objects for the plant and outdoor scenes
 function setup() {
   createCanvas(500, 600);
+  mouseShadowX = mouseX;
+  mouseShadowY = mouseY;
   // TIMEFRAMES
   // Set the initial boxes and store them into an array
   setupTimeFrames();
@@ -112,6 +118,9 @@ function setup() {
   // HUMIDITY
   // Set the initial position and properties of the water
   setupHumidity();
+  // PLAYER
+  // Set the initial position and properties of the player
+  setupPlayer();
 }
 
 // draw()
@@ -139,12 +148,12 @@ function draw() {
   wallCanvas();
 
   // IN FRONT OF THE WALL
-  // A tiny image follows the mouse
-  mouseAvatar();
   // A plant is growing slowly
   displayPlant();
   // Humidity is visible in the air
   displayHumidity();
+  // Player has an avatar and collects water
+  displayPlayer();
 }
 
 // setupNightSky()
@@ -514,7 +523,7 @@ function setupHumidity() {
   // Generate mostly random values for the arguments of the Humidity constructor
   for (let i = 0; i < numWater; i++) {
     let waterX = random(0, 150);
-    let waterY = random(-200, 80);
+    let waterY = random(-200, 100);
     let waterRadius = random(1.5, 2.5);
     let speedX = random(.1, .6);
     let speedY = random(.1, .2);
@@ -528,11 +537,11 @@ function setupHumidity() {
   // Generate mostly random values for the arguments of the Humidity constructor
   for (let i = 0; i < numWater; i++) {
     let waterX = random(350, 500);
-    let waterY = random(-200, 80);
+    let waterY = random(-200, 100);
     let waterRadius = random(1.5, 2.5);
     let speedX = random(.1, .6);
     let speedY = random(.1, .2);
-    let waterReductionRate = random(.001, .002);
+    let waterReductionRate = random(.0006, .001);
     // Create a new drop with the values
     let newWater = new Humidity(waterX, waterY, waterRadius, speedX, speedY, waterReductionRate);
     // Add the new drop to the array
@@ -562,15 +571,25 @@ function displayHumidity() {
   }
 }
 
-// mouseAvatar()
+// setupPlayer()
 //
-// Set an image to be the mouse avatar
-// Its position follows mouseX and mouseY
-function mouseAvatar() {
-  push();
-  imageMode(CENTER);
-  image(fly, mouseX, mouseY, 35, 35);
-  pop();
+// Set the inital position and properties of the player
+function setupPlayer() {
+  // Create a new player object
+  player = new Player(fly, 40);
+}
+
+// displayPlayer()
+//
+// Display the player and its functionalities
+function displayPlayer() {
+  player.display();
+  for (let i = 0; i < leftWater.length; i++) {
+    player.handleCollecting(leftWater[i]);
+  }
+  for (let i = 0; i < rightWater.length; i++) {
+    player.handleCollecting(rightWater[i]);
+  }
 }
 
 // wallCanvas()
