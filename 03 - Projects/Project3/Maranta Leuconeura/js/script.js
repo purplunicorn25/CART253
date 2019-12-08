@@ -2,7 +2,7 @@ let windowWall;
 
 let offsetTargetX = 0;
 let timeFrameInterval = 500;
-let translationRate = 2;
+let translationRate = .5;
 
 // TIME FRAMES
 let sun0; // 0 - 400
@@ -71,8 +71,11 @@ let rightWater = [];
 let fly;
 // Player object
 let player;
-let mouseShadowX;
-let mouseShadowY;
+
+// WATERBAR
+// WaterBar objects
+let waterBar;
+let waterBarTop;
 
 // preload()
 //
@@ -121,6 +124,9 @@ function setup() {
   // PLAYER
   // Set the initial position and properties of the player
   setupPlayer();
+  // WATERBAR
+  // Set the initial position and properties of the water bar
+  setupWaterBar();
 }
 
 // draw()
@@ -154,6 +160,8 @@ function draw() {
   displayHumidity();
   // Player has an avatar and collects water
   displayPlayer();
+  // The water bar represents the amont of water collected (score)
+  displayWaterBar();
 }
 
 // setupNightSky()
@@ -591,6 +599,27 @@ function displayPlayer() {
     player.handleCollecting(rightWater[i]);
   }
 }
+
+// setupWaterBar()
+//
+// Set the initial position and properties of the water bar
+function setupWaterBar() {
+  // Create a new water bar object
+  waterBarTop = new WaterBar(473, 520, 480, 520, 10, 220, "#3FE0D0");
+  waterBar = new WaterBar(473, 220, 480, 520, 10, 0, "#FFFFFF");
+}
+
+// displayWaterBar()
+//
+// Display the WaterBar and its functionalities
+function displayWaterBar() {
+  // Display two rectangles, one on top of the other
+  waterBar.display();
+  waterBarTop.display();
+  // The top bar displays the score of the player
+  waterBarTop.handleScore(player);
+}
+
 
 // wallCanvas()
 //

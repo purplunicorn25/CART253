@@ -20,6 +20,9 @@ class Player {
     this.avatar = avatar;
     // Interactive properties
     this.collectingRate = .2;
+    // Score properties
+    this.score = 5;
+    this.scoring = false;
   }
 
   // display
@@ -46,7 +49,17 @@ class Player {
     if (d < this.width / 4 + humidity.radius) {
       // Decrease humidity's radius when overlap
       humidity.radius -= this.collectingRate;
+      // Increase score
+      this.score += humidity.radius;
+      this.scoring = true;
     }
+
   }
 
+  // resetScore
+  //
+  // Reset score to its original value
+  resetScore() {
+    this.score = 5;
+  }
 }
