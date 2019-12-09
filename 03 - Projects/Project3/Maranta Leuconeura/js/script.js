@@ -11,7 +11,7 @@
 // but in the end it does not change anything.
 // The leaves of the plant grow slowly as the time passes
 // and when they they are fully grown you win
-// (new baby maranta leuconeura).
+// (new little baby maranta leuconeura).
 
 // Track whether the game as started
 let playing = false;
