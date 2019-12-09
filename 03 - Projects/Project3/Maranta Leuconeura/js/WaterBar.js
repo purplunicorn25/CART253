@@ -1,6 +1,7 @@
 // WaterBar
 //
 // That class displays how much water has been collected.
+// When the bar is full, a button appears to water the plant
 // The player.score is changing the height of the bar.
 
 class WaterBar {
@@ -57,7 +58,7 @@ class WaterBar {
   // The size of the rectangle is linked to the player.score
   handleScore(player) {
     if (player.scoring === true) {
-      this.highY = this.highY - player.score * 2; // adjust the rate to the size of the bar
+      this.highY = this.highY - player.score * 2 / 300; // adjust the rate to the size of the bar
       this.highY = constrain(this.highY, this.maxHeight, this.lowY);
       player.scoring = false;
     }
@@ -68,7 +69,7 @@ class WaterBar {
 
   // handleButton
   //
-  // Check if the player overlaps the button and cicks interval
+  // Check if the player overlaps the button and fill the button to reset the bar values
   handleButton(player) {
     // Calculate distance from player to button
     let d = dist(this.x, this.y, player.x, player.y);

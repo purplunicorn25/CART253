@@ -1,8 +1,17 @@
 "use strict"
 
-// INFO
-// ALLO
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// The Secret Journey of a Maranta Leuconeura
+// by Anne Boutet
+//
+// This game is a low interraction/comtemplative game.
+// The only true power the player has is patience.
+// Updating sceneries pass in the background as if it was outside.
+// They translate to the left all at the same time.
+// The player can collect water that is in the air,
+// but in the end it does not change anything.
+// The leaves of the plant grow slowly as the time passes
+// and when they they are fully grown you win
+// (new baby maranta leuconeura).
 
 // Track whether the game as started
 let playing = false;
@@ -49,8 +58,10 @@ let drops2 = [];
 let drops8 = [];
 
 // SUN
+// first frame
 let sun;
 let rays;
+// fourth frame
 let secondSun;
 let secondRays;
 
@@ -231,6 +242,7 @@ function draw() {
     // Handle the game starting
     startGame();
 
+    // In game functions and interactions
   } else if (!gameOver) {
     // MUSIC
     if (!inGameMusic.isLooping()) {
@@ -245,6 +257,7 @@ function draw() {
         waterBarTop.playWaterSound = false;
       }
     }
+
     // BEHIND THE WALL
     // All the sceneries are updated at the same time
     // They are displayed and move to the left in an infinite loop
@@ -279,6 +292,7 @@ function draw() {
     endScreen();
   }
 }
+
 // startScreen()
 //
 // Present the game and its instructions
@@ -305,6 +319,9 @@ function startScreen() {
   pop();
 }
 
+// startGame()
+//
+// Button to start the game
 function startGame() {
   // Draw an invisible rectangle
   push();
@@ -807,7 +824,7 @@ function displayWaterBar() {
 
 // wallCanvas()
 //
-// The image acts like a stencil that create a wall like effect
+// The image acts like a stencil that create a wall-like effect
 function wallCanvas() {
   push();
   imageMode(CENTER);

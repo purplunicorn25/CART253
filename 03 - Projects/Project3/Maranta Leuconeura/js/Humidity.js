@@ -34,7 +34,7 @@ class Humidity {
 
   // gravity
   //
-  // Move the snownflakes down using perling noise on the x axis
+  // Move the drops down using perling noise on the x axis
   gravity() {
     // Move down
     this.y += this.speedY;
@@ -76,27 +76,4 @@ class Humidity {
       this.y = random(-10, 0);
     }
   }
-  //
-  // // humidify
-  // //
-  // // will be applied in the waterBar objects
-  // // concentrate the drop on the plant until they disappear
-  // humidify() {
-  //   // Check if the button has been clicked
-  //   // Draw the ellipse
-  //   // if (this.radius === 0) {
-  //   //   // Reset its properties
-  //   //   this.x = random(200, 300);
-  //   //   this.y = random(350, 450);
-  //   //   this.radius = this.maxRadius;
-  //   // } else {
-  //   push();
-  //   noStroke();
-  //   fill(this.fillColor);
-  //   ellipse(this.x, this.y, this.radius * 2, this.radius * 2);
-  //   pop();
-  //   // Reduce its size to zero
-  //   this.radius -= this.reductionRate;
-  //   this.radius = constrain(this.radius, 0, this.maxRadius);
-  // }
 }

@@ -15,7 +15,7 @@ class Snowflake1 extends Snow {
 
   // gravity
   //
-  // Move the snownflakes down using perling noise on the x axis
+  // Move the snownflakes down
   gravity() {
     super.gravity();
   }

@@ -1,6 +1,6 @@
 // Sun
 //
-// That class represents a clear blue sky with a bright sun.
+// That class represents a bright sun.
 // It illustrates the concept of a sunny day.
 // It is two ellipse that change size to make a glowing effect
 

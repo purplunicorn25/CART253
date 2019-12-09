@@ -48,10 +48,8 @@ class Leaves {
   //
   // Check if the plant as grown to its full size
   handleWinning() {
-    console.log();
     if (this.height >= this.maxHeight) {
-      gameOver = true;
-      return true;
+      gameOver = true
     }
   }
 }

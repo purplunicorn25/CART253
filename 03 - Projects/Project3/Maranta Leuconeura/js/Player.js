@@ -1,7 +1,7 @@
 // Player
 //
-// That class allows the player to collect water,
-// water the plant when the bar is filled,
+// That class allows the player to collect water and
+// water the plant when the bar is filled.
 
 class Player {
 
@@ -40,7 +40,7 @@ class Player {
   //
   // Take a humidity object as an argument and check if the player
   // overlaps it. If so, increase the water level. If the humidity object's
-  // radius is === 0.5, it resets.
+  // radius is === 0.5, it resets (handled in the waterBar class).
   handleCollecting(humidity) {
     // Calculate distance from player to humidity
     let d = dist(this.x, this.y, humidity.x, humidity.y);
@@ -52,7 +52,6 @@ class Player {
       this.score += humidity.radius;
       this.scoring = true;
     }
-
   }
 
   // resetScore

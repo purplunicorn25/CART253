@@ -2,7 +2,7 @@
 //
 // That class represents a night sky full of stars.
 // It illustrates the concept of night time.
-// It is basically a black rectangle with sparkling stars.
+// It is basically tiny ellipse (sparkling stars).
 
 class Night {
 

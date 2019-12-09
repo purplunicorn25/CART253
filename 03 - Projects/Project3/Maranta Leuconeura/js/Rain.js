@@ -1,8 +1,8 @@
 // Rain
 //
 // That class represents a rainy day.
-// It is tiny square that fall down and reappear
-// by mean of a HandleWrapping function.
+// It is tiny square that falls down and appears
+// again by mean of a HandleWrapping function.
 
 class Rain {
 

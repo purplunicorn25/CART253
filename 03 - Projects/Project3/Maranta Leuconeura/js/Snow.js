@@ -1,6 +1,6 @@
 // Snow
 //
-// That class represents a snownflakes falling down.
+// That class represents a snownflake falling down.
 // It illustrates the concept of a snowy day.
 // The snowflakes will be displayed by subclasses:
 // Snowflake1 and Snowflake2
@@ -28,7 +28,7 @@ class Snow {
 
   // gravity
   //
-  // Move the snownflakes down using perling noise on the x axis
+  // Move the snownflakes down 
   gravity() {
     // Move down
     this.y += this.speedY;
