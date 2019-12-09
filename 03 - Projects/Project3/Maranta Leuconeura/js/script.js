@@ -124,7 +124,7 @@ let arrow = {
 };
 let pot = {
   x: 250,
-  y: 550,
+  y: 475,
   width: 100,
   height: 100
 };
@@ -147,15 +147,18 @@ let flyImage = {
   y: 75
 }
 let planted;
+let seed;
+let potImage;
 
 // END
 // Objects displayed at the endScreen
 let babyPlantImage = {
   x: 250,
-  y: 550,
+  y: 350,
   width: 500,
   height: 100
 }
+let endPotImage;
 let congratulations = {
   x: 250,
   y: 150,
@@ -187,12 +190,18 @@ function preload() {
   // Mouse Avatar
   fly = loadImage("assets/images/fly.png");
   // Button image
-  buttonImage = loadImage("assets/images/fly.png");
+  buttonImage = loadImage("assets/images/drop.png");
   // Leaves
   for (let i = 0; i < 9; i++) {
     let fileName = "assets/images/leaves/leaf" + i + ".png";
     leafAvatars.push(loadImage(fileName));
   }
+  // Seed
+  seed = loadImage("assets/images/seed.png");
+  // Start pot
+  potImage = loadImage("assets/images/pot_start.png");
+  // End pot
+  endPotImage = loadImage("assets/images/pot_end.png");
 }
 
 // setup()
@@ -316,6 +325,10 @@ function startScreen() {
   image(fly, arrow.x, arrow.y);
   // Fly Image
   image(fly, flyImage.x, flyImage.y);
+  // potImage
+  image(potImage, pot.x, pot.y);
+  // Mouse avatar
+  image(seed, mouseX, mouseY);
   pop();
 }
 
@@ -344,6 +357,9 @@ function startGame() {
 // Congratulate the player for his/her patience
 function endScreen() {
   background(200);
+  // Baby plant Image
+  imageMode(CENTER);
+  image(endPotImage, babyPlantImage.x, babyPlantImage.y, 500, 600);
   // Congratulations
   textAlign(CENTER, CENTER);
   push();
@@ -357,9 +373,6 @@ function endScreen() {
   textFont(cursiveFont);
   let fullComments = comments.comment1 + waterBarTop.waterScore + comments.comment2;
   text(fullComments, comments.x, comments.y);
-  // Baby plant Image
-  imageMode(CENTER);
-  image(fly, babyPlantImage.x, babyPlantImage.y);
   pop();
 }
 
@@ -701,7 +714,7 @@ function setupPlant() {
     let leafWidth = random(0, 5);
     let leafHeight = random(0, 10);
     let leafAvatar = leafAvatars[i];
-    let leafGrowningRate = 1; //.008
+    let leafGrowningRate = 0.008;
     let leafMaxHeight = 50;
     // Create a new leaf with the values
     let newLeaf = new Leaves(leafX, leafY, leafWidth, leafHeight, leafAvatar, leafGrowningRate, leafMaxHeight)

@@ -29,7 +29,7 @@ class WaterBar {
     this.maxRadius = 16;
     this.growingRate = 2;
     this.buttonImage = buttonImage;
-    this.buttonImageWidth = 30;
+    this.buttonImageWidth = 20;
     this.buttonImageHeight = this.buttonImageWidth;
     // Button filling properties
     this.buttonFillingRadius = 0;
