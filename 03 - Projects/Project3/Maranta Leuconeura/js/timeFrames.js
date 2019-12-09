@@ -46,5 +46,4 @@ class TimeFrames {
       this.x = this.ninthFrameX;
     }
   }
-
 }
