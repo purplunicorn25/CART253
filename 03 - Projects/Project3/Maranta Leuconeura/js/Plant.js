@@ -9,14 +9,14 @@ class Leaves {
   //
   // Set the initial values for the Leaves properties
   // Either sets default values or use the arguments provided
-  constructor(x, y, width, height, angle, avatar, growingRate, maxHeight) {
+  constructor(x, y, width, height, avatar, growingRate, maxHeight) {
     // Position properties
     this.x = x;
     this.y = y;
     // Display property
     this.width = width;
     this.height = height;
-    this.theta = angle;
+    this.originHeight = height;
     this.avatar = avatar;
     // Growing properties
     this.heightGrowingRate = growingRate;
@@ -30,8 +30,6 @@ class Leaves {
   display() {
     push();
     imageMode(CENTER);
-    // translate(this.x, this.y);
-    // rotate(this.theta);
     image(this.avatar, this.x, this.y, this.width, this.height);
     pop();
   }
@@ -40,9 +38,20 @@ class Leaves {
   //
   // Enlarge the plant on both axis
   grow() {
-    if (this.height < this.maxHeight) {
+    if (this.height <= this.maxHeight) {
       this.width += this.widthGrowingRate;
       this.height += this.heightGrowingRate;
+    }
+  }
+
+  // handleWinning
+  //
+  // Check if the plant as grown to its full size
+  handleWinning() {
+    console.log();
+    if (this.height >= this.maxHeight) {
+      gameOver = true;
+      return true;
     }
   }
 }

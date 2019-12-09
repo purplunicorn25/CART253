@@ -24,7 +24,7 @@ class Humidity {
     // Movement properties
     this.speedY = speedY;
     this.speedX = speedX;
-    this.floor = 350;
+    this.floor = 300;
     this.tx = random(0, 1000);
     this.vx = 0;
     // Interactive properties
@@ -76,30 +76,27 @@ class Humidity {
       this.y = random(-10, 0);
     }
   }
-
-  // humidify
   //
-  // will be applied in the waterBar objects
-  // concentrate the drop on the plant until they disappear
-  humidify() {
-    // Check if the button has been clicked
-    if (this.waterButtonClicked === true) {
-      // Draw the ellipse
-      push();
-      noStroke();
-      fill(this.fillColor);
-      ellipse(this.x, this.y, this.radius * 2, this.radius * 2);
-      pop();
-      // Reduce its size to zero
-      this.radius -= this.reductionRate;
-      this.radius = constrain(this.radius, 0, this.maxRadius);
-    }
-    if (this.radius === 0) {
-      // Reset its properties
-      this.x = random(200, 300);
-      this.y = random(350, 450);
-      this.radius = this.maxRadius;
-      this.waterButtonClicked = false;
-    }
-  }
+  // // humidify
+  // //
+  // // will be applied in the waterBar objects
+  // // concentrate the drop on the plant until they disappear
+  // humidify() {
+  //   // Check if the button has been clicked
+  //   // Draw the ellipse
+  //   // if (this.radius === 0) {
+  //   //   // Reset its properties
+  //   //   this.x = random(200, 300);
+  //   //   this.y = random(350, 450);
+  //   //   this.radius = this.maxRadius;
+  //   // } else {
+  //   push();
+  //   noStroke();
+  //   fill(this.fillColor);
+  //   ellipse(this.x, this.y, this.radius * 2, this.radius * 2);
+  //   pop();
+  //   // Reduce its size to zero
+  //   this.radius -= this.reductionRate;
+  //   this.radius = constrain(this.radius, 0, this.maxRadius);
+  // }
 }

@@ -4,6 +4,11 @@
 // ALLO
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+// Track whether the game as started
+let playing = false;
+// Track whether the game is over
+let gameOver = false;
+
 // WALL & FURNITURE
 let windowWall;
 
@@ -95,6 +100,9 @@ let buttonImage;
 // SOUNDS
 let inGameMusic;
 
+// START
+// Image as a
+
 // preload()
 //
 // Load assets before the game starts
@@ -157,41 +165,64 @@ function setup() {
 // Handles sceneries, movement and interractions
 // The game starts, the player plays and the game ends
 function draw() {
-  // Music
-  if (!inGameMusic.isLooping()) {
-    // Loop the music
-    inGameMusic.loop();
+  if (!playing) {
+    // Display Title and instructions
+    startScreen();
+
+  } else if (!gameOver) {
+    // MUSIC
+    if (!inGameMusic.isLooping()) {
+      // Loop the music
+      inGameMusic.loop();
+    }
+    // BEHIND THE WALL
+    // All the sceneries are updated at the same time
+    // They are displayed and move to the left in an infinite loop
+    // BOXES
+    displayTimeFrames();
+    // NIGHT
+    displayNight();
+    // RAIN
+    displayRain();
+    // SUN
+    displaySun();
+    // SNOW
+    displaySnow();
+
+    // THE WALL
+    // Update the wall background as the game runs
+    // After all the outdoor scenes
+    wallCanvas();
+
+    // IN FRONT OF THE WALL
+    // A plant is growing slowly
+    displayPlant();
+    // Humidity is visible in the air
+    displayHumidity();
+    // Player has an avatar and collects water
+    displayPlayer();
+    // The water bar represents the amont of water collected (score)
+    displayWaterBar();
+    // The watering represents the water hydrating the plant
+    displayWatering();
+
+  } else if (gameOver) {
+    endScreen();
   }
-  // BEHIND THE WALL
-  // All the sceneries are updated at the same time
-  // They are displayed and move to the left in an infinite loop
-  // BOXES
-  displayTimeFrames();
-  // NIGHT
-  displayNight();
-  // RAIN
-  displayRain();
-  // SUN
-  displaySun();
-  // SNOW
-  displaySnow();
+}
+// startScreen()
+//
+// Present the game and its instructions
+// Plant a seed in the pot as a start button
+function startScreen() {
+  background(255, 255, 0);
+}
 
-  // THE WALL
-  // Update the wall background as the game runs
-  // After all the outdoor scenes
-  wallCanvas();
-
-  // IN FRONT OF THE WALL
-  // A plant is growing slowly
-  displayPlant();
-  // Humidity is visible in the air
-  displayHumidity();
-  // Player has an avatar and collects water
-  displayPlayer();
-  // The water bar represents the amont of water collected (score)
-  displayWaterBar();
-  // The watering represents the water hydrating the plant
-  displayWatering();
+// endScreen()
+//
+// Congratulate the player for his/her patience
+function endScreen() {
+  background(255, 0, 0);
 }
 
 // setupNightSky()
@@ -531,12 +562,11 @@ function setupPlant() {
     let leafY = random(400, 410);
     let leafWidth = random(0, 5);
     let leafHeight = random(0, 10);
-    let leafTheta = random(-PI / 16, PI / 16);
     let leafAvatar = leafAvatars[i];
-    let leafGrowningRate = 1;
+    let leafGrowningRate = .0008;
     let leafMaxHeight = 50;
     // Create a new leaf with the values
-    let newLeaf = new Leaves(leafX, leafY, leafWidth, leafHeight, leafTheta, leafAvatar, leafGrowningRate, leafMaxHeight)
+    let newLeaf = new Leaves(leafX, leafY, leafWidth, leafHeight, leafAvatar, leafGrowningRate, leafMaxHeight)
     // Add the new leaf to the array
     leaves.push(newLeaf);
   }
@@ -551,6 +581,8 @@ function displayPlant() {
     leaves[i].display();
     leaves[i].grow();
   }
+  // Check if the lucky leaf grew to its full size
+  leaves[7].handleWinning();
 }
 
 // setupHumidity()
@@ -632,12 +664,7 @@ function setupWatering() {
 // displayWatering()
 //
 // Display the watering drop and their functionalities
-function displayWatering() {
-  // Display the water from the array around the plant
-  for (let i = 0; i < watering.length; i++) {
-    watering[i].humidify();
-  }
-}
+function displayWatering() {}
 
 // setupPlayer()
 //
@@ -676,10 +703,10 @@ function displayWaterBar() {
   // Display two rectangles, one on top of the other
   waterBar.display();
   waterBarTop.display();
+  // Check if the player overlaps and clicks the button
+  waterBarTop.handleButton(player, waterBar);
   // The top bar displays the score of the player
   waterBarTop.handleScore(player);
-  // Check if the player overlaps and clicks the button
-  waterBarTop.handleButton(player);
 }
 
 // wallCanvas()
@@ -736,8 +763,6 @@ function displayTimeFrames() {
 //
 // Check if the left button of the mouse is clicked
 function mousePressed() {
-  waterBarTop.clicked = true;
-  for (let i = 0; i < watering.length; i++) {
-    watering[i].waterButtonClicked = true;
-  }
+  // Start the game
+  playing = true
 }

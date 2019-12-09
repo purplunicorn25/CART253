@@ -25,13 +25,15 @@ class WaterBar {
     this.y = 190;
     this.radius = 15;
     this.maxRadius = 16;
-    this.growingRate = .6;
+    this.growingRate = 2;
     this.clicked = false;
     this.buttonImage = buttonImage;
     this.buttonImageWidth = 30;
     this.buttonImageHeight = this.buttonImageWidth;
-    // Interactive properties
-    this.humidify = false;
+    // Button filling properties
+    this.buttonFillingRadius = 0;
+    this.buttonFillRate = .3;
+    this.buttonFillingFill = "#7EF9FF";
   }
 
   // display
@@ -60,6 +62,33 @@ class WaterBar {
     }
   }
 
+  // handleButton
+  //
+  // Check if the player overlaps the button and cicks interval
+  handleButton(player) {
+    // Calculate distance from player to button
+    let d = dist(this.x, this.y, player.x, player.y);
+    // Check if the distance is less than the button's radius
+    if (d < player.width / 4 + this.radius && this.highY === this.maxHeight) {
+      // Change the button's radius
+      this.radius += this.growingRate;
+      this.radius = constrain(this.radius, 15, this.maxRadius);
+      // Fill up the button
+      push();
+      noStroke();
+      fill(this.buttonFillingFill);
+      ellipse(this.x, this.y, this.buttonFillingRadius * 2, this.buttonFillingRadius * 2);
+      this.buttonFillingRadius += this.buttonFillRate;
+      this.buttonFillingRadius = constrain(this.buttonFillingRadius, 0, this.maxRadius);
+      pop();
+      if (this.buttonFillingRadius === this.maxRadius) {
+        player.resetScore();
+        this.highY = this.originHighY;
+        this.buttonFillingRadius = 0;
+        this.clicked = false;
+      }
+    }
+  }
 
   // button
   //
@@ -73,27 +102,5 @@ class WaterBar {
     imageMode(CENTER);
     image(this.buttonImage, this.x, this.y, this.buttonImageWidth, this.buttonImageHeight);
     pop();
-  }
-
-  // handleButton
-  //
-  // Check if the player overlaps the button and cicks interval
-  handleButton(player) {
-    // Calculate distance from player to button
-    let d = dist(this.x, this.y, player.x, player.y);
-    // Check if the distance is less than the button's radius
-    if (d < player.width / 4 + this.radius) {
-      // Change the button's radius
-      this.radius += this.growingRate;
-      this.radius = constrain(this.radius, 15, this.maxRadius);
-      if (this.clicked === true) {
-        player.resetScore();
-        this.highY = this.originHighY;
-        this.clicked = false;
-      }
-    } else {
-      this.radius -= this.growingRate;
-      this.radius = constrain(this.radius, 15, this.maxRadius);
-    }
   }
 }
