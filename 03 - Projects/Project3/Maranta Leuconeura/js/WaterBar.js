@@ -20,13 +20,13 @@ class WaterBar {
     // Display properties
     this.maxHeight = maxHeight;
     this.fill = color;
-    // Button properties
+    // Button position properties
     this.x = this.highX + this.width / 2;
     this.y = 190;
+    // Button display properties
     this.radius = 15;
     this.maxRadius = 16;
     this.growingRate = 2;
-    this.clicked = false;
     this.buttonImage = buttonImage;
     this.buttonImageWidth = 30;
     this.buttonImageHeight = this.buttonImageWidth;
@@ -34,6 +34,8 @@ class WaterBar {
     this.buttonFillingRadius = 0;
     this.buttonFillRate = .3;
     this.buttonFillingFill = "#7EF9FF";
+    // Sound properties
+    this.playWaterSound = false;
   }
 
   // display
@@ -81,11 +83,16 @@ class WaterBar {
       this.buttonFillingRadius += this.buttonFillRate;
       this.buttonFillingRadius = constrain(this.buttonFillingRadius, 0, this.maxRadius);
       pop();
+      // If the button is fully filled reset all the values and play a sound
       if (this.buttonFillingRadius === this.maxRadius) {
+        // Play a sound of pouring water
+        this.playWaterSound = true;
+        // Reset score
         player.resetScore();
+        // Reset bar
         this.highY = this.originHighY;
+        // ButtonFill
         this.buttonFillingRadius = 0;
-        this.clicked = false;
       }
     }
   }

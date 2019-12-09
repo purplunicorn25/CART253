@@ -99,6 +99,7 @@ let buttonImage;
 
 // SOUNDS
 let inGameMusic;
+let waterPouring;
 
 // FONTS
 let serifFont;
@@ -112,9 +113,10 @@ let arrow = {
 };
 let pot = {
   x: 250,
-  y: 400,
+  y: 550,
   fill: 0,
-  radius: 100
+  width: 100,
+  height: 100
 };
 let title = {
   x: 250,
@@ -134,6 +136,7 @@ let flyImage = {
   x: 450,
   y: 75
 }
+let planted;
 
 // preload()
 //
@@ -141,6 +144,7 @@ let flyImage = {
 function preload() {
   // Sounds
   inGameMusic = loadSound("assets/sounds/Lilla_Kulturbidragsvalsen.mp3");
+  waterPouring = loadSound("assets/sounds/water-pouring.mp3");
   // Fonts
   serifFont = loadFont("assets/fonts/PlayfairDisplay-Black.ttf");
   cursiveFont = loadFont("assets/fonts/GloriaHallelujah-Regular.ttf");
@@ -184,9 +188,6 @@ function setup() {
   // HUMIDITY
   // Set the initial position and properties of the water
   setupHumidity();
-  // WATERING
-  // Set the initial position and properties of the water
-  setupWatering();
   // PLAYER
   // Set the initial position and properties of the player
   setupPlayer();
@@ -200,15 +201,26 @@ function setup() {
 // Handles sceneries, movement and interractions
 // The game starts, the player plays and the game ends
 function draw() {
+  // Screen before the game starts
   if (!playing) {
     // Display Title and instructions
     startScreen();
+    // Handle the game starting
+    startGame();
 
   } else if (!gameOver) {
     // MUSIC
     if (!inGameMusic.isLooping()) {
       // Loop the music
       inGameMusic.loop();
+    }
+    if (waterBarTop.playWaterSound === true) {
+      if (!waterPouring.isPlaying()) {
+        // Loop the music
+        masterVolume(0.1);
+        waterPouring.play();
+        waterBarTop.playWaterSound = false;
+      }
     }
     // BEHIND THE WALL
     // All the sceneries are updated at the same time
@@ -238,8 +250,6 @@ function draw() {
     displayPlayer();
     // The water bar represents the amont of water collected (score)
     displayWaterBar();
-    // The watering represents the water hydrating the plant
-    displayWatering();
 
   } else if (gameOver) {
     endScreen();
@@ -269,6 +279,23 @@ function startScreen() {
   // Fly Image
   image(fly, flyImage.x, flyImage.y);
   pop();
+}
+
+function startGame() {
+  // Draw an invisible rectangle
+  push();
+  rectMode(CENTER);
+  noStroke();
+  noFill();
+  rect(pot.x, pot.y, pot.width, pot.height);
+  pop();
+  // Calculate the distance between the rectangle and the player
+  let d = dist(pot.x, pot.y, mouseX, mouseY);
+  // Check if the distance is less than the rectangle half width
+  if (d < pot.height / 2 && planted === true) {
+    // Start the game
+    playing = true;
+  }
 }
 
 // endScreen()
@@ -616,7 +643,7 @@ function setupPlant() {
     let leafWidth = random(0, 5);
     let leafHeight = random(0, 10);
     let leafAvatar = leafAvatars[i];
-    let leafGrowningRate = .0008;
+    let leafGrowningRate = .008;
     let leafMaxHeight = 50;
     // Create a new leaf with the values
     let newLeaf = new Leaves(leafX, leafY, leafWidth, leafHeight, leafAvatar, leafGrowningRate, leafMaxHeight)
@@ -693,31 +720,6 @@ function displayHumidity() {
     rightWater[i].reset();
   }
 }
-
-// setupWatering()
-//
-// Set the inital position and properties of the humidity
-function setupWatering() {
-  // LEFT
-  // Generate mostly random values for the arguments of the Humidity constructor
-  for (let i = 0; i < numWatering; i++) {
-    let waterX = random(200, 300);
-    let waterY = random(350, 450);
-    let waterRadius = random(2, 4);
-    let speedX = 0;
-    let speedY = 0;
-    let waterReductionRate = .2;
-    // Create a new drop with the values
-    let newWater = new Humidity(waterX, waterY, waterRadius, speedX, speedY, waterReductionRate);
-    // Add the new drop to the array
-    watering.push(newWater);
-  }
-}
-
-// displayWatering()
-//
-// Display the watering drop and their functionalities
-function displayWatering() {}
 
 // setupPlayer()
 //
@@ -816,6 +818,6 @@ function displayTimeFrames() {
 //
 // Check if the left button of the mouse is clicked
 function mousePressed() {
-  // Start the game
-  playing = true
+  planted = true;
+  return false;
 }
