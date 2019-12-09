@@ -36,6 +36,8 @@ class WaterBar {
     this.buttonFillingFill = "#7EF9FF";
     // Sound properties
     this.playWaterSound = false;
+    // Score properties
+    this.waterScore = 0;
   }
 
   // display
@@ -93,6 +95,9 @@ class WaterBar {
         this.highY = this.originHighY;
         // ButtonFill
         this.buttonFillingRadius = 0;
+        // Add one to the counter of
+        // times that the player watered the plant
+        this.waterScore += 1;
       }
     }
   }

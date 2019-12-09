@@ -106,7 +106,7 @@ let serifFont;
 let cursiveFont;
 
 // START
-// User types the name of its plant
+// Objects displayed at the startScreen
 let arrow = {
   x: 250,
   y: 400
@@ -114,7 +114,6 @@ let arrow = {
 let pot = {
   x: 250,
   y: 550,
-  fill: 0,
   width: 100,
   height: 100
 };
@@ -137,6 +136,30 @@ let flyImage = {
   y: 75
 }
 let planted;
+
+// END
+// Objects displayed at the endScreen
+let babyPlantImage = {
+  x: 250,
+  y: 550,
+  width: 500,
+  height: 100
+}
+let congratulations = {
+  x: 250,
+  y: 150,
+  size: 32,
+  fill: 255,
+  text: "Congratulations,\n You are now a grandparent!\nYour Maranta Leuconeura\nhas given life!",
+}
+let comments = {
+  x: 250,
+  y: 320,
+  size: 22,
+  fill: 0,
+  comment1: "Patience was your only\ntrue power in this game.\nNevertheless, you cared well for\nyour plant and watered it ",
+  comment2: " times. "
+}
 
 // preload()
 //
@@ -252,6 +275,7 @@ function draw() {
     displayWaterBar();
 
   } else if (gameOver) {
+    // Congratulation for growing the plant
     endScreen();
   }
 }
@@ -302,7 +326,24 @@ function startGame() {
 //
 // Congratulate the player for his/her patience
 function endScreen() {
-  background(255, 0, 0);
+  background(200);
+  // Congratulations
+  textAlign(CENTER, CENTER);
+  push();
+  fill(congratulations.fill);
+  textFont(serifFont);
+  textSize(congratulations.size);
+  text(congratulations.text, congratulations.x, congratulations.y);
+  // Comments
+  fill(comments.fill);
+  textSize(comments.size);
+  textFont(cursiveFont);
+  let fullComments = comments.comment1 + waterBarTop.waterScore + comments.comment2;
+  text(fullComments, comments.x, comments.y);
+  // Baby plant Image
+  imageMode(CENTER);
+  image(fly, babyPlantImage.x, babyPlantImage.y);
+  pop();
 }
 
 // setupNightSky()
@@ -643,7 +684,7 @@ function setupPlant() {
     let leafWidth = random(0, 5);
     let leafHeight = random(0, 10);
     let leafAvatar = leafAvatars[i];
-    let leafGrowningRate = .008;
+    let leafGrowningRate = 1; //.008
     let leafMaxHeight = 50;
     // Create a new leaf with the values
     let newLeaf = new Leaves(leafX, leafY, leafWidth, leafHeight, leafAvatar, leafGrowningRate, leafMaxHeight)

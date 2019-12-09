@@ -2,7 +2,6 @@
 //
 // That class allows the player to collect water,
 // water the plant when the bar is filled,
-// and to draw a secret drawing only displayed at the end.
 
 class Player {
 
