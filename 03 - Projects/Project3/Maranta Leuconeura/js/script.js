@@ -100,15 +100,50 @@ let buttonImage;
 // SOUNDS
 let inGameMusic;
 
+// FONTS
+let serifFont;
+let cursiveFont;
+
 // START
-// Image as a
+// User types the name of its plant
+let arrow = {
+  x: 250,
+  y: 400
+};
+let pot = {
+  x: 250,
+  y: 400,
+  fill: 0,
+  radius: 100
+};
+let title = {
+  x: 250,
+  y: 150,
+  text: "The Secret Journey\nof a\nMaranta Leuconeura",
+  size: 35,
+  fill: 255
+};
+let instructions = {
+  x: 250,
+  y: 300,
+  text: "Bring it into the world\n and watch it grow!",
+  size: 25,
+  fill: 0
+};
+let flyImage = {
+  x: 450,
+  y: 75
+}
 
 // preload()
 //
 // Load assets before the game starts
 function preload() {
-  // SOUNDS
+  // Sounds
   inGameMusic = loadSound("assets/sounds/Lilla_Kulturbidragsvalsen.mp3");
+  // Fonts
+  serifFont = loadFont("assets/fonts/PlayfairDisplay-Black.ttf");
+  cursiveFont = loadFont("assets/fonts/GloriaHallelujah-Regular.ttf");
   // Wall
   windowWall = loadImage("assets/images/window.png");
   // Mouse Avatar
@@ -215,7 +250,25 @@ function draw() {
 // Present the game and its instructions
 // Plant a seed in the pot as a start button
 function startScreen() {
-  background(255, 255, 0);
+  background(200);
+  // Title
+  textAlign(CENTER, CENTER);
+  push();
+  fill(title.fill);
+  textFont(serifFont);
+  textSize(title.size);
+  text(title.text, title.x, title.y);
+  // Instructions
+  fill(instructions.fill);
+  textSize(instructions.size);
+  textFont(cursiveFont);
+  text(instructions.text, instructions.x, instructions.y);
+  // Arrow Image
+  imageMode(CENTER);
+  image(fly, arrow.x, arrow.y);
+  // Fly Image
+  image(fly, flyImage.x, flyImage.y);
+  pop();
 }
 
 // endScreen()
