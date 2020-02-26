@@ -58,7 +58,7 @@ class WaterBar {
   // The size of the rectangle is linked to the player.score
   handleScore(player) {
     if (player.scoring === true) {
-      this.highY = this.highY - player.score * 2 / 300; // adjust the rate to the size of the bar
+      this.highY = this.highY - player.score * 2 / 1000; // adjust the rate to the size of the bar
       this.highY = constrain(this.highY, this.maxHeight, this.lowY);
       player.scoring = false;
     }

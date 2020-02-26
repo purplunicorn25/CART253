@@ -20,6 +20,9 @@ let gameOver = false;
 
 // WALL & FURNITURE
 let windowWall;
+let table;
+let potBase;
+let potTop;
 
 // TIME FRAMES
 // Properties
@@ -185,8 +188,11 @@ function preload() {
   // Fonts
   serifFont = loadFont("assets/fonts/PlayfairDisplay-Black.ttf");
   cursiveFont = loadFont("assets/fonts/GloriaHallelujah-Regular.ttf");
-  // Wall
+  // Wall, table and pot
   windowWall = loadImage("assets/images/window.png");
+  // table = loadImage("assets/images/table.png");
+  potBase = loadImage("assets/images/pot_base.png");
+  potTop = loadImage("assets/images/pot.png");
   // Mouse Avatar
   fly = loadImage("assets/images/fly.png");
   // Button image
@@ -285,10 +291,13 @@ function draw() {
     // Update the wall background as the game runs
     // After all the outdoor scenes
     wallCanvas();
+    // Update the furniture and pot
+    furniture()
 
     // IN FRONT OF THE WALL
     // A plant is growing slowly
     displayPlant();
+    potFront();
     // Humidity is visible in the air
     displayHumidity();
     // Player has an avatar and collects water
@@ -388,7 +397,7 @@ function setupNight() {
     let starX = random(500, 1000); // night2
     let starY = random(0, height);
     let moonX = 800;
-    let moonY = 200;
+    let moonY = 290;
     let starRadius = random(.3, .8);
     let reductionRate = random(-0.02, -0.005);
     let growingRate = 0.01;
@@ -405,7 +414,7 @@ function setupNight() {
     let starX = random(1500, 2000); // night2
     let starY = random(0, height);
     let moonX = 1800;
-    let moonY = 300;
+    let moonY = 290;
     let starRadius = random(.3, .8);
     let reductionRate = random(-0.02, -0.005);
     let growingRate = 0.01;
@@ -422,7 +431,7 @@ function setupNight() {
     let starX = random(2500, 3000); // night2
     let starY = random(0, height);
     let moonX = 2800;
-    let moonY = 300;
+    let moonY = 290;
     let starRadius = random(.3, .8);
     let reductionRate = random(-0.02, -0.005);
     let growingRate = 0.01;
@@ -439,7 +448,7 @@ function setupNight() {
     let starX = random(3500, 4000); // night2
     let starY = random(0, height);
     let moonX = 3800;
-    let moonY = 300;
+    let moonY = 290;
     let starRadius = random(.3, .8);
     let reductionRate = random(-0.02, -0.005);
     let growingRate = 0.01;
@@ -456,7 +465,7 @@ function setupNight() {
     let starX = random(4500, 5000); // night2
     let starY = random(0, height);
     let moonX = 4800;
-    let moonY = 300;
+    let moonY = 290;
     let starRadius = random(.3, .8);
     let reductionRate = random(-0.02, -0.005);
     let growingRate = 0.01;
@@ -710,12 +719,12 @@ function setupPlant() {
   // Generate mostly random values for the arguments of the Plant constructor
   for (let i = 0; i < numLeaves; i++) {
     let leafX = random(225, 275);
-    let leafY = random(400, 410);
+    let leafY = random(440, 450);
     let leafWidth = random(0, 5);
     let leafHeight = random(0, 10);
     let leafAvatar = leafAvatars[i];
-    let leafGrowningRate = 0.008;
-    let leafMaxHeight = 50;
+    let leafGrowningRate = 0.008; // 0.008
+    let leafMaxHeight = 80;
     // Create a new leaf with the values
     let newLeaf = new Leaves(leafX, leafY, leafWidth, leafHeight, leafAvatar, leafGrowningRate, leafMaxHeight)
     // Add the new leaf to the array
@@ -841,7 +850,27 @@ function displayWaterBar() {
 function wallCanvas() {
   push();
   imageMode(CENTER);
-  image(windowWall, width / 2, height / 2);
+  image(windowWall, width / 2, height / 2, 500, 600);
+  pop();
+}
+
+// furniture()
+//
+// Display the images of the furniture and the pot
+function furniture() {
+  push();
+  imageMode(CENTER);
+  image(potBase, width / 2, 490, 120, 120);
+  pop();
+}
+
+// potTop()
+//
+// Display the image of the border of the top before the plant leaves
+function potFront() {
+  push();
+  imageMode(CENTER);
+  image(potTop, width / 2, 490, 120, 120);
   pop();
 }
 
