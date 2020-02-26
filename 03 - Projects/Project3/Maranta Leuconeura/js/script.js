@@ -175,7 +175,7 @@ let comments = {
   size: 22,
   fill: 0,
   comment1: "Patience was your only\ntrue power in this game.\nNevertheless, you cared well for\nyour plant and watered it ",
-  comment2: " times. "
+  comment2: " times. \n Refresh to start again!"
 }
 
 // preload()
